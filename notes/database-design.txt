@@ -1,0 +1,141 @@
+12:36 AM 5/14/2026
+
+
+
+Product
+-------------
+Title : 		Cheese burger, Pizza mini
+Describtion	
+Price             	5000
+Available Now : Yes/ NO
+
+
+Order 
+-------------
+ID 
+Date
+Customer
+Total_price
+discount 
+order_status
+Delivery fee 
+Address
+Driver
+datetime
+Total items 
+requested_time
+
+Customer 
+-----------------
+Name 
+Address
+phone 
+location
+
+Drive 
+---------------
+Name
+Vehicle type bike/Car
+
+Menu
+Offers discount
+
+Jetpack compose quotes app hilt retrofit
+
+Module A: Staff & Seating
+SQL
+-- 1. Employee Roles
+CREATE TABLE Roles (
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(50) NOT NULL UNIQUE -- e.g., 'Manager', 'Chef', 'Server', 'Cashier'
+);
+
+-- 2. Employees
+CREATE TABLE Employees (
+    employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    role_id INT,
+    phone VARCHAR(15),
+    email VARCHAR(100) UNIQUE,
+    hire_date DATE DEFAULT (CURRENT_DATE),
+    is_active BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (role_id) REFERENCES Roles(role_id)
+);
+
+-- 3. Restaurant Tables
+CREATE TABLE Restaurant_Tables (
+    table_id INT PRIMARY KEY AUTO_INCREMENT,
+    table_number VARCHAR(10) NOT NULL UNIQUE,
+    capacity INT NOT NULL,
+    status VARCHAR(20) DEFAULT 'Available' -- 'Available', 'Occupied', 'Reserved', 'Dirty'
+);
+Module B: Menu Management
+SQL
+-- 4. Menu Categories
+CREATE TABLE Categories (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(50) NOT NULL UNIQUE, -- e.g., 'Appetizers', 'Main Course', 'Drinks'
+    description TEXT
+);
+
+-- 5. Menu Items
+CREATE TABLE Menu_Items (
+    item_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    category_id INT,
+    is_available BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+);
+Module C: Orders & Payments
+SQL
+-- 6. Customers (Optional for walk-ins, required for reservations/loyalty)
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    phone VARCHAR(15) UNIQUE,
+    email VARCHAR(100) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 7. Orders (The Header)
+CREATE TABLE Orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    table_id INT NULL, -- NULL if it's a takeout/delivery order
+    employee_id INT,   -- The server or cashier who took the order
+    customer_id INT NULL,
+    order_type VARCHAR(20) NOT NULL, -- 'Dine-In', 'Takeout', 'Delivery'
+    order_status VARCHAR(20) DEFAULT 'Pending', -- 'Pending', 'In Preparation', 'Served', 'Completed', 'Cancelled'
+    total_amount DECIMAL(10, 2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (table_id) REFERENCES Restaurant_Tables(table_id),
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+-- 8. Order Items (The Details - Junction table for Many-to-Many relationship)
+CREATE TABLE Order_Items (
+    order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT,
+    item_id INT,
+    quantity INT NOT NULL DEFAULT 1,
+    unit_price DECIMAL(10, 2) NOT NULL, -- Stored explicitly in case menu prices change later
+    special_notes TEXT,                 -- e.g., "No onions", "Extra spicy"
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES Menu_Items(item_id)
+);
+
+-- 9. Payments
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT UNIQUE, -- One payment per order (or remove UNIQUE for split bills)
+    payment_method VARCHAR(30) NOT NULL, -- 'Cash', 'Credit Card', 'Apple Pay'
+    amount_paid DECIMAL(10, 2) NOT NULL,
+    tip_amount DECIMAL(10, 2) DEFAULT 0.00,
+    payment_status VARCHAR(20) DEFAULT 'Completed', -- 'Completed', 'Failed', 'Refunded'
+    paid_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+);

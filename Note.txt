@@ -1,0 +1,12 @@
+Fast Food App
+2:15 PM 5/17/2026
+
+Goals 
+----------
+Sell to local business. Make it work in the real world. 
+Add it to your CV. 
+First real developer experience. 
+
+Guide
+-------------------------------
+First start with local data. When design done. Add Retrofit & Firebase. 
