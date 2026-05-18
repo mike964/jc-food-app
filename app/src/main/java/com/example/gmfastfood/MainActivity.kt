@@ -26,8 +26,8 @@ class MainActivity : ComponentActivity() {
 //                        modifier = Modifier.padding(innerPadding)
 //                    )
 //                }
-//                MainScreen()
-                SharedNavApp()
+                MainScreen()  // Main App
+//                SharedNavApp()
             }
         }
     }

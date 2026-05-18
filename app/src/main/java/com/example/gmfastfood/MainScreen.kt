@@ -42,11 +42,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.gmfastfood.cart.CartScreen
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
@@ -84,7 +88,10 @@ fun MainScreen() {
         ) {
             composable("home") { HomeScreen() }
             composable("search") { SearchScreen() }
-            composable("orders") { OrdersScreen() }
+//            composable("orders") { OrdersScreen() }
+            composable("cart") {
+                CartScreen()
+            }
             composable("profile") { ProfileScreen() }
         }
     }
@@ -113,6 +120,7 @@ data class NavItem(
 val listOfNavItems = listOf(
     NavItem("Home", Icons.Default.Home, "home"),
     NavItem("Search", Icons.Default.Search, "search"),
-    NavItem("Orders", Icons.AutoMirrored.Filled.List, "orders"),
+//    NavItem("Orders", Icons.AutoMirrored.Filled.List, "orders"),
+    NavItem("Cart", Icons.AutoMirrored.Filled.List, "cart"),
     NavItem("Profile", Icons.Default.Person, "profile")
 )

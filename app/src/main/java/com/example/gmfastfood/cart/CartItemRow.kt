@@ -1,5 +1,6 @@
 package com.example.gmfastfood.cart
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.gmfastfood.vm.CartItem
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun CartItemRow(
     item: CartItem,
