@@ -55,6 +55,7 @@ fun SharedNavApp() {
                         icon = { Icon(tab.icon, contentDescription = tab.label) },
                         onClick = {
                             navController.navigate(tab.route) {
+                                // Clear backstack up to the start tab to avoid accumulating memory
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
