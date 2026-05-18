@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -33,18 +34,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.data.Product
+import com.example.gmfastfood.data.products
+
 @Composable
 fun HomeScreen(){
+
     Column(
         modifier= Modifier.fillMaxSize()
             .padding(horizontal = 20.dp, vertical = 28.dp)
     ){
-        Text("Foodgo", Modifier, fontSize = 45.sp, fontWeight = FontWeight.SemiBold, )
+        Text("Food Go", Modifier, fontSize = 45.sp, fontWeight = FontWeight.SemiBold, )
         Text("Order your favourite food!", Modifier, fontSize = 15.sp,
             color = Color(0xff6A6A6A),
             fontWeight = FontWeight.Medium)
+
         SearchBox()
         HorizontalSliderItems()
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -52,8 +59,8 @@ fun HomeScreen(){
             modifier = Modifier.fillMaxSize().padding(vertical = 12.dp),
 
             ) {
-            items(10) {
-                FoodItem()
+            items(products) { item ->
+                FoodItem(item)
             }
         }
 
@@ -74,7 +81,6 @@ fun HorizontalSliderItems(){
             .fillMaxWidth().
             wrapContentHeight(),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
-
     ) {
         texts.forEach {
             Box(
@@ -90,7 +96,6 @@ fun HorizontalSliderItems(){
 }
 @Composable
 fun SearchBox(){
-
     Row(
         modifier= Modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -127,7 +132,7 @@ fun SearchBox(){
 }
 
 @Composable
-fun FoodItem(){
+fun FoodItem(item: Product){
     Card(
         modifier = Modifier.width(185.dp).height(225.dp),
         shape = RoundedCornerShape(20.dp),
@@ -135,7 +140,7 @@ fun FoodItem(){
         elevation = CardDefaults.cardElevation(5.dp)
     ){
         Image(
-            painter = painterResource(R.drawable.burger),
+            painter = painterResource(item.image),
             contentDescription = "burger",
             modifier = Modifier
                 .padding(horizontal = 32.dp)
@@ -144,7 +149,7 @@ fun FoodItem(){
         Column(
             modifier = Modifier.padding(top = 20.dp, start = 11.dp)
         ){
-            Text("Cheeseburger", Modifier, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            Text(item.title, Modifier, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             Text("Wendy's Burger", Modifier, fontSize = 16.sp)
         }
         Row(
