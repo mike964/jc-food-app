@@ -25,7 +25,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,9 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.data.products
+import com.example.gmfastfood.navigation.SharedViewModel
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(viewModel: SharedViewModel) {
+    val text by viewModel.sharedText.collectAsState()
 
     Column(
         modifier= Modifier.fillMaxSize()
@@ -48,6 +53,12 @@ fun HomeScreen(){
         Text("Order your favourite food!", Modifier, fontSize = 15.sp,
             color = Color(0xff6A6A6A),
             fontWeight = FontWeight.Medium)
+
+        TextField(
+            value = text,
+            onValueChange = { viewModel.updateText(it) },
+            label = { Text("Shared Data") }
+        )
 
         SearchBox()
         HorizontalSliderItems()

@@ -13,3 +13,12 @@ class SharedNavigationViewModel : ViewModel() {
         _sharedText.value = newText
     }
 }
+
+class SharedViewModel : ViewModel() {
+    private val _sharedText = MutableStateFlow("")
+    val sharedText: StateFlow<String> = _sharedText.asStateFlow()
+
+    fun updateText(newText: String) {
+        _sharedText.value = newText
+    }
+}

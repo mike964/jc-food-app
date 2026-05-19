@@ -2,6 +2,11 @@ package com.example.gmfastfood.navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -11,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
@@ -33,6 +39,13 @@ inline fun <reified VM : ViewModel> NavController.getSharedViewModel(navGraphRou
     }
     // Provide the ViewModel scoped to that parent graph's lifecycle
     return viewModel(viewModelStoreOwner = backStackEntry)
+}
+enum class SharedTabs(val route: Any, val icon: ImageVector, val label: String) {
+    HOME(Routes.MainGraph, Icons.Default.Home, "Home"),
+    INPUT(Routes.Input, Icons.Default.Edit, "Input"),
+    DISPLAY(Routes.Display, Icons.AutoMirrored.Filled.List, "Display"),
+    CART(Routes.Cart, Icons.AutoMirrored.Filled.List, "Cart"),
+    PROFILE(Routes.Profile, Icons.Default.Person, "Profile")
 }
 
 @Composable
@@ -75,7 +88,6 @@ fun SharedNavApp() {
         ) {
             // Nested navigation graph wrapper
             navigation<Routes.MainGraph>(startDestination = Routes.Input) {
-
                 composable<Routes.Input> {
                     // Fetch the Shared ViewModel using our helper function
                     val sharedViewModel: SharedNavigationViewModel =

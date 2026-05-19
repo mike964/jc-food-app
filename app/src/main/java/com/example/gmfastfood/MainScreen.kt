@@ -1,5 +1,6 @@
 package com.example.gmfastfood;
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable;
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
@@ -39,12 +41,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.gmfastfood.cart.CartScreen
+import com.example.gmfastfood.navigation.Routes
+import com.example.gmfastfood.navigation.SharedNavigationViewModel
+import com.example.gmfastfood.navigation.SharedViewModel
+import com.example.gmfastfood.navigation.getSharedViewModel
+
+@SuppressLint("UnrememberedGetBackStackEntry")
+@Composable
+inline fun <reified VM : ViewModel> NavController.getSharedViewModel(navGraphRoute: Any): VM {
+    // Find the back stack entry of the parent navigation graph
+    val backStackEntry = remember(this) {
+        getBackStackEntry(navGraphRoute)
+    }
+    // Provide the ViewModel scoped to that parent graph's lifecycle
+    return viewModel(viewModelStoreOwner = backStackEntry)
+}
+
+enum class SharedTabs(val route: Any, val icon: ImageVector, val label: String) {
+    HOME(Routes.Home, Icons.Default.Home, "Home"),
+    INPUT(Routes.Input, Icons.Default.Edit, "Input"),
+    DISPLAY(Routes.Display, Icons.AutoMirrored.Filled.List, "Display"),
+    CART(Routes.Cart, Icons.AutoMirrored.Filled.List, "Cart"),
+    PROFILE(Routes.Profile, Icons.Default.Person, "Profile")
+}
 
 @Composable
 fun MainScreen() {
@@ -52,6 +81,7 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     var selectedIndex by remember { mutableIntStateOf(0) }
+
 
     Scaffold(
         bottomBar = {
@@ -69,7 +99,7 @@ fun MainScreen() {
                                 }
                                 // Avoid multiple copies of the same destination
                                 launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
+                                // Restore state when re selecting a previously selected item
                                 restoreState = true
                             }
                         },
@@ -83,16 +113,29 @@ fun MainScreen() {
         // NavHost handles switching between screen composables
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = Routes.MainGraph,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable("home") { HomeScreen() }
-            composable("search") { SearchScreen() }
-//            composable("orders") { OrdersScreen() }
-            composable("cart") {
-                CartScreen()
+            navigation<Routes.MainGraph>(startDestination = Routes.Home) {
+                composable<Routes.Home> {
+                    val sharedViewModel: SharedViewModel =
+                        navController.getSharedViewModel(Routes.MainGraph)
+
+                    HomeScreen(sharedViewModel)
+                }
+                composable<Routes.Search> {
+                    val sharedViewModel: SharedViewModel =
+                        navController.getSharedViewModel(Routes.MainGraph)
+
+                    SearchScreen(sharedViewModel)
+                }
+                composable<Routes.Cart> {
+                    CartScreen()
+                }
+                composable<Routes.Profile> {
+                    ProfileScreen()
+                }
             }
-            composable("profile") { ProfileScreen() }
         }
     }
 }
@@ -102,10 +145,7 @@ fun ProfileScreen() {
     Text("Profile Screen")
 }
 
-@Composable
-fun SearchScreen() {
-    Text("Search Screen")
-}
+
 @Composable
 fun OrdersScreen() {
     Text("Orders")
@@ -114,13 +154,13 @@ fun OrdersScreen() {
 data class NavItem(
     val label: String,
     val icon: ImageVector,
-    val route: String
+    val route: Any,
 )
 
 val listOfNavItems = listOf(
-    NavItem("Home", Icons.Default.Home, "home"),
-    NavItem("Search", Icons.Default.Search, "search"),
+    NavItem("Home", Icons.Default.Home, Routes.Home),
+    NavItem("Search", Icons.Default.Search, Routes.Search),
 //    NavItem("Orders", Icons.AutoMirrored.Filled.List, "orders"),
-    NavItem("Cart", Icons.AutoMirrored.Filled.List, "cart"),
-    NavItem("Profile", Icons.Default.Person, "profile")
+    NavItem("Cart", Icons.AutoMirrored.Filled.List, Routes.Cart),
+    NavItem("Profile", Icons.Default.Person, Routes.Profile)
 )
