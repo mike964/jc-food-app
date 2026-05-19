@@ -60,7 +60,7 @@ fun HomeScreen(viewModel: SharedViewModel) {
             label = { Text("Shared Data") }
         )
 
-        SearchBox()
+        SearchBox( textValue = text, onValueChange = { viewModel.updateText(it) })
         HorizontalSliderItems()
 
         LazyVerticalGrid(
@@ -105,42 +105,7 @@ fun HorizontalSliderItems(){
         }
     }
 }
-@Composable
-fun SearchBox(){
-    Row(
-        modifier= Modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
 
-        Row(
-            modifier = Modifier
-                .padding(top = 20.dp)
-                .height(60.dp)
-                .width(280.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xfff3f4f6))
-                .padding(18.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            Icon(Icons.Filled.Search, contentDescription = null)
-            Text("Search", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold,)
-
-        }
-        Box(
-            modifier = Modifier
-                .padding(top =15.dp)
-                .size(60.dp)
-                .background(Color(0xffEF2A39), RoundedCornerShape(20.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(R.drawable.settings_sliders),
-                contentDescription = null,
-            )
-        }
-    }
-}
 
 @Composable
 fun FoodItem(item: Product){

@@ -2,26 +2,10 @@ package com.example.gmfastfood;
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable;
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -33,14 +17,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -52,7 +30,6 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.gmfastfood.cart.CartScreen
 import com.example.gmfastfood.navigation.Routes
-import com.example.gmfastfood.navigation.SharedNavigationViewModel
 import com.example.gmfastfood.navigation.SharedViewModel
 import com.example.gmfastfood.navigation.getSharedViewModel
 
@@ -67,13 +44,7 @@ inline fun <reified VM : ViewModel> NavController.getSharedViewModel(navGraphRou
     return viewModel(viewModelStoreOwner = backStackEntry)
 }
 
-enum class SharedTabs(val route: Any, val icon: ImageVector, val label: String) {
-    HOME(Routes.Home, Icons.Default.Home, "Home"),
-    INPUT(Routes.Input, Icons.Default.Edit, "Input"),
-    DISPLAY(Routes.Display, Icons.AutoMirrored.Filled.List, "Display"),
-    CART(Routes.Cart, Icons.AutoMirrored.Filled.List, "Cart"),
-    PROFILE(Routes.Profile, Icons.Default.Person, "Profile")
-}
+
 
 @Composable
 fun MainScreen() {
