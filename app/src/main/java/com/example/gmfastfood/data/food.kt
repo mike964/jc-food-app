@@ -4,6 +4,7 @@ import com.example.gmfastfood.R
 
 
 data class Product(
+    val id: Int,
     val title: String,
     val description: String,
     val price: Double,
@@ -12,7 +13,6 @@ data class Product(
     val imageList: List<Int> = emptyList(),
     val categoryId: Int,
     val category: String,
-    val id: Int,
     val isFavorite: Boolean = false,
     val isOnSale: Boolean = false,
     val isAvailableNow: Boolean = true,
@@ -53,6 +53,7 @@ val categories = listOf<Category>(
 
 val products = listOf<Product>(
     Product(
+        id = 1 ,
         "Cheese Burger",
         "Wendy's Burger",
         3.99,
@@ -61,7 +62,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Burgers",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -71,6 +71,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
         ),
     Product(
+        id = 2 ,
         "Margherita Pizza",
         "Margherita pizza very delicious",
         7.99,
@@ -79,7 +80,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Pizza",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -89,6 +89,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        id = 3 ,
         "Pepperoni Pizza",
         "Peperoni pizza very delicious",
         8.99,
@@ -97,7 +98,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Pizza",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -107,6 +107,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        id = 4 ,
         "Chicken Burger",
         "Chicken burger very delicious",
         3.99,
@@ -115,7 +116,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Burgers",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -125,6 +125,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        5 ,
         "Curly Flies",
         "Chicken burger very delicious",
         3.99,
@@ -133,7 +134,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Burgers",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -143,6 +143,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        6,
         "Baked Chicken Breast",
         "Chicken burger very delicious",
         3.99,
@@ -151,7 +152,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Burgers",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -161,6 +161,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        7,
         "Hummus Soup",
         "Chicken burger very delicious",
         3.99,
@@ -169,7 +170,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Soups",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -179,6 +179,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        8,
         "Taco Pasta",
         "Taco pasta very delicious",
         6.99,
@@ -187,7 +188,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Soups",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -197,6 +197,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        9,
         "Chicken Noodle",
         "Chicken noodle very delicious",
         4.99,
@@ -205,7 +206,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Soups",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,
@@ -215,6 +215,7 @@ val products = listOf<Product>(
         updatedAt = "2023-05-01",
     ),
     Product(
+        10,
         "Italian Pasta",
         "Famous italia pasta",
         4.99,
@@ -223,7 +224,6 @@ val products = listOf<Product>(
         listOf( R.drawable.burger),
         1,
         "Soups",
-        1,
         true,
         isOnSale = true,
         isAvailableNow = true,

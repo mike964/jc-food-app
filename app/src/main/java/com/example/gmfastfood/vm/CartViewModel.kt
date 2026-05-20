@@ -49,6 +49,20 @@ class CartViewModel : ViewModel() {
         }
     }
 
+    fun addToCart(item: CartItem) {
+        _uiState.update { currentState ->
+            val existingItem = currentState.cartItems.find { it.id == item.id }
+            if (existingItem != null) {
+                val updatedList = currentState.cartItems.map {
+                    if (it.id == item.id) item.copy(quantity = it.quantity + 1) else it
+                }
+                currentState.copy(cartItems = updatedList)
+            } else {
+                currentState.copy(cartItems = currentState.cartItems + item)
+            }
+        }
+    }
+
     fun updateQuantity(itemId: Int, newQuantity: Int) {
         if (newQuantity <= 0) {
             removeItem(itemId)

@@ -16,7 +16,7 @@ import com.example.gmfastfood.vm.CartViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
-    viewModel: CartViewModel = viewModel()
+    viewModel: CartViewModel
 ) {
     // Safely collect state from ViewModel
     val uiState by viewModel.uiState.collectAsState()

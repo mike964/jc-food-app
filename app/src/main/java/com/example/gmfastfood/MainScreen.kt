@@ -32,6 +32,7 @@ import com.example.gmfastfood.cart.CartScreen
 import com.example.gmfastfood.navigation.Routes
 import com.example.gmfastfood.navigation.SharedViewModel
 import com.example.gmfastfood.navigation.getSharedViewModel
+import com.example.gmfastfood.vm.CartViewModel
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -52,7 +53,7 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     var selectedIndex by remember { mutableIntStateOf(0) }
-
+    val cartViewModel = viewModel<CartViewModel>()
 
     Scaffold(
         bottomBar = {
@@ -92,7 +93,7 @@ fun MainScreen() {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
 
-                    HomeScreen(sharedViewModel)
+                    HomeScreen(sharedViewModel, cartViewModel)
                 }
                 composable<Routes.Search> {
                     val sharedViewModel: SharedViewModel =
@@ -101,7 +102,8 @@ fun MainScreen() {
                     SearchScreen(sharedViewModel)
                 }
                 composable<Routes.Cart> {
-                    CartScreen()
+
+                    CartScreen( cartViewModel)
                 }
                 composable<Routes.Profile> {
                     ProfileScreen()
