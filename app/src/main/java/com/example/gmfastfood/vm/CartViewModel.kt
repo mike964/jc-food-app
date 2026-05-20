@@ -1,6 +1,7 @@
 package com.example.gmfastfood.vm
 
 import androidx.lifecycle.ViewModel
+import com.example.gmfastfood.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,6 +11,7 @@ data class CartItem(
     val id: Int,
     val name: String,
     val price: Double,
+    val imageUrl: String = "",
     val quantity: Int = 1
 ) {
     // Helper to get total price for this specific item
@@ -41,9 +43,9 @@ class CartViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 cartItems = listOf(
-                    CartItem(id = 1, name = "Wireless Headphones", price = 79.99, quantity = 1),
-                    CartItem(id = 2, name = "Mechanical Keyboard", price = 120.00, quantity = 1),
-                    CartItem(id = 3, name = "Leather Wallet", price = 35.50, quantity = 2)
+                    CartItem(id = 1, name = "Wireless Headphones", price = 79.99, imageUrl = R.drawable.burger.toString(), quantity = 1),
+                    CartItem(id = 2, name = "Mechanical Keyboard", price = 120.00, imageUrl = R.drawable.pizza.toString(), quantity = 1),
+                    CartItem(id = 3, name = "Leather Wallet", price = 35.50, imageUrl = R.drawable.salads.toString(), quantity = 2)
                 )
             )
         }
@@ -54,7 +56,7 @@ class CartViewModel : ViewModel() {
             val existingItem = currentState.cartItems.find { it.id == item.id }
             if (existingItem != null) {
                 val updatedList = currentState.cartItems.map {
-                    if (it.id == item.id) item.copy(quantity = it.quantity + 1) else it
+                    if (it.id == item.id) it.copy(quantity = it.quantity + 1) else it
                 }
                 currentState.copy(cartItems = updatedList)
             } else {

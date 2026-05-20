@@ -1,14 +1,15 @@
 package com.example.gmfastfood.cart
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -20,8 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.gmfastfood.R
 import com.example.gmfastfood.vm.CartItem
 
 @SuppressLint("DefaultLocale")
@@ -34,25 +37,22 @@ fun CartItemRow(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(2.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                .fillMaxWidth().
+              padding(horizontal = 16.dp, vertical = 4.dp) ,
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Item Details
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = item.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                Text(text = "$${String.format("%.2f", item.price)} each", style = MaterialTheme.typography.bodySmall)
-                Text(
-                    text = "Total: $${String.format("%.2f", item.totalPrice)}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold
+            Column() {
+                Image(
+                    painter = painterResource(item.imageUrl.toIntOrNull() ?: R.drawable.burger),
+                    contentDescription = "item image",
+                    modifier = Modifier
+                        .size(80.dp)
                 )
             }
 
@@ -62,7 +62,7 @@ fun CartItemRow(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 IconButton(onClick = onDecrease) {
-                    Icon(imageVector = Icons.Default.Clear, contentDescription = "Decrease")
+                    Icon(   painter = painterResource(id = R.drawable.ic_remove), contentDescription= "Decrease" )
                 }
                 Text(
                     text = item.quantity.toString(),
@@ -76,6 +76,17 @@ fun CartItemRow(
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "Remove Item")
                 }
             }
+        }
+        // Item Details
+        Row( modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = item.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(text = "$${String.format("%.2f", item.price)} each", style = MaterialTheme.typography.bodySmall)
+            Text(
+                text = "Total: $${String.format("%.2f", item.totalPrice)}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold
+            )
         }
     }
 }

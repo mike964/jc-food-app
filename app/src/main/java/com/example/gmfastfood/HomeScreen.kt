@@ -126,7 +126,7 @@ fun FoodItem(item: Product, cartViewModel: CartViewModel) {
             IconButton(
                 onClick = {
 //                    Log.d("TAG", item.title )
-                    cartViewModel.addToCart(CartItem(item.id, name=item.title, price=item.price, quantity = 1) )
+                    cartViewModel.addToCart(CartItem(item.id,   imageUrl = item.image.toString(), name=item.title, price=item.price, quantity = 1) )
                 },
                 modifier = Modifier
                     .align(Alignment.BottomEnd) // Positions in top-right
