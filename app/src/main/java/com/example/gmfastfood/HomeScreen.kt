@@ -82,7 +82,6 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 
 @Composable
 fun FoodItem(item: Product, cartViewModel: CartViewModel) {
-
     Card(
         modifier = Modifier
             .width(185.dp)

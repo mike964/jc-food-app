@@ -19,6 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -46,7 +48,6 @@ inline fun <reified VM : ViewModel> NavController.getSharedViewModel(navGraphRou
 }
 
 
-
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -54,6 +55,16 @@ fun MainScreen() {
     val currentDestination = navBackStackEntry?.destination
     var selectedIndex by remember { mutableIntStateOf(0) }
     val cartViewModel = viewModel<CartViewModel>()
+
+    // # Navigation bar items
+    val listOfNavItems = listOf(
+        NavItem("Home", Icons.Default.Home, Routes.Home),
+        NavItem("Search", Icons.Default.Search, Routes.Search),
+//    NavItem("Orders", Icons.AutoMirrored.Filled.List, "orders"),
+        NavItem("Cart", ImageVector.vectorResource(id = R.drawable.ic_shopping_cart), Routes.Cart),
+        NavItem("Profile", Icons.Default.Person, Routes.Profile)
+    )
+
 
     Scaffold(
         bottomBar = {
@@ -103,7 +114,7 @@ fun MainScreen() {
                 }
                 composable<Routes.Cart> {
 
-                    CartScreen( cartViewModel)
+                    CartScreen(cartViewModel)
                 }
                 composable<Routes.Profile> {
                     ProfileScreen()
@@ -130,10 +141,3 @@ data class NavItem(
     val route: Any,
 )
 
-val listOfNavItems = listOf(
-    NavItem("Home", Icons.Default.Home, Routes.Home),
-    NavItem("Search", Icons.Default.Search, Routes.Search),
-//    NavItem("Orders", Icons.AutoMirrored.Filled.List, "orders"),
-    NavItem("Cart", Icons.AutoMirrored.Filled.List, Routes.Cart),
-    NavItem("Profile", Icons.Default.Person, Routes.Profile)
-)
