@@ -48,7 +48,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .padding(horizontal = 20.dp, vertical = 28.dp)
+         .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
         Text("Food Go", Modifier, fontSize = 45.sp, fontWeight = FontWeight.SemiBold)
         Text(
