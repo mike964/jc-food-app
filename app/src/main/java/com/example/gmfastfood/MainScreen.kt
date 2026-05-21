@@ -3,15 +3,17 @@ package com.example.gmfastfood;
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable;
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -19,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,6 +36,10 @@ import com.example.gmfastfood.navigation.Routes
 import com.example.gmfastfood.navigation.SharedViewModel
 import com.example.gmfastfood.navigation.getSharedViewModel
 import com.example.gmfastfood.vm.CartViewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.example.gmfastfood.ui.theme.Orange
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -47,7 +52,6 @@ inline fun <reified VM : ViewModel> NavController.getSharedViewModel(navGraphRou
     return viewModel(viewModelStoreOwner = backStackEntry)
 }
 
-
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -55,6 +59,7 @@ fun MainScreen() {
     val currentDestination = navBackStackEntry?.destination
     var selectedIndex by remember { mutableIntStateOf(0) }
     val cartViewModel = viewModel<CartViewModel>()
+    val cartTotalItems = cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
 
     // # Navigation bar items
     val listOfNavItems = listOf(
@@ -65,12 +70,13 @@ fun MainScreen() {
         NavItem("Profile", Icons.Default.Person, Routes.Profile)
     )
 
-
     Scaffold(
         bottomBar = {
             NavigationBar {
                 listOfNavItems.forEachIndexed { index, item ->
                     NavigationBarItem(
+                        icon = { BadgeBox(item.icon , item.label,  cartTotalItems) },
+                        label = { Text(text = item.label) },
                         selected = selectedIndex == index,
                         onClick = {
                             selectedIndex = index
@@ -85,9 +91,7 @@ fun MainScreen() {
                                 // Restore state when re selecting a previously selected item
                                 restoreState = true
                             }
-                        },
-                        icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
-                        label = { Text(text = item.label) }
+                        }
                     )
                 }
             }
@@ -125,6 +129,19 @@ fun MainScreen() {
 }
 
 @Composable
+fun BadgeBox(x0: ImageVector, label: String,  cartTotalItems: Int) {
+    BadgedBox(badge = {
+        if ( label == "Cart" && cartTotalItems > 0)
+        Text(  cartTotalItems.toString())
+    }) {
+        Icon(imageVector = x0, contentDescription = "badge" ,
+            modifier = Modifier.size(24.dp),
+            tint = if (cartTotalItems > 0 && label == "Cart") Orange else Color.DarkGray)
+    }
+}
+
+
+@Composable
 fun ProfileScreen() {
     Text("Profile Screen")
 }
@@ -141,3 +158,8 @@ data class NavItem(
     val route: Any,
 )
 
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewNavigationBar (){
+//    MainScreen( )
+//}
