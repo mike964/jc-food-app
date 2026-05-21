@@ -9,3 +9,5 @@
 First Repo no API. Just mock data. 
 Next fork repo and add firebase. 
 
+Horizontal sliders. 
+Burgers. Pizza. Drinks. Salads. 

@@ -60,6 +60,8 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
         SearchBox(textValue = text, onValueChange = { viewModel.updateText(it) })
         HorizontalSlider()
 
+        HorizontalList(itemsList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
