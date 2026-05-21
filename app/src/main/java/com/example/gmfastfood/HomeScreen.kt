@@ -48,7 +48,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp, vertical = 28.dp)
+//            .padding(horizontal = 20.dp, vertical = 28.dp)
     ) {
         Text("Food Go", Modifier, fontSize = 45.sp, fontWeight = FontWeight.SemiBold)
         Text(
@@ -62,28 +62,22 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 12.dp),
-
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxSize()
             ) {
             items(products) { item ->
                 FoodItem(item, cartViewModel)
             }
         }
-
     }
 }
-
-
 
 
 @Composable
 fun FoodItem(item: Product, cartViewModel: CartViewModel) {
     Card(
-        modifier = Modifier
+        modifier = Modifier.padding(8.dp, 4.dp)
             .width(185.dp)
             .height(225.dp),
         shape = RoundedCornerShape(12.dp),
