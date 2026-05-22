@@ -40,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.ui.theme.DarkBlue
 import com.example.gmfastfood.ui.theme.Orange
 
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -137,7 +138,8 @@ fun BadgeBox(x0: ImageVector, label: String,  cartTotalItems: Int) {
     }) {
         Icon(imageVector = x0, contentDescription = "badge" ,
             modifier = Modifier.size(28.dp),
-            tint = if (cartTotalItems > 0 && label == "Cart") Orange else Color.DarkGray)
+//            tint = if (cartTotalItems > 0 && label == "Cart") Orange else Color.DarkGray)
+            tint =  Color.DarkGray)
     }
 }
 

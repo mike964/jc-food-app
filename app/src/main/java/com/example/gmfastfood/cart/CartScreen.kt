@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.gmfastfood.vm.CartViewModel
 
@@ -23,13 +24,15 @@ fun CartScreen(
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Your Cart") })
-        }
+        },
+        containerColor = Color(0xFFAFCEEC) // Set your custom color here
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            Spacer(Modifier.height(8.dp))
             if (uiState.cartItems.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
