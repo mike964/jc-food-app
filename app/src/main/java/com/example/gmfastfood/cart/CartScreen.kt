@@ -25,7 +25,7 @@ fun CartScreen(
         topBar = {
             TopAppBar(title = { Text("Your Cart") })
         },
-        containerColor = Color(0xFFAFCEEC) // Set your custom color here
+        containerColor = Color(0xFFD5E1EF) // Set your custom color here
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -45,7 +45,7 @@ fun CartScreen(
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.cartItems, key = { it.id }) { item ->

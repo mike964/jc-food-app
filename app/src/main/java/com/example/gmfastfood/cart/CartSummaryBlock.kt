@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 @SuppressLint("DefaultLocale")
 @Composable
 fun CartSummaryBlock(
-    subtotal: Int,
+    subtotal: Double,
     shipping: Double,
     total: Double,
     onCheckoutClick: () -> Unit
@@ -39,16 +39,16 @@ fun CartSummaryBlock(
         ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text("Subtotal")
-                Text("$${String.format("%.2f", subtotal.toDouble())}")
+                Text(String.format("%.0f", subtotal))
             }
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text("Shipping")
-                Text(if (shipping == 0.0) "FREE" else "$${String.format("%.2f", shipping)}")
+                Text(if (shipping == 0.0) "FREE" else String.format("%.2f", shipping))
             }
             Divider(modifier = Modifier.padding(vertical = 4.dp))
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text("Total", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
-                Text("$${String.format("%.2f", total)}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
+                Text("IQD ${String.format("%.0f", total)}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Button(

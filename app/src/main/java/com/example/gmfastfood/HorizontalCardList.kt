@@ -108,7 +108,7 @@ fun HorizontalCardList(itemList: List<Product>, addToCart: (CartItem) -> Unit) {
                         modifier = Modifier.fillMaxWidth()
                     )
                     Text(
-                        text = item.price.toString(), textAlign = TextAlign.Center, fontSize = 12.sp,
+                        text = item.price.toInt().toString(), textAlign = TextAlign.Center, fontSize = 12.sp,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

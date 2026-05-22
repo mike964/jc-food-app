@@ -2,6 +2,7 @@ package com.example.gmfastfood.vm
 
 import androidx.lifecycle.ViewModel
 import com.example.gmfastfood.R
+import com.example.gmfastfood.data.products
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,21 +11,21 @@ import kotlinx.coroutines.flow.update
 data class CartItem(
     val id: Int,
     val name: String,
-    val price: Int,
+    val price: Double,
     val imageUrl: String = "",
-    val quantity: Int = 1
+    val quantity: Int = 1,
 ) {
     // Helper to get total price for this specific item
-    val totalPrice: Int get() = price * quantity
+    val totalPrice: Double get() = price * quantity
 }
 
 // UI State wrapper
 data class CartUiState(
     val cartItems: List<CartItem> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
 ) {
     // Derived state for the summary
-    val subtotal: Int get() = cartItems.sumOf { it.totalPrice }
+    val subtotal: Double get() = cartItems.sumOf { it.totalPrice }
     val shipping: Double get() = if (subtotal > 0 && subtotal < 50.0) 5.0 else 0.0
     val total: Double get() = subtotal + shipping
 }
@@ -43,9 +44,8 @@ class CartViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 cartItems = listOf(
-                    CartItem(id = 1, name = "Wireless Headphones", price = 2500, imageUrl = R.drawable.burger.toString(), quantity = 1),
-                    CartItem(id = 2, name = "Mechanical Keyboard", price = 1500, imageUrl = R.drawable.pizza.toString(), quantity = 1),
-                    CartItem(id = 3, name = "Leather Wallet", price = 3500, imageUrl = R.drawable.salads.toString(), quantity = 1)
+                    CartItem(1, "Burger", 2000.0, R.drawable.burger.toString()),
+                    CartItem(2, "Pizza", 2000.0, R.drawable.pizza.toString())
                 )
             )
         }

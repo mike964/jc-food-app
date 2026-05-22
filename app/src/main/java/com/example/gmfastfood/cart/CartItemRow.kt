@@ -79,11 +79,12 @@ fun CartItemRow(
             }
         }
         // Item Details
-        Row( modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row( modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text = item.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            Text(text = "$${String.format("%.2f", item.price.toDouble())} each", style = MaterialTheme.typography.bodySmall)
+            Text(text = "${String.format("%.0f", item.price)} each", style = MaterialTheme.typography.bodySmall)
             Text(
-                text = "Total: $${String.format("%.2f", item.totalPrice.toDouble())}",
+                text = "Total: IQD ${String.format("%.0f", item.totalPrice)}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold
