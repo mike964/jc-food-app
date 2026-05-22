@@ -64,7 +64,6 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             itemsList = listOf(
                 "Burgers",
                 "Pizza",
-                "Sushi",
                 "Drinks",
                 "Desserts",
                 "Salads",
@@ -76,10 +75,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 
 //        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
         Spacer(modifier = Modifier.height(10.dp))
-        Text("Popular", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(10.dp))
-//        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
-        Text("Special Offers",  Modifier.padding(16.dp, 4.dp, ),
+        Text("Popular", Modifier.padding(16.dp, 4.dp, ),
             fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         HorizontalCardList(
             itemList = products,

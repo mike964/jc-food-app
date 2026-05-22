@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 @SuppressLint("DefaultLocale")
 @Composable
 fun CartSummaryBlock(
-    subtotal: Double,
+    subtotal: Int,
     shipping: Double,
     total: Double,
     onCheckoutClick: () -> Unit
@@ -39,7 +39,7 @@ fun CartSummaryBlock(
         ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text("Subtotal")
-                Text("$${String.format("%.2f", subtotal)}")
+                Text("$${String.format("%.2f", subtotal.toDouble())}")
             }
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text("Shipping")

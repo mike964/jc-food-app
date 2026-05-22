@@ -43,8 +43,10 @@ fun HorizontalCardList(itemList: List<Product>, addToCart: (CartItem) -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(12.dp) // Space between cards
     ) {
         items(itemList) { item ->
-            Column( modifier = Modifier
-                .width(128.dp)) {
+            Column(
+                modifier = Modifier
+                    .width(128.dp)
+            ) {
                 Card(
                     modifier = Modifier
                         .width(128.dp)
@@ -70,7 +72,15 @@ fun HorizontalCardList(itemList: List<Product>, addToCart: (CartItem) -> Unit) {
                             IconButton(
                                 onClick = {
 //                    Log.d("TAG", item.title )
-                                addToCart(CartItem(item.id,   imageUrl = item.image.toString(), name=item.title, price=item.price, quantity = 1) )
+                                    addToCart(
+                                        CartItem(
+                                            item.id,
+                                            imageUrl = item.image.toString(),
+                                            name = item.title,
+                                            price = item.price,
+                                            quantity = 1
+                                        )
+                                    )
                                 },
                                 modifier = Modifier
                                     .align(Alignment.BottomEnd) // Positions in top-right
@@ -88,12 +98,20 @@ fun HorizontalCardList(itemList: List<Product>, addToCart: (CartItem) -> Unit) {
                     }
                 }
                 Column(
-                    Modifier.height(50.dp).padding(2.dp)
-                      //  .background(Color.Yellow)
-                ) {   Text(
-                    text = item.title, textAlign = TextAlign.Center, fontSize = 14.sp,
-                    modifier = Modifier.fillMaxWidth()
-                )}
+                    Modifier
+                        .height(50.dp)
+                        .padding(2.dp)
+                    //  .background(Color.Yellow)
+                ) {
+                    Text(
+                        text = item.title, textAlign = TextAlign.Center, fontSize = 14.sp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = item.price.toString(), textAlign = TextAlign.Center, fontSize = 12.sp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
             }
 

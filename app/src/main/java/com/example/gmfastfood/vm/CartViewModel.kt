@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.update
 data class CartItem(
     val id: Int,
     val name: String,
-    val price: Double,
+    val price: Int,
     val imageUrl: String = "",
     val quantity: Int = 1
 ) {
     // Helper to get total price for this specific item
-    val totalPrice: Double get() = price * quantity
+    val totalPrice: Int get() = price * quantity
 }
 
 // UI State wrapper
@@ -24,7 +24,7 @@ data class CartUiState(
     val isLoading: Boolean = false
 ) {
     // Derived state for the summary
-    val subtotal: Double get() = cartItems.sumOf { it.totalPrice }
+    val subtotal: Int get() = cartItems.sumOf { it.totalPrice }
     val shipping: Double get() = if (subtotal > 0 && subtotal < 50.0) 5.0 else 0.0
     val total: Double get() = subtotal + shipping
 }
@@ -43,9 +43,9 @@ class CartViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 cartItems = listOf(
-                    CartItem(id = 1, name = "Wireless Headphones", price = 79.99, imageUrl = R.drawable.burger.toString(), quantity = 1),
-                    CartItem(id = 2, name = "Mechanical Keyboard", price = 120.00, imageUrl = R.drawable.pizza.toString(), quantity = 1),
-                    CartItem(id = 3, name = "Leather Wallet", price = 35.50, imageUrl = R.drawable.salads.toString(), quantity = 2)
+                    CartItem(id = 1, name = "Wireless Headphones", price = 2500, imageUrl = R.drawable.burger.toString(), quantity = 1),
+                    CartItem(id = 2, name = "Mechanical Keyboard", price = 1500, imageUrl = R.drawable.pizza.toString(), quantity = 1),
+                    CartItem(id = 3, name = "Leather Wallet", price = 3500, imageUrl = R.drawable.salads.toString(), quantity = 1)
                 )
             )
         }
