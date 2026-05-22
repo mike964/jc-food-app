@@ -39,7 +39,7 @@ import com.example.gmfastfood.vm.CartItem
 fun HorizontalCardList(itemList: List<Product>, addToCart: (CartItem) -> Unit) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(8.dp), // Padding for the entire row
+        contentPadding = PaddingValues(12.dp), // Padding for the entire row
         horizontalArrangement = Arrangement.spacedBy(12.dp) // Space between cards
     ) {
         items(itemList) { item ->

@@ -48,7 +48,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(horizontal = 4.dp, vertical = 2.dp)
+//            .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
         Text("Food Go", Modifier, fontSize = 45.sp, fontWeight = FontWeight.SemiBold)
         Text(
@@ -79,23 +79,28 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
         Text("Popular", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(10.dp))
 //        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
-        Text("Special Offers", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(10.dp))
-
+        Text("Special Offers",  Modifier.padding(16.dp, 4.dp, ),
+            fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         HorizontalCardList(
             itemList = products,
             addToCart = { cartViewModel.addToCart(it) },
         )
-        Spacer(modifier = Modifier.height(10.dp))
 
-        Text("Burgers", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(10.dp))
+        Text("Burgers", Modifier.padding(16.dp, 4.dp, ),
+            fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         HorizontalCardList(
             itemList = filterProductsByCategory("Burgers"),
+            addToCart = { cartViewModel.addToCart(it) }
+        )
+
+        Text("Salads", Modifier.padding(16.dp, 4.dp, ),
+            fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+        HorizontalCardList(
+            itemList = filterProductsByCategory("Salads"),
             addToCart = { cartViewModel.addToCart(it) })
 
-        Text("Drinks", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(10.dp))
+        Text("Drinks",Modifier.padding(16.dp, 4.dp, ),
+            fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         HorizontalCardList(
             itemList = filterProductsByCategory("Drinks"),
             addToCart = { cartViewModel.addToCart(it) })
