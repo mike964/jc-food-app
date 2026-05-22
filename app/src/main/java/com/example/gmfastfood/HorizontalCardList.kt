@@ -36,7 +36,7 @@ import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.vm.CartItem
 
 @Composable
-fun HorizontalCardList(itemList: List<Product>) {
+fun HorizontalCardList(itemList: List<Product>, addToCart: (CartItem) -> Unit) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(8.dp), // Padding for the entire row
@@ -70,7 +70,7 @@ fun HorizontalCardList(itemList: List<Product>) {
                             IconButton(
                                 onClick = {
 //                    Log.d("TAG", item.title )
-//                                cartViewModel.addToCart(CartItem(item.id,   imageUrl = item.image.toString(), name=item.title, price=item.price, quantity = 1) )
+                                addToCart(CartItem(item.id,   imageUrl = item.image.toString(), name=item.title, price=item.price, quantity = 1) )
                                 },
                                 modifier = Modifier
                                     .align(Alignment.BottomEnd) // Positions in top-right

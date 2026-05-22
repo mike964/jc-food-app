@@ -42,7 +42,7 @@ import com.example.gmfastfood.vm.CartViewModel
 @Composable
 fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     val text by viewModel.sharedText.collectAsState()
-    val scrollState =  rememberScrollState()
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
@@ -60,7 +60,19 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
         SearchBox(textValue = text, onValueChange = { viewModel.updateText(it) })
         HorizontalSlider()
 
-        HorizontalList(itemsList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
+        HorizontalList(
+            itemsList = listOf(
+                "Burgers",
+                "Pizza",
+                "Sushi",
+                "Drinks",
+                "Desserts",
+                "Salads",
+                "Pasta",
+                "Snacks",
+                "Soup"
+            )
+        )
 
 //        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
         Spacer(modifier = Modifier.height(10.dp))
@@ -70,13 +82,23 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
         Text("Special Offers", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(10.dp))
 
-        HorizontalCardList(itemList = products)
+        HorizontalCardList(
+            itemList = products,
+            addToCart = { cartViewModel.addToCart(it) },
+        )
         Spacer(modifier = Modifier.height(10.dp))
+
+        Text("Burgers", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+        Spacer(modifier = Modifier.height(10.dp))
+        HorizontalCardList(
+            itemList = filterProductsByCategory("Burgers"),
+            addToCart = { cartViewModel.addToCart(it) })
 
         Text("Drinks", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.height(10.dp))
-        HorizontalCardList(itemList = filterProductsByCategory("Drinks"))
-
+        HorizontalCardList(
+            itemList = filterProductsByCategory("Drinks"),
+            addToCart = { cartViewModel.addToCart(it) })
 
 
 //        LazyVerticalGrid(
@@ -96,7 +118,8 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 @Composable
 fun FoodItem(item: Product, cartViewModel: CartViewModel) {
     Card(
-        modifier = Modifier.padding(8.dp, 4.dp)
+        modifier = Modifier
+            .padding(8.dp, 4.dp)
             .width(185.dp)
             .height(225.dp),
         shape = RoundedCornerShape(12.dp),
@@ -138,8 +161,12 @@ fun FoodItem(item: Product, cartViewModel: CartViewModel) {
             IconButton(
                 onClick = {
 //                    Log.d("TAG", item.title )
-                    cartViewModel.addToCart(CartItem(item.id,   imageUrl = item.image.toString(),
-                        name=item.title, price=item.price, quantity = 1) )
+                    cartViewModel.addToCart(
+                        CartItem(
+                            item.id, imageUrl = item.image.toString(),
+                            name = item.title, price = item.price, quantity = 1
+                        )
+                    )
                 },
                 modifier = Modifier
                     .align(Alignment.BottomEnd) // Positions in top-right
@@ -148,8 +175,8 @@ fun FoodItem(item: Product, cartViewModel: CartViewModel) {
                     imageVector = Icons.Filled.AddCircle,
                     contentDescription = "Add to cart",
                     modifier = Modifier.size(32.dp), // Sets the internal icon size
-                            tint = Color.Red
-                    )
+                    tint = Color.Red
+                )
             }
         }
     }
