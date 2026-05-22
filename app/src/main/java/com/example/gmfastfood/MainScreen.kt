@@ -132,10 +132,10 @@ fun MainScreen() {
 fun BadgeBox(x0: ImageVector, label: String,  cartTotalItems: Int) {
     BadgedBox(badge = {
         if ( label == "Cart" && cartTotalItems > 0)
-        Text(  cartTotalItems.toString())
+        Text(  cartTotalItems.toString(), modifier = Modifier.padding(top = 12.dp), color = Color.White, style = MaterialTheme.typography.labelSmall)
     }) {
         Icon(imageVector = x0, contentDescription = "badge" ,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(28.dp),
             tint = if (cartTotalItems > 0 && label == "Cart") Orange else Color.DarkGray)
     }
 }
