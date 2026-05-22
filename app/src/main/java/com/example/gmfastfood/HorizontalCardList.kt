@@ -1,6 +1,7 @@
 package com.example.gmfastfood
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,18 +14,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.gmfastfood.data.Product
+import com.example.gmfastfood.vm.CartItem
 
 @Composable
 fun HorizontalCardList(itemList: List<Product>) {
@@ -36,16 +44,14 @@ fun HorizontalCardList(itemList: List<Product>) {
         items(itemList) { item ->
             Card(
                 modifier = Modifier
-                    .width(160.dp)
-                    .height(160.dp)
-//                      .fillMaxWidth()
-                ,
+                    .width(148.dp)
+                    .height(148.dp),
                 shape = RoundedCornerShape(15.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
             ) {
                 Column() {
                     Box(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().background(Color.White),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -53,10 +59,25 @@ fun HorizontalCardList(itemList: List<Product>) {
                             contentDescription = "burger",
                                     contentScale = ContentScale.Crop, // Crops image to fill the width
                             modifier = Modifier
-                                .height(130.dp)
-                                .fillMaxWidth()
+                                .height(120.dp)
+//                                .fillMaxWidth()
                         )
-
+                        IconButton(
+                            onClick = {
+//                    Log.d("TAG", item.title )
+//                                cartViewModel.addToCart(CartItem(item.id,   imageUrl = item.image.toString(), name=item.title, price=item.price, quantity = 1) )
+                            },
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd) // Positions in top-right
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.AddCircle,
+                                contentDescription = "Add to cart",
+                                modifier = Modifier.size(32.dp) // Sets the internal icon size
+                                .background(color = Color.White, shape = CircleShape),
+                                tint = Color.Red,
+                            )
+                        }
                     }
                     Text(text = item.title,  textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth() )

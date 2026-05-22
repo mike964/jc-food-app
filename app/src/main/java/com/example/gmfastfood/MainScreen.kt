@@ -39,6 +39,7 @@ import com.example.gmfastfood.vm.CartViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.ui.theme.Orange
 
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -132,7 +133,7 @@ fun MainScreen() {
 fun BadgeBox(x0: ImageVector, label: String,  cartTotalItems: Int) {
     BadgedBox(badge = {
         if ( label == "Cart" && cartTotalItems > 0)
-        Text(  cartTotalItems.toString(), modifier = Modifier.padding(top = 12.dp), color = Color.White, style = MaterialTheme.typography.labelSmall)
+        Text(  cartTotalItems.toString(), modifier = Modifier.padding(top = 8.dp), color = Color.Red, fontSize = 18.sp)
     }) {
         Icon(imageVector = x0, contentDescription = "badge" ,
             modifier = Modifier.size(28.dp),

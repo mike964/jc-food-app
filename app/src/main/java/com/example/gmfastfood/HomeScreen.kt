@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.data.Product
+import com.example.gmfastfood.data.filterProductsByCategory
 import com.example.gmfastfood.data.products
 import com.example.gmfastfood.navigation.SharedViewModel
 import com.example.gmfastfood.vm.CartItem
@@ -61,9 +62,6 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 
         HorizontalList(itemsList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
 
-        Spacer(modifier = Modifier.height(10.dp))
-        Text("Categories", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-        Spacer(modifier = Modifier.height(10.dp))
 //        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
         Spacer(modifier = Modifier.height(10.dp))
         Text("Popular", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
@@ -74,6 +72,11 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 
         HorizontalCardList(itemList = products)
         Spacer(modifier = Modifier.height(10.dp))
+
+        Text("Drinks", Modifier, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+        Spacer(modifier = Modifier.height(10.dp))
+        HorizontalCardList(itemList = filterProductsByCategory("Drinks"))
+
 
 
 //        LazyVerticalGrid(
@@ -135,7 +138,8 @@ fun FoodItem(item: Product, cartViewModel: CartViewModel) {
             IconButton(
                 onClick = {
 //                    Log.d("TAG", item.title )
-                    cartViewModel.addToCart(CartItem(item.id,   imageUrl = item.image.toString(), name=item.title, price=item.price, quantity = 1) )
+                    cartViewModel.addToCart(CartItem(item.id,   imageUrl = item.image.toString(),
+                        name=item.title, price=item.price, quantity = 1) )
                 },
                 modifier = Modifier
                     .align(Alignment.BottomEnd) // Positions in top-right
