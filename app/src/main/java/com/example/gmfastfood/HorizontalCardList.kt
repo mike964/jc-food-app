@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.vm.CartItem
 
@@ -42,47 +43,60 @@ fun HorizontalCardList(itemList: List<Product>) {
         horizontalArrangement = Arrangement.spacedBy(12.dp) // Space between cards
     ) {
         items(itemList) { item ->
-            Card(
-                modifier = Modifier
-                    .width(148.dp)
-                    .height(148.dp),
-                shape = RoundedCornerShape(15.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
-            ) {
-                Column() {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(item.image),
-                            contentDescription = "burger",
-                                    contentScale = ContentScale.Crop, // Crops image to fill the width
+            Column( modifier = Modifier
+                .width(128.dp)) {
+                Card(
+                    modifier = Modifier
+                        .width(128.dp)
+                        .height(128.dp),
+                    shape = RoundedCornerShape(15.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+                ) {
+                    Column() {
+                        Box(
                             modifier = Modifier
-                                .height(120.dp)
-//                                .fillMaxWidth()
-                        )
-                        IconButton(
-                            onClick = {
+                                .fillMaxWidth()
+                                .background(Color.White),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(item.image),
+                                contentDescription = "burger",
+                                contentScale = ContentScale.Crop, // Crops image to fill the width
+                                modifier = Modifier
+//                                    .height(120.dp)
+                                    .fillMaxSize()
+                            )
+                            IconButton(
+                                onClick = {
 //                    Log.d("TAG", item.title )
 //                                cartViewModel.addToCart(CartItem(item.id,   imageUrl = item.image.toString(), name=item.title, price=item.price, quantity = 1) )
-                            },
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd) // Positions in top-right
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.AddCircle,
-                                contentDescription = "Add to cart",
-                                modifier = Modifier.size(32.dp) // Sets the internal icon size
-                                .background(color = Color.White, shape = CircleShape),
-                                tint = Color.Red,
-                            )
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.BottomEnd) // Positions in top-right
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.AddCircle,
+                                    contentDescription = "Add to cart",
+                                    modifier = Modifier
+                                        .size(32.dp) // Sets the internal icon size
+                                        .background(color = Color.White, shape = CircleShape),
+                                    tint = Color.Red,
+                                )
+                            }
                         }
                     }
-                    Text(text = item.title,  textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth() )
                 }
+                Column(
+                    Modifier.height(50.dp).padding(2.dp)
+                      //  .background(Color.Yellow)
+                ) {   Text(
+                    text = item.title, textAlign = TextAlign.Center, fontSize = 14.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )}
+
             }
+
         }
     }
 }
