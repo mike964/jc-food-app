@@ -383,5 +383,23 @@ val products = listOf<Product>(
         ingredients = listOf(),
         createdAt = "2023-05-01",
         updatedAt = "2023-05-01",
+    ),
+    Product(
+        84,
+        "Water bottle",
+        "_",
+        250.0,
+        4.6,
+        R.drawable.water_bottle,
+        listOf(),
+        1,
+        "Drinks",
+        true,
+        isOnSale = true,
+        isAvailableNow = true,
+        isNew = true,
+        ingredients = listOf(),
+        createdAt = "2023-05-01",
+        updatedAt = "2023-05-01",
     )
 )

@@ -40,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.profile.ProfileScreen
 import com.example.gmfastfood.ui.theme.DarkBlue
 import com.example.gmfastfood.ui.theme.Orange
 
@@ -143,11 +144,6 @@ fun BadgeBox(x0: ImageVector, label: String,  cartTotalItems: Int) {
     }
 }
 
-
-@Composable
-fun ProfileScreen() {
-    Text("Profile Screen")
-}
 
 
 @Composable
