@@ -10,7 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.gmfastfood.navigation.SharedViewModel
+import com.example.gmfastfood.vm.SharedViewModel
 import kotlin.text.ifEmpty
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

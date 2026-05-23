@@ -32,8 +32,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.gmfastfood.cart.CartScreen
 import com.example.gmfastfood.navigation.Routes
-import com.example.gmfastfood.navigation.SharedViewModel
-import com.example.gmfastfood.navigation.getSharedViewModel
+import com.example.gmfastfood.vm.SharedViewModel
 import com.example.gmfastfood.vm.CartViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
@@ -41,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.profile.ProfileScreen
 import com.example.gmfastfood.screens.CheckoutScreen
-import com.example.gmfastfood.screens.SearchScreen
 import com.example.gmfastfood.screens.SearchScreen2
 
 @SuppressLint("UnrememberedGetBackStackEntry")

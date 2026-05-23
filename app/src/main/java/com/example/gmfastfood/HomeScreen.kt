@@ -1,5 +1,6 @@
 package com.example.gmfastfood
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -34,15 +36,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.data.filterProductsByCategory
-import com.example.gmfastfood.data.products
-import com.example.gmfastfood.navigation.SharedViewModel
+import com.example.gmfastfood.vm.SharedViewModel
 import com.example.gmfastfood.vm.CartItem
 import com.example.gmfastfood.vm.CartViewModel
+import com.example.gmfastfood.vm.UiState
 
 @Composable
 fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
+
+    val state by viewModel.uiState.collectAsState()
+
+    Log.d("HomeScreen", "$state")
+    // Success(items=[Product(id=1, title=Cheese Burger, ..
+
 
     Column(
         modifier = Modifier
@@ -80,10 +88,27 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             "Popular", Modifier.padding(16.dp, 4.dp),
             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
         )
-        HorizontalCardList(
-            itemList = products,
-            addToCart = { cartViewModel.addToCart(it) },
-        )
+
+        when (val currentState = state) {
+            is UiState.Loading -> {
+                Box( Modifier.size(100.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(strokeWidth = 4.dp)
+                    Spacer(modifier = Modifier.height(12.dp))
+//                   Text("Simulating fetch request (2.5s)...", color = Color.Gray, fontSize = 14.sp)
+                }
+            }
+
+            is UiState.Success -> {
+                HorizontalCardList(
+                    itemList = currentState.items,
+                    addToCart = { cartViewModel.addToCart(it) }
+                )
+            }
+
+            is UiState.Error -> {
+                Text(currentState.message, color = Color.Red, fontSize = 14.sp)
+            }
+        }
 
         Text(
             "Burgers", Modifier.padding(16.dp, 4.dp),
@@ -111,16 +136,6 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             addToCart = { cartViewModel.addToCart(it) })
 
 
-//        LazyVerticalGrid(
-//            columns = GridCells.Fixed(2),
-//            horizontalArrangement = Arrangement.spacedBy(4.dp),
-//            verticalArrangement = Arrangement.spacedBy(8.dp),
-//            modifier = Modifier.fillMaxSize()
-//            ) {
-//            items(products) { item ->
-//                FoodItem(item, cartViewModel)
-//            }
-//        }
     }
 }
 
@@ -210,9 +225,3 @@ data class SlidingContent(
     val text: String,
     val selected: Boolean = false,
 )
-
-@Preview
-@Composable
-fun HomeScreenPreview() {
-//    FoodItem(products[0])
-}
