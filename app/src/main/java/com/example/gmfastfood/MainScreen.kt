@@ -13,7 +13,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,8 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.profile.ProfileScreen
-import com.example.gmfastfood.ui.theme.DarkBlue
-import com.example.gmfastfood.ui.theme.Orange
+import com.example.gmfastfood.screens.CheckoutScreen
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -121,7 +119,10 @@ fun MainScreen() {
                 }
                 composable<Routes.Cart> {
 
-                    CartScreen(cartViewModel)
+                    CartScreen(cartViewModel, onCheckoutClick = { navController.navigate(Routes.Checkout) })
+                }
+                composable<Routes.Checkout> {
+                    CheckoutScreen( onBackClicked = { navController.popBackStack() }, onOrderPlaced = { navController.navigate(Routes.Home) })
                 }
                 composable<Routes.Profile> {
                     ProfileScreen()

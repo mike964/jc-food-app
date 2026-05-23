@@ -16,7 +16,8 @@ import com.example.gmfastfood.vm.CartViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
-    viewModel: CartViewModel
+    viewModel: CartViewModel,
+    onCheckoutClick: () -> Unit
 ) {
     // Safely collect state from ViewModel
     val uiState by viewModel.uiState.collectAsState()
@@ -25,7 +26,7 @@ fun CartScreen(
         topBar = {
             TopAppBar(title = { Text("Your Cart") })
         },
-        containerColor = Color(0xFFA8CCEE) // Set your custom color here
+        containerColor = Color(0xFFEFF2F5) // Set your custom color here
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -63,7 +64,12 @@ fun CartScreen(
                     subtotal = uiState.subtotal,
                     shipping = uiState.shipping,
                     total = uiState.total,
-                    onCheckoutClick = { /* Handle Checkout Logic */ }
+                    onCheckoutClick = {
+                        // Navigate to checkout screen
+                        // or handle checkout logic here
+                        // For example: navController.navigate("checkout")
+                        onCheckoutClick()
+                    }
                 )
             }
         }

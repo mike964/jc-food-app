@@ -18,5 +18,7 @@ sealed interface Routes {
     @Serializable data object Input : Routes     // Tab 1
     @Serializable data object Display : Routes   // Tab 2
     @Serializable data object Cart : Routes      // Tab 3
+    @Serializable data object Checkout : Routes      // Tab 3
+
     @Serializable data object Profile : Routes   // Tab 4
 }
