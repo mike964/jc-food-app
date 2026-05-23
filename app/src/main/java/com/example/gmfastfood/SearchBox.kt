@@ -71,7 +71,7 @@ fun SearchBox( textValue : String ,  onValueChange: (String) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.settings_sliders),
+                painter = painterResource(R.drawable.ic_basket),
                 contentDescription = null,
             )
         }

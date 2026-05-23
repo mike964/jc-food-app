@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.profile.ProfileScreen
 import com.example.gmfastfood.screens.CheckoutScreen
+import com.example.gmfastfood.screens.SearchScreen
+import com.example.gmfastfood.screens.SearchScreen2
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -115,7 +117,7 @@ fun MainScreen() {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
 
-                    SearchScreen(sharedViewModel)
+                    SearchScreen2(sharedViewModel)
                 }
                 composable<Routes.Cart> {
 

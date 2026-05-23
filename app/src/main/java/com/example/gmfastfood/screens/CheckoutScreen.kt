@@ -42,7 +42,7 @@ fun CheckoutScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFFEFF2F5))
+                .background(Color(0xFFF8F9FA))
         ) {
             // Scrollable Content Region
             Column(
