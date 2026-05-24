@@ -127,8 +127,9 @@ fun MainScreen() {
                     CheckoutScreen( onBackClicked = { navController.popBackStack() }, onOrderPlaced = { navController.navigate(Routes.Home) })
                 }
                 composable<Routes.Profile> {
-                    ProfileScreen()
+//                    ProfileScreen()
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
+                    MainCatalogScreenWithCart()
                 }
             }
         }

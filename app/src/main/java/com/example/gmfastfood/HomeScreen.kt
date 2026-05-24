@@ -18,29 +18,35 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import com.example.gmfastfood.data.FakeApiClient
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.vm.SharedViewModel
@@ -48,6 +54,7 @@ import com.example.gmfastfood.vm.CartItem
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.UiState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     val text by viewModel.sharedText.collectAsState()
@@ -60,6 +67,9 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     Log.d("HomeScreen", "$state")
     // Success(items=[Product(id=1, title=Cheese Burger, ..
 
+    // Material 3 bottom sheet structural state variables
+    var showCartBottomSheet by remember { mutableStateOf(false) }
+    val totalCartItems : Int = cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
 
     Surface(
         modifier = Modifier
@@ -106,7 +116,13 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
                                 Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text("Hello")
+                                IconButton(onClick = { showCartBottomSheet = true  }   ) {
+                                    BadgedBox(
+                                        badge = { if (totalCartItems > 0) Badge { Text(totalCartItems.toString()) } }
+                                    ) {
+                                        Icon(Icons.Default.ShoppingCart, contentDescription = "Open Bag Window View")
+                                    }
+                                }
                             }
                             Column(
                                 Modifier
@@ -132,6 +148,26 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
                             ) {
                                 Text("Total : ${cartViewModel.uiState.collectAsState().value.total.toInt()}")
                             }
+                        }
+                    }
+
+                    // 3. DECLARATIVE MODAL BOTTOM SHEET OVERLAY CONTEXT
+                    if (showCartBottomSheet) {
+                        ModalBottomSheet(
+                            onDismissRequest = { showCartBottomSheet = false },
+                            dragHandle = { BottomSheetDefaults.DragHandle() },
+                            containerColor = Color.White
+                        ) {
+                            ShoppingCartContent(
+                                cartItems = cartViewModel.uiState.collectAsState().value.cartItems,
+                                onUpdateQuantity = { itemId, newQty ->
+                                    cartViewModel.updateQuantity(itemId, newQty)
+                                },
+                                onCheckoutClicked = {
+                                    showCartBottomSheet = false
+                                    /* Navigate to Checkout Screen */
+                                }
+                            )
                         }
                     }
 
