@@ -5,6 +5,9 @@
 [x] Simple Shopping cart example
 [x] Add item to cart view model 
 [x] Push to Github repo   5/24/2026
+[x] Sticky Header for Submit order btn row 
+[] Cart pop up details. 
+[] 
 [ ] On click food item show details popup 
 [] Flip food item cards
 

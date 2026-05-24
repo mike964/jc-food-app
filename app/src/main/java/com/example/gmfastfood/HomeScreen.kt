@@ -23,9 +23,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.gmfastfood.data.FakeApiClient
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.vm.SharedViewModel
@@ -58,139 +61,174 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     // Success(items=[Product(id=1, title=Cheese Burger, ..
 
 
-    Column(
+    Surface(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
 //            .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
-        Column(Modifier.padding(8.dp)) {
-            Text("Food & More", Modifier, fontSize = 38.sp, fontWeight = FontWeight.SemiBold)
-            Text(
-                "Order your favourite food!", Modifier, fontSize = 15.sp,
-                color = Color(0xFF868C96),
-                fontWeight = FontWeight.Medium
-            )
-            SearchBox(textValue = text, onValueChange = { viewModel.updateText(it) })
-//        HorizontalSlider()
-        }
-
-        // # Only if cart has one item or more show this row with total price
-        if (cartViewModel.uiState.collectAsState().value.cartItems.isNotEmpty()) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .background(
-                        Color(0xFFCFEAD0)
-                    )
-            ) {
-                Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Hello")
-                }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Row {
                 Column(
                     Modifier
-                        .weight(2f)
-                        .padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(0.dp)
+//                        .background(Color.Red)
+//                        .height(200.dp)
                 ) {
-                    Button(
-                        onClick = {},
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF2FB235), // Background color
-                            contentColor = Color.White  // Text/Icon color
-                        ),
-                        shape = MaterialTheme.shapes.medium
-                    ) {
-                        Text("Submit Order", fontSize = 18.sp)
+                    Text(
+                        "Food & More",
+                        Modifier,
+                        fontSize = 38.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        "Order your favourite food!", Modifier, fontSize = 15.sp,
+                        color = Color(0xFF868C96),
+                        fontWeight = FontWeight.Medium
+                    )
+//            SearchBox(textValue = text, onValueChange = { viewModel.updateText(it) })
+//        HorizontalSlider()
+
+
+                    // # Only if cart has one item or more show this row with total price
+                    if (cartViewModel.uiState.collectAsState().value.cartItems.isNotEmpty()) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(vertical = 4.dp)
+                                .background(
+                                    Color(0xFFD6EAD6)
+                                )
+                        ) {
+                            Column(
+                                Modifier.weight(1f),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text("Hello")
+                            }
+                            Column(
+                                Modifier
+                                    .weight(2f)
+                                    .padding(8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Button(
+                                    onClick = {},
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFF2FB235), // Background color
+                                        contentColor = Color.White  // Text/Icon color
+                                    ),
+                                    shape = MaterialTheme.shapes.medium
+                                ) {
+                                    Text("Submit Order", fontSize = 18.sp)
+                                }
+                            }
+                            Column(
+                                Modifier.weight(1f),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text("Total : ${cartViewModel.uiState.collectAsState().value.total.toInt()}")
+                            }
+                        }
                     }
-                }
-                Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Total : ${ cartViewModel.uiState.collectAsState().value.total.toInt()}")
+
+                    HorizontalList(
+                        itemsList = listOf(
+                            "Burgers",
+                            "Pizza",
+                            "Drinks",
+                            "Desserts",
+                            "Salads",
+                            "Pasta",
+                            "Snacks",
+                            "Soup"
+                        )
+                    )
                 }
             }
-        }
-
-
-
-
-        HorizontalList(
-            itemsList = listOf(
-                "Burgers",
-                "Pizza",
-                "Drinks",
-                "Desserts",
-                "Salads",
-                "Pasta",
-                "Snacks",
-                "Soup"
-            )
-        )
 
 //        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            "Popular", Modifier.padding(16.dp, 4.dp),
-            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-        )
+//        Spacer(modifier = Modifier.height(10.dp))
 
-        when (val currentState = state) {
-            is UiState.Loading -> {
-                Box(Modifier.size(100.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(strokeWidth = 4.dp)
-                    Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier
+                    //  .fillMaxSize()
+//                    .background(Color.Cyan)
+//                    .height(600.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        //  .fillMaxSize()
+//            .background(Color.Cyan)
+                        .verticalScroll(scrollState)
+//                        .padding(top = 100.dp) // Offset by the row's height
+                ) {
+                    Text(
+                        "Popular", Modifier.padding(16.dp, 4.dp),
+                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                    )
+
+                    when (val currentState = state) {
+                        is UiState.Loading -> {
+                            Box(Modifier.size(100.dp), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator(strokeWidth = 4.dp)
+                                Spacer(modifier = Modifier.height(12.dp))
 //                   Text("Simulating fetch request (2.5s)...", color = Color.Gray, fontSize = 14.sp)
+                            }
+                        }
+
+                        is UiState.Success -> {
+                            HorizontalCardList(
+                                itemList = currentState.items,
+                                addToCart = { cartViewModel.addToCart(it) }
+                            )
+                        }
+
+                        is UiState.Error -> {
+                            Text(currentState.message, color = Color.Red, fontSize = 14.sp)
+                        }
+                    }
+
+                    Text(
+                        "Burgers", Modifier.padding(16.dp, 4.dp),
+                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                    )
+                    HorizontalCardList(
+                        itemList = fakeApi.getProductsByCategory("Burgers"),
+                        addToCart = { cartViewModel.addToCart(it) }
+                    )
+
+                    Text(
+                        "Pizza", Modifier.padding(16.dp, 4.dp),
+                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                    )
+                    HorizontalCardList(
+                        itemList = fakeApi.getProductsByCategory("Pizza"),
+                        addToCart = { cartViewModel.addToCart(it) }
+                    )
+
+                    Text(
+                        "Salads", Modifier.padding(16.dp, 4.dp),
+                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                    )
+                    HorizontalCardList(
+                        itemList = fakeApi.getProductsByCategory("Salads"),
+                        addToCart = { cartViewModel.addToCart(it) })
+
+                    Text(
+                        "Drinks", Modifier.padding(16.dp, 4.dp),
+                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                    )
+                    HorizontalCardList(
+                        itemList = fakeApi.getProductsByCategory("Drinks"),
+                        addToCart = { cartViewModel.addToCart(it) }
+                    )
                 }
             }
-
-            is UiState.Success -> {
-                HorizontalCardList(
-                    itemList = currentState.items,
-                    addToCart = { cartViewModel.addToCart(it) }
-                )
-            }
-
-            is UiState.Error -> {
-                Text(currentState.message, color = Color.Red, fontSize = 14.sp)
-            }
         }
-
-        Text(
-            "Burgers", Modifier.padding(16.dp, 4.dp),
-            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-        )
-        HorizontalCardList(
-            itemList = fakeApi.getProductsByCategory("Burgers"),
-            addToCart = { cartViewModel.addToCart(it) }
-        )
-
-        Text(
-            "Pizza", Modifier.padding(16.dp, 4.dp),
-            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-        )
-        HorizontalCardList(
-            itemList = fakeApi.getProductsByCategory("Pizza"),
-            addToCart = { cartViewModel.addToCart(it) }
-        )
-
-        Text(
-            "Salads", Modifier.padding(16.dp, 4.dp),
-            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-        )
-        HorizontalCardList(
-            itemList = fakeApi.getProductsByCategory("Salads"),
-            addToCart = { cartViewModel.addToCart(it) })
-
-        Text(
-            "Drinks", Modifier.padding(16.dp, 4.dp),
-            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-        )
-        HorizontalCardList(
-            itemList = fakeApi.getProductsByCategory("Drinks"),
-            addToCart = { cartViewModel.addToCart(it) })
-
-
     }
 }
 
