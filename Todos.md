@@ -4,6 +4,7 @@
 [x] Fake data with 10 sample items 
 [x] Simple Shopping cart example
 [x] Add item to cart view model 
+[x] Push to Github repo   5/24/2026
 [ ] On click food item show details popup 
 [] Flip food item cards
 
