@@ -1,7 +1,6 @@
 package com.example.gmfastfood;
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable;
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gmfastfood.profile.ProfileScreen
 import com.example.gmfastfood.screens.CheckoutScreen
 import com.example.gmfastfood.screens.SearchScreen2
 
@@ -62,7 +60,8 @@ fun MainScreen() {
     val currentDestination = navBackStackEntry?.destination
     var selectedIndex by remember { mutableIntStateOf(0) }
     val cartViewModel = viewModel<CartViewModel>()
-    val cartTotalItems = cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
+    val cartTotalItems =
+        cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
 
     // # Navigation bar items
     val listOfNavItems = listOf(
@@ -78,7 +77,7 @@ fun MainScreen() {
             NavigationBar {
                 listOfNavItems.forEachIndexed { index, item ->
                     NavigationBarItem(
-                        icon = { BadgeBox(item.icon , item.label,  cartTotalItems) },
+                        icon = { BadgeBox(item.icon, item.label, cartTotalItems) },
                         label = { Text(text = item.label) },
                         selected = selectedIndex == index,
                         onClick = {
@@ -111,7 +110,7 @@ fun MainScreen() {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
 
-                    HomeScreen(sharedViewModel, cartViewModel)
+                    HomeScreen(sharedViewModel, cartViewModel,   onCheckoutClick = { navController.navigate(Routes.Checkout) })
                 }
                 composable<Routes.Search> {
                     val sharedViewModel: SharedViewModel =
@@ -121,10 +120,16 @@ fun MainScreen() {
                 }
                 composable<Routes.Cart> {
 
-                    CartScreen(cartViewModel, onCheckoutClick = { navController.navigate(Routes.Checkout) })
+                    CartScreen(
+                        cartViewModel,
+                        onCheckoutClick = { navController.navigate(Routes.Checkout) }
+                    )
                 }
                 composable<Routes.Checkout> {
-                    CheckoutScreen( onBackClicked = { navController.popBackStack() }, onOrderPlaced = { navController.navigate(Routes.Home) })
+                    CheckoutScreen(
+                        onBackClicked = { navController.popBackStack() },
+                        onOrderPlaced = { navController.navigate(Routes.Home) }
+                    )
                 }
                 composable<Routes.Profile> {
 //                    ProfileScreen()
@@ -137,24 +142,26 @@ fun MainScreen() {
 }
 
 @Composable
-fun BadgeBox(x0: ImageVector, label: String,  cartTotalItems: Int) {
+fun BadgeBox(x0: ImageVector, label: String, cartTotalItems: Int) {
     BadgedBox(badge = {
-        if ( label == "Cart" && cartTotalItems > 0)
-        Text(  cartTotalItems.toString(),
+        if (label == "Cart" && cartTotalItems > 0)
+            Text(
+                cartTotalItems.toString(),
 //            modifier = Modifier.padding(top = 8.dp ) ,
 //                .background(Color.White),
-            color = Color.Red,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+                color = Color.Red,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
             )
     }) {
-        Icon(imageVector = x0, contentDescription = "badge" ,
+        Icon(
+            imageVector = x0, contentDescription = "badge",
             modifier = Modifier.size(28.dp),
 //            tint = if (cartTotalItems > 0 && label == "Cart") Orange else Color.DarkGray)
-            tint =  Color.DarkGray)
+            tint = Color.DarkGray
+        )
     }
 }
-
 
 
 @Composable

@@ -56,7 +56,11 @@ import com.example.gmfastfood.vm.UiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
+fun HomeScreen(
+    viewModel: SharedViewModel,
+    cartViewModel: CartViewModel,
+    onCheckoutClick: () -> Unit,
+) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
 
@@ -120,7 +124,8 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
                                     BadgedBox(
                                         badge = { if (totalCartItems > 0) Badge { Text(totalCartItems.toString()) } }
                                     ) {
-                                        Icon(Icons.Default.ShoppingCart, contentDescription = "Open Bag Window View")
+                                        Icon(Icons.Default.ShoppingCart, contentDescription = "Open Bag Window View",
+                                            Modifier.size(28.dp))
                                     }
                                 }
                             }
@@ -166,6 +171,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
                                 onCheckoutClicked = {
                                     showCartBottomSheet = false
                                     /* Navigate to Checkout Screen */
+                                    onCheckoutClick()
                                 }
                             )
                         }
