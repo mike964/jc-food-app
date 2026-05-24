@@ -10,6 +10,10 @@
 
 First Repo no API. Just mock data. 
 Next fork repo and add firebase. 
-
 Horizontal sliders. 
 Burgers. Pizza. Drinks. Salads. 
+Arabic language
+Simple API. No firebase. Just json. 
+Simple Auth 
+fake api - Loading affect
+jetpack compose select address on map

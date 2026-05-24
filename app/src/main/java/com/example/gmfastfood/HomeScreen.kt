@@ -34,8 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.data.FakeApiClient
 import com.example.gmfastfood.data.Product
-import com.example.gmfastfood.data.filterProductsByCategory
 import com.example.gmfastfood.vm.SharedViewModel
 import com.example.gmfastfood.vm.CartItem
 import com.example.gmfastfood.vm.CartViewModel
@@ -45,6 +45,8 @@ import com.example.gmfastfood.vm.UiState
 fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
+
+    val fakeApi : FakeApiClient = FakeApiClient()
 
     val state by viewModel.uiState.collectAsState()
 
@@ -115,7 +117,16 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
         )
         HorizontalCardList(
-            itemList = filterProductsByCategory("Burgers"),
+            itemList = fakeApi.getProductsByCategory("Burgers"),
+            addToCart = { cartViewModel.addToCart(it) }
+        )
+
+        Text(
+            "Pizza", Modifier.padding(16.dp, 4.dp),
+            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+        )
+        HorizontalCardList(
+            itemList = fakeApi.getProductsByCategory("Pizza"),
             addToCart = { cartViewModel.addToCart(it) }
         )
 
@@ -124,7 +135,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
         )
         HorizontalCardList(
-            itemList = filterProductsByCategory("Salads"),
+            itemList =  fakeApi.getProductsByCategory("Salads"),
             addToCart = { cartViewModel.addToCart(it) })
 
         Text(
@@ -132,7 +143,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
         )
         HorizontalCardList(
-            itemList = filterProductsByCategory("Drinks"),
+            itemList =  fakeApi.getProductsByCategory("Drinks"),
             addToCart = { cartViewModel.addToCart(it) })
 
 

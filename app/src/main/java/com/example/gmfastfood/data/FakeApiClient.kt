@@ -18,8 +18,19 @@ class FakeApiClient {
         }
 
         // 3. Mock database payload data returned on success paths
-        return products
+        return products.shuffled()
+    }
+
+    fun toggleError() {
+        toggleErrorFlag = !toggleErrorFlag
+    }
+
+    fun resetError() {
+        toggleErrorFlag = false
+
     }
 
     fun getItemById(id: Int): Product? = products.find { it.id == id }
+
+    fun getProductsByCategory(category: String): List<Product> = products.filter { it.category == category }
 }
