@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -45,7 +47,11 @@ fun CartSummaryBlock(
                 Text("Shipping")
                 Text(if (shipping == 0.0) "FREE" else String.format("%.2f", shipping))
             }
-            Divider(modifier = Modifier.padding(vertical = 4.dp))
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 4.dp),
+                thickness = DividerDefaults.Thickness,
+                color = DividerDefaults.color
+            )
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text("Total", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
                 Text("IQD ${String.format("%.0f", total)}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)

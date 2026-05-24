@@ -1,6 +1,7 @@
 package com.example.gmfastfood;
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable;
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -36,6 +37,7 @@ import com.example.gmfastfood.vm.SharedViewModel
 import com.example.gmfastfood.vm.CartViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.profile.ProfileScreen
@@ -137,7 +139,13 @@ fun MainScreen() {
 fun BadgeBox(x0: ImageVector, label: String,  cartTotalItems: Int) {
     BadgedBox(badge = {
         if ( label == "Cart" && cartTotalItems > 0)
-        Text(  cartTotalItems.toString(), modifier = Modifier.padding(top = 8.dp), color = Color.Red, fontSize = 18.sp)
+        Text(  cartTotalItems.toString(),
+//            modifier = Modifier.padding(top = 8.dp ) ,
+//                .background(Color.White),
+            color = Color.Red,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+            )
     }) {
         Icon(imageVector = x0, contentDescription = "badge" ,
             modifier = Modifier.size(28.dp),

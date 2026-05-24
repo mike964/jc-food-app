@@ -2,6 +2,7 @@ package com.example.gmfastfood
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,11 +18,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -46,7 +50,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
 
-    val fakeApi : FakeApiClient = FakeApiClient()
+    val fakeApi: FakeApiClient = FakeApiClient()
 
     val state by viewModel.uiState.collectAsState()
 
@@ -71,6 +75,46 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 //        HorizontalSlider()
         }
 
+        // # Only if cart has one item or more show this row with total price
+        if (cartViewModel.uiState.collectAsState().value.cartItems.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .background(
+                        Color(0xFFCFEAD0)
+                    )
+            ) {
+                Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Hello")
+                }
+                Column(
+                    Modifier
+                        .weight(2f)
+                        .padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(
+                        onClick = {},
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF2FB235), // Background color
+                            contentColor = Color.White  // Text/Icon color
+                        ),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Text("Submit Order", fontSize = 18.sp)
+                    }
+                }
+                Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Total : ${ cartViewModel.uiState.collectAsState().value.total.toInt()}")
+                }
+            }
+        }
+
+
+
+
         HorizontalList(
             itemsList = listOf(
                 "Burgers",
@@ -93,7 +137,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
 
         when (val currentState = state) {
             is UiState.Loading -> {
-                Box( Modifier.size(100.dp), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(100.dp), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(strokeWidth = 4.dp)
                     Spacer(modifier = Modifier.height(12.dp))
 //                   Text("Simulating fetch request (2.5s)...", color = Color.Gray, fontSize = 14.sp)
@@ -135,7 +179,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
         )
         HorizontalCardList(
-            itemList =  fakeApi.getProductsByCategory("Salads"),
+            itemList = fakeApi.getProductsByCategory("Salads"),
             addToCart = { cartViewModel.addToCart(it) })
 
         Text(
@@ -143,7 +187,7 @@ fun HomeScreen(viewModel: SharedViewModel, cartViewModel: CartViewModel) {
             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
         )
         HorizontalCardList(
-            itemList =  fakeApi.getProductsByCategory("Drinks"),
+            itemList = fakeApi.getProductsByCategory("Drinks"),
             addToCart = { cartViewModel.addToCart(it) })
 
 
