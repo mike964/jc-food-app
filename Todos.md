@@ -6,10 +6,13 @@
 [x] Add item to cart view model 
 [x] Push to Github repo   5/24/2026
 [x] Sticky Header for Submit order btn row 
-[] Cart pop up details. 
-[] 
+[x] Cart pop up details. 
+[]  Remove navigation bar. Not necessary for this project. 
+[] Filter products by search
+
 [ ] On click food item show details popup 
-[] Flip food item cards
+[] Flip food item cards - nn 
+
 
 
 First Repo no API. Just mock data. 

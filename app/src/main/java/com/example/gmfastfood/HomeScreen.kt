@@ -3,6 +3,7 @@ package com.example.gmfastfood
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -73,7 +76,8 @@ fun HomeScreen(
 
     // Material 3 bottom sheet structural state variables
     var showCartBottomSheet by remember { mutableStateOf(false) }
-    val totalCartItems : Int = cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
+    val totalCartItems: Int =
+        cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
 
     Surface(
         modifier = Modifier
@@ -91,20 +95,50 @@ fun HomeScreen(
 //                        .background(Color.Red)
 //                        .height(200.dp)
                 ) {
-                    Text(
-                        "Food & More",
-                        Modifier,
-                        fontSize = 38.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        "Order your favourite food!", Modifier, fontSize = 15.sp,
-                        color = Color(0xFF868C96),
-                        fontWeight = FontWeight.Medium
-                    )
+                    Row {
+                        Column(Modifier.weight(2f)) {
+                            Text(
+                                "Food & More",
+                                Modifier,
+                                fontSize = 38.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Text(
+                                "Order your favourite food!", Modifier, fontSize = 15.sp,
+                                color = Color(0xFF868C96),
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                        Column(
+                            Modifier.weight(1f)
+                            // .background(Color.Yellow)
+                        ) {
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                horizontalArrangement = Arrangement.End, // Horizontal centering
+                                verticalAlignment = Alignment.CenterVertically // Vertical centering
+                            ) {
+                                IconButton(onClick = { showCartBottomSheet = true }) {
+                                    Icon(
+                                        Icons.Default.Search,
+                                        contentDescription = "Open Search popup window",
+                                        Modifier.size(38.dp)
+                                    )
+                                }
+                                IconButton(onClick = { showCartBottomSheet = true }) {
+                                    Icon(
+                                        Icons.Default.Person,
+                                        contentDescription = "Open Search popup window",
+                                        Modifier.size(38.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
 //            SearchBox(textValue = text, onValueChange = { viewModel.updateText(it) })
 //        HorizontalSlider()
-
 
                     // # Only if cart has one item or more show this row with total price
                     if (cartViewModel.uiState.collectAsState().value.cartItems.isNotEmpty()) {
@@ -120,12 +154,18 @@ fun HomeScreen(
                                 Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                IconButton(onClick = { showCartBottomSheet = true  }   ) {
+                                IconButton(onClick = { showCartBottomSheet = true }) {
                                     BadgedBox(
-                                        badge = { if (totalCartItems > 0) Badge { Text(totalCartItems.toString()) } }
+                                        badge = {
+                                            if (totalCartItems > 0)
+                                                Badge { Text(totalCartItems.toString()) }
+                                        }
                                     ) {
-                                        Icon(Icons.Default.ShoppingCart, contentDescription = "Open Bag Window View",
-                                            Modifier.size(28.dp))
+                                        Icon(
+                                            Icons.Default.ShoppingCart,
+                                            contentDescription = "Open Bag Window View",
+                                            Modifier.size(30.dp)
+                                        )
                                     }
                                 }
                             }
@@ -197,7 +237,7 @@ fun HomeScreen(
 
             Row(
                 modifier = Modifier
-                    //  .fillMaxSize()
+                //  .fillMaxSize()
 //                    .background(Color.Cyan)
 //                    .height(600.dp)
             ) {
