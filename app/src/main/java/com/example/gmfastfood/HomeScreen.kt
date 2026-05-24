@@ -79,11 +79,29 @@ fun HomeScreen(
     val totalCartItems: Int =
         cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
 
+    var showSearchPopup by remember { mutableStateOf(false) }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
 //            .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            // Overlay Popup Screen Definition
+            SearchPopupScreen(
+                isOpen = showSearchPopup,
+                onDismiss = { showSearchPopup = false },
+                onConfirm = {
+                    // Execute background tasks or repository updates here
+                    println("User clicked confirmed!")
+                }
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -116,18 +134,18 @@ fun HomeScreen(
                             Row(
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(top = 8.dp),
+                                    .padding(top = 8.dp, end = 8.dp),
                                 horizontalArrangement = Arrangement.End, // Horizontal centering
                                 verticalAlignment = Alignment.CenterVertically // Vertical centering
                             ) {
-                                IconButton(onClick = { showCartBottomSheet = true }) {
+                                IconButton(onClick = { showSearchPopup = true }) {
                                     Icon(
                                         Icons.Default.Search,
                                         contentDescription = "Open Search popup window",
                                         Modifier.size(38.dp)
                                     )
                                 }
-                                IconButton(onClick = { showCartBottomSheet = true }) {
+                                IconButton(onClick = {  showCartBottomSheet = true }) {
                                     Icon(
                                         Icons.Default.Person,
                                         contentDescription = "Open Search popup window",

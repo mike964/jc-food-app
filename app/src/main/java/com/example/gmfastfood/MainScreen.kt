@@ -134,7 +134,8 @@ fun MainScreen() {
                 composable<Routes.Profile> {
 //                    ProfileScreen()
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
-                    MainCatalogScreenWithCart()
+//                    MainCatalogScreenWithCart()
+                    LoginPopup( onDismiss = { }, isOpen = true )
                 }
             }
         }
