@@ -1,9 +1,9 @@
 package com.example.gmfastfood
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,15 +12,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.gmfastfood.vm.SharedViewModel
 
 @Composable
 fun SearchPopupScreen(
     isOpen: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    viewModel : SharedViewModel
 ) {
     // If state is false, do not render anything
     if (!isOpen) return
+
+    // Collect states safely from the ViewModel
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val books by viewModel.filteredBooks.collectAsState()
 
     Dialog(
         // Handles hardware back button clicks and clicking outside the popup card
@@ -35,8 +41,7 @@ fun SearchPopupScreen(
             modifier = Modifier
                 .fillMaxWidth(0.92f) // Now this modifier will be respected
                 .wrapContentHeight(),
-//                .padding(16.dp),
-            shape = RoundedCornerShape(20.dp),
+           shape = RoundedCornerShape(20.dp),
         ) {
             Column(
                 modifier = Modifier
@@ -45,7 +50,31 @@ fun SearchPopupScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                SearchBox( textValue = "", onValueChange = { }  )
+                SearchBox(
+                    textValue = searchQuery,
+                    onValueChange = { viewModel.onSearchQueryChanged(it) }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Results List
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 400.dp) // Limit height to prevent overflow in dialog
+                ) {
+                    items(books, key = { it.id }) { book ->
+                        Card(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(text = book.title, style = MaterialTheme.typography.titleMedium)
+                                Text(text = "By ${book.author}", style = MaterialTheme.typography.bodyMedium)
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Subtitle/Body description
                 Text(

@@ -98,7 +98,8 @@ fun HomeScreen(
                 onConfirm = {
                     // Execute background tasks or repository updates here
                     println("User clicked confirmed!")
-                }
+                },
+                viewModel = viewModel
             )
         }
 
