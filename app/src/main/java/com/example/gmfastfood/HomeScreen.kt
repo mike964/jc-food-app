@@ -142,11 +142,12 @@ fun HomeScreen(
                                 "Food & More",
                                 Modifier,
                                 fontSize = 38.sp,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color(0xFF3D0606),
                             )
                             Text(
-                                "Order your favourite food!", Modifier, fontSize = 15.sp,
-                                color = Color(0xFF868C96),
+                                "Enjoy your favourite food!", Modifier, fontSize = 15.sp,
+                                color = Color(0xFFFF6969),
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -184,7 +185,6 @@ fun HomeScreen(
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-//                                .padding(vertical = 4.dp)
                                 .background(
                                     Color(0xFFD6EAD6)
                                 )

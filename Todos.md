@@ -9,7 +9,7 @@
 [x] Cart pop up details. 
 []  Remove navigation bar. Not necessary for this project. 
 [x] Filter products by search in popup
-[ ] Jump to section by pill click 
+[x] Jump to section by pill click    5/25/2026
 
 [ ] On click food item show details popup 
 [] Flip food item cards - nn 
