@@ -116,7 +116,7 @@ fun HomeScreen(
 //                        .height(200.dp)
                 ) {
                     Row {
-                        Column(Modifier.weight(2f)) {
+                        Column(Modifier.weight(2f).padding(start = 8.dp)) {
                             Text(
                                 "Food & More",
                                 Modifier,

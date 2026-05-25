@@ -133,7 +133,8 @@ fun MainScreen() {
                     )
                 }
                 composable<Routes.Profile> {
-                    ProfileScreen()
+//                    ProfileScreen()
+                    JumpToSection()
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
 //                    MainCatalogScreenWithCart()
 //                    LoginPopup( onDismiss = { }, isOpen = true )
