@@ -12,26 +12,29 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class Book(val id: Int, val title: String, val author: String)
 
-sealed interface  UiState {
-    object Loading :  UiState
-    data class Success(val items: List<Product>) :  UiState
-    data class Error(val message: String) :  UiState
+sealed interface UiState {
+    object Loading : UiState
+    data class Success(val items: List<Product>) : UiState
+    data class Error(val message: String) : UiState
 }
 
 class SharedViewModel(
-    private val apiService: FakeApiClient = FakeApiClient()
+    private val apiService: FakeApiClient = FakeApiClient(),
 ) : ViewModel() {
     private val _sharedText = MutableStateFlow("")
     val sharedText: StateFlow<String> = _sharedText.asStateFlow()
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    private val _products = MutableStateFlow<List<Product>>(emptyList())
 
     init {
         loadDataFromNetwork()
@@ -42,7 +45,10 @@ class SharedViewModel(
             _uiState.update { UiState.Loading }
             try {
                 val data = apiService.getProductItems()
-                _uiState.update { UiState.Success(items = data) }
+                _uiState.update {
+                    UiState.Success(items = data)
+                }
+                _products.value = data
             } catch (e: Exception) {
                 _uiState.update { UiState.Error(message = e.localizedMessage ?: "Unknown Error") }
             }
@@ -77,6 +83,21 @@ class SharedViewModel(
             books.filter { book ->
                 book.title.contains(query, ignoreCase = true) ||
                         book.author.contains(query, ignoreCase = true)
+            }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
+    val filteredProducts = combine(_products, _searchQuery) { products, query ->
+        if (query.isBlank()) {
+            products
+        } else {
+            products.filter { product ->
+                product.title.contains(query, ignoreCase = true)
+//                        ||  product.author.contains(query, ignoreCase = true)
             }
         }
     }.stateIn(

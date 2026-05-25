@@ -27,6 +27,7 @@ fun SearchPopupScreen(
     // Collect states safely from the ViewModel
     val searchQuery by viewModel.searchQuery.collectAsState()
     val books by viewModel.filteredBooks.collectAsState()
+    val products by viewModel.filteredProducts.collectAsState()
 
     Dialog(
         // Handles hardware back button clicks and clicking outside the popup card
@@ -46,6 +47,7 @@ fun SearchPopupScreen(
             Column(
                 modifier = Modifier
                     .padding(24.dp)
+//                    .height(600.dp)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -62,27 +64,17 @@ fun SearchPopupScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 400.dp) // Limit height to prevent overflow in dialog
+                        .heightIn(max = 400.dp, min = 400.dp) // Limit height to prevent overflow in dialog
                 ) {
-                    items(books, key = { it.id }) { book ->
+                    items(products, key = { it.id }) { book ->
                         Card(modifier = Modifier.fillMaxWidth()) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(text = book.title, style = MaterialTheme.typography.titleMedium)
-                                Text(text = "By ${book.author}", style = MaterialTheme.typography.bodyMedium)
+//                                Text(text = "By ${book.author}", style = MaterialTheme.typography.bodyMedium)
                             }
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Subtitle/Body description
-                Text(
-                    text = "If you head back now, you will lose all the progress made on this draft.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
