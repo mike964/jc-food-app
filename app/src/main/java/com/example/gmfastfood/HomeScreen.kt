@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -40,12 +41,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -56,6 +61,7 @@ import com.example.gmfastfood.vm.SharedViewModel
 import com.example.gmfastfood.vm.CartItem
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.UiState
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +72,15 @@ fun HomeScreen(
 ) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+    var targetA by remember { mutableFloatStateOf(0f) }
+    var burgersPosition by remember { mutableFloatStateOf(0f) }
+    var pizzaPosition by remember { mutableFloatStateOf(0f) }
+    var drinksPosition by remember { mutableFloatStateOf(0f) }
+    var saladsPosition by remember { mutableFloatStateOf(0f) }
+
+//    Log.d("HomeScreen", "burgerPosition: $burgersPosition, pizzaPosition: $pizzaPosition, drinksPosition: $drinksPosition, saladsPosition: $saladsPosition")
+
 
     val fakeApi: FakeApiClient = FakeApiClient()
 
@@ -86,7 +101,6 @@ fun HomeScreen(
             .fillMaxSize()
 //            .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
-
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -111,12 +125,19 @@ fun HomeScreen(
             Row {
                 Column(
                     Modifier
-                        .padding(0.dp)
-//                        .background(Color.Red)
+//                        .background(Color(0xFFF1CACA))
 //                        .height(200.dp)
                 ) {
-                    Row {
-                        Column(Modifier.weight(2f).padding(start = 8.dp)) {
+                    Row(
+                        Modifier
+                            .background(Color(0xFFE82020))
+                            .padding(10.dp)
+                    ) {
+                        Column(
+                            Modifier
+                                .weight(2f)
+                                .padding(start = 8.dp)
+                        ) {
                             Text(
                                 "Food & More",
                                 Modifier,
@@ -147,7 +168,7 @@ fun HomeScreen(
                                         Modifier.size(38.dp)
                                     )
                                 }
-                                IconButton(onClick = {  showCartBottomSheet = true }) {
+                                IconButton(onClick = { showCartBottomSheet = true }) {
                                     Icon(
                                         Icons.Default.Person,
                                         contentDescription = "Open Search popup window",
@@ -157,15 +178,13 @@ fun HomeScreen(
                             }
                         }
                     }
-//            SearchBox(textValue = text, onValueChange = { viewModel.updateText(it) })
-//        HorizontalSlider()
 
                     // # Only if cart has one item or more show this row with total price
                     if (cartViewModel.uiState.collectAsState().value.cartItems.isNotEmpty()) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                                .padding(vertical = 4.dp)
+//                                .padding(vertical = 4.dp)
                                 .background(
                                     Color(0xFFD6EAD6)
                                 )
@@ -237,18 +256,86 @@ fun HomeScreen(
                         }
                     }
 
-                    HorizontalList(
-                        itemsList = listOf(
-                            "Burgers",
-                            "Pizza",
-                            "Drinks",
-                            "Desserts",
-                            "Salads",
-                            "Pasta",
-                            "Snacks",
-                            "Soup"
-                        )
-                    )
+//                    HorizontalList(
+//                        itemsList = listOf(
+//                            "Burgers",
+//                            "Pizza",
+//                            "Drinks",
+//                            "Desserts",
+//                            "Salads",
+//                            "Pasta",
+//                            "Snacks",
+//                            "Soup"
+//                        )
+//                    )
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        items(1) {
+                            Button(
+                                onClick = {
+                                    scope.launch { scrollState.animateScrollTo(burgersPosition.toInt()) }
+                                },
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFEAEBEE), // Background color
+                                    contentColor = Color.DarkGray   // Text/Icon color
+                                )
+                            ) {
+                                Text("Burgers")
+                            }
+                            Button(
+                                onClick = {
+                                    scope.launch { scrollState.animateScrollTo(pizzaPosition.toInt()) }
+                                },
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFEAEBEE), // Background color
+                                    contentColor = Color.DarkGray   // Text/Icon color
+                                )
+                            ) {
+                                Text("Pizza")
+                            }
+                            Button(
+                                onClick = {
+                                    scope.launch { scrollState.animateScrollTo(saladsPosition.toInt()) }
+                                },
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFEAEBEE), // Background color
+                                    contentColor = Color.DarkGray   // Text/Icon color
+                                )
+                            ) {
+                                Text("Salads")
+                            }
+                            Button(
+                                onClick = {
+                                    scope.launch { scrollState.animateScrollTo(drinksPosition.toInt()) }
+                                },
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFEAEBEE), // Background color
+                                    contentColor = Color.DarkGray   // Text/Icon color
+                                )
+                            ) {
+                                Text("Drinks")
+                            }
+                            Button(
+                                onClick = {
+                                    scope.launch { scrollState.animateScrollTo(drinksPosition.toInt()) }
+                                },
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFEAEBEE), // Background color
+                                    contentColor = Color.DarkGray   // Text/Icon color
+                                )
+                            ) {
+                                Text("Snacks")
+                            }
+                        }
+                    }
+
                 }
             }
 
@@ -295,7 +382,11 @@ fun HomeScreen(
                     }
 
                     Text(
-                        "Burgers", Modifier.padding(16.dp, 4.dp),
+                        "Burgers", Modifier
+                            .padding(16.dp, 4.dp)
+                            .onGloballyPositioned { coordinates ->
+                                burgersPosition = coordinates.positionInRoot().y
+                            },
                         fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                     )
                     HorizontalCardList(
@@ -304,7 +395,11 @@ fun HomeScreen(
                     )
 
                     Text(
-                        "Pizza", Modifier.padding(16.dp, 4.dp),
+                        "Pizza", Modifier
+                            .padding(16.dp, 4.dp)
+                            .onGloballyPositioned { coordinates ->
+                                pizzaPosition = coordinates.positionInRoot().y
+                            },
                         fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                     )
                     HorizontalCardList(
@@ -313,7 +408,11 @@ fun HomeScreen(
                     )
 
                     Text(
-                        "Salads", Modifier.padding(16.dp, 4.dp),
+                        "Salads", Modifier
+                            .padding(16.dp, 4.dp)
+                            .onGloballyPositioned { coordinates ->
+                                saladsPosition = coordinates.positionInRoot().y
+                            },
                         fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                     )
                     HorizontalCardList(
@@ -321,13 +420,19 @@ fun HomeScreen(
                         addToCart = { cartViewModel.addToCart(it) })
 
                     Text(
-                        "Drinks", Modifier.padding(16.dp, 4.dp),
+                        "Drinks", Modifier
+                            .padding(16.dp, 4.dp)
+                            .onGloballyPositioned { coordinates ->
+                                drinksPosition = coordinates.positionInRoot().y
+                            },
                         fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                     )
                     HorizontalCardList(
                         itemList = fakeApi.getProductsByCategory("Drinks"),
                         addToCart = { cartViewModel.addToCart(it) }
                     )
+
+                    Spacer(Modifier.height(800.dp))
                 }
             }
         }

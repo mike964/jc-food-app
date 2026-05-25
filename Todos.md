@@ -8,7 +8,8 @@
 [x] Sticky Header for Submit order btn row 
 [x] Cart pop up details. 
 []  Remove navigation bar. Not necessary for this project. 
-[] Filter products by search
+[x] Filter products by search in popup
+[ ] Jump to section by pill click 
 
 [ ] On click food item show details popup 
 [] Flip food item cards - nn 
