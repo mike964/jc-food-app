@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.profile.ProfileScreen
 import com.example.gmfastfood.screens.CheckoutScreen
 import com.example.gmfastfood.screens.SearchScreen2
 
@@ -132,10 +133,10 @@ fun MainScreen() {
                     )
                 }
                 composable<Routes.Profile> {
-//                    ProfileScreen()
+                    ProfileScreen()
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
 //                    MainCatalogScreenWithCart()
-                    LoginPopup( onDismiss = { }, isOpen = true )
+//                    LoginPopup( onDismiss = { }, isOpen = true )
                 }
             }
         }

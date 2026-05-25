@@ -1,12 +1,14 @@
 package com.example.gmfastfood
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -32,6 +34,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -73,7 +77,7 @@ fun ShoppingCartContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(cartItems, key = { it.id }) { item ->
-                    CartItemRow(lineItem = item, onQuantityModified = { qty -> onUpdateQuantity(item.id, qty) })
+                    CartItemRow(item = item, onQuantityModified = { qty -> onUpdateQuantity(item.id, qty) })
                 }
             }
 
@@ -87,7 +91,8 @@ fun ShoppingCartContent(
             ) {
                 Text("Subtotal:", fontSize = 15.sp, color = Color.Gray, fontWeight = FontWeight.Medium)
                 Text(
-                    text = "$${String.format("%.2f", totalCartPrice)}",
+                    //text = "$${String.format("%.2f", totalCartPrice)}",
+                    text = "${String.format("%.0f", totalCartPrice)} IQD",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = MaterialTheme.colorScheme.primary
@@ -109,7 +114,7 @@ fun ShoppingCartContent(
 // 5. INDIVIDUAL CART ITEM ROW VIEW
 // ==========================================
 @Composable
-fun CartItemRow(lineItem: CartItem, onQuantityModified: (Int) -> Unit) {
+fun CartItemRow(item: CartItem, onQuantityModified: (Int) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -118,10 +123,16 @@ fun CartItemRow(lineItem: CartItem, onQuantityModified: (Int) -> Unit) {
         Box(
             modifier = Modifier
                 .size(64.dp)
-                .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+                .background(Color(0xFFF5F5F5), RoundedCornerShape(10.dp)),
             contentAlignment = Alignment.Center
         ) {
-            Text("📦", fontSize = 22.sp)
+            Image(
+                painter = painterResource(item.imageUrl.toIntOrNull() ?: R.drawable.burger),
+                contentDescription = "item image",
+                modifier = Modifier
+                       .fillMaxSize(), // Makes the Composable fill parent bounds
+                contentScale = ContentScale.Crop
+            )
         }
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -129,14 +140,14 @@ fun CartItemRow(lineItem: CartItem, onQuantityModified: (Int) -> Unit) {
         // Title and Base Price Info Frame
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = lineItem.name,
+                text = item.name,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = "$${lineItem.price}",
+                text = "$${item.price}",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Bold
@@ -150,27 +161,27 @@ fun CartItemRow(lineItem: CartItem, onQuantityModified: (Int) -> Unit) {
             modifier = Modifier.background(Color(0xFFF5F5F5), CircleShape).padding(horizontal = 4.dp, vertical = 2.dp)
         ) {
             FilledIconButton(
-                onClick = { onQuantityModified(lineItem.quantity - 1) },
+                onClick = { onQuantityModified(item.quantity - 1) },
                 colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color.Transparent),
                 modifier = Modifier.size(28.dp)
             ) {
                 Icon(
-                    imageVector = if (lineItem.quantity == 1) Icons.Default.Delete else Icons.Default.Clear,
+                    imageVector = if (item.quantity == 1) Icons.Default.Delete else Icons.Default.Clear,
                     contentDescription = "Reduce Quantity count",
-                    tint = if (lineItem.quantity == 1) Color.Red else Color.Black,
+                    tint = if (item.quantity == 1) Color.Red else Color.Black,
                     modifier = Modifier.size(16.dp)
                 )
             }
 
             Text(
-                text = lineItem.quantity.toString(),
+                text = item.quantity.toString(),
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(horizontal = 6.dp)
             )
 
             FilledIconButton(
-                onClick = { onQuantityModified(lineItem.quantity + 1) },
+                onClick = { onQuantityModified(item.quantity + 1) },
                 colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color.Transparent),
                 modifier = Modifier.size(28.dp)
             ) {
