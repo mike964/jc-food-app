@@ -99,7 +99,8 @@ fun HomeScreen(
                     // Execute background tasks or repository updates here
                     println("User clicked confirmed!")
                 },
-                viewModel = viewModel
+                viewModel = viewModel,
+                cartViewModel = cartViewModel
             )
         }
 
