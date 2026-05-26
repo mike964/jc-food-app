@@ -85,7 +85,7 @@ fun HorizontalCardList(
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
                                     .background(
-                                        if (itemExistsInCart) Color(0x550D73D8)
+                                        if (itemExistsInCart) Color(0x55D8A90D)
                                         else Color(0x00D3B114)
                                     )
                                     .fillMaxWidth(),
@@ -134,7 +134,9 @@ fun HorizontalCardList(
                                     }
                                     IconButton(
                                         onClick = {
-                                            onUpdateQuantity(item.id, -1)
+                                            onUpdateQuantity(item.id,
+                                                itemExistingInCart?.quantity?.minus(1) ?: 0
+                                            )
                                         },
                                     ) {
                                         Icon(
