@@ -17,6 +17,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -31,7 +32,9 @@ fun CartSummaryBlock(
 ) {
     Surface(
         tonalElevation = 8.dp,
-        shadowElevation = 8.dp
+        shadowElevation = 8.dp,
+//        color = MaterialTheme.colorScheme.surface,
+//        color = Color(0x91A9C2DA),
     ) {
         Column(
             modifier = Modifier

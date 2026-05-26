@@ -49,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.painterResource
@@ -69,6 +70,7 @@ fun HomeScreen(
     viewModel: SharedViewModel,
     cartViewModel: CartViewModel,
     onCheckoutClick: () -> Unit,
+    onSubmitOrderClick : () -> Unit
 ) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
@@ -194,8 +196,11 @@ fun HomeScreen(
                                 Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                IconButton(onClick = { showCartBottomSheet = true }) {
+                                IconButton(onClick = { showCartBottomSheet = true },
+//                                    modifier = Modifier.background(Color.LightGray, shape = RectangleShape)
+                                ) {
                                     BadgedBox(
+                                      modifier =  Modifier.padding(top = 8.dp )  ,
                                         badge = {
                                             if (totalCartItems > 0)
                                                 Badge { Text(totalCartItems.toString()) }
@@ -216,7 +221,9 @@ fun HomeScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Button(
-                                    onClick = {},
+                                    onClick = {
+                                        onSubmitOrderClick()
+                                    },
                                     modifier = Modifier.fillMaxWidth(),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = Color(0xFF2FB235), // Background color

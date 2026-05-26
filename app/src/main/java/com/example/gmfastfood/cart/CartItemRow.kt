@@ -2,9 +2,11 @@ package com.example.gmfastfood.cart
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,9 +23,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.R
 import com.example.gmfastfood.vm.CartItem
 
@@ -34,36 +38,40 @@ fun CartItemRow(
     onIncrease: () -> Unit,
     onDecrease: () -> Unit,
     onRemove: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(2.dp),
+        modifier = Modifier
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceBright)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceBright  )
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth().
-              padding(horizontal = 16.dp, vertical = 4.dp) ,
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .fillMaxSize()
+//                .padding(4.dp),
+         ,   horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column() {
+            Column(Modifier.padding(horizontal = 4.dp)) {
                 Image(
                     painter = painterResource(item.imageUrl.toIntOrNull() ?: R.drawable.burger),
                     contentDescription = "item image",
                     modifier = Modifier
-                        .size(80.dp)
+                        .size(60.dp)
                 )
             }
-
             // Quantity Controls
             Row(
+//                modifier = Modifier.background(Color.Yellow),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 IconButton(onClick = onDecrease) {
-                    Icon(   painter = painterResource(id = R.drawable.ic_remove), contentDescription= "Decrease" )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_remove),
+                        contentDescription = "Decrease"
+                    )
                 }
                 Text(
                     text = item.quantity.toString(),
@@ -73,18 +81,33 @@ fun CartItemRow(
                 IconButton(onClick = onIncrease) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Increase")
                 }
-                IconButton(onClick = onRemove, colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.error)) {
+                IconButton(
+                    onClick = onRemove,
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                ) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "Remove Item")
                 }
             }
         }
         // Item Details
-        Row( modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = item.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            Text(text = "${String.format("%.0f", item.price)} each", style = MaterialTheme.typography.bodySmall)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                   .background(Color(0xFFCAD8E8))
+                .padding(horizontal = 16.dp, vertical = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(
-                text = "Total: IQD ${String.format("%.0f", item.totalPrice)}",
+                text = item.name,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "${String.format("%.0f", item.price)} each",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = "Total: ${String.format("%.0f", item.totalPrice)}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold

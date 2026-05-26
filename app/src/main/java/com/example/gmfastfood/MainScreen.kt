@@ -111,7 +111,10 @@ fun MainScreen() {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
 
-                    HomeScreen(sharedViewModel, cartViewModel,   onCheckoutClick = { navController.navigate(Routes.Checkout) })
+                    HomeScreen(sharedViewModel, cartViewModel,
+                        onCheckoutClick = { navController.navigate(Routes.Checkout) } ,
+                        onSubmitOrderClick = { navController.navigate(Routes.Cart) }
+                        )
                 }
                 composable<Routes.Search> {
                     val sharedViewModel: SharedViewModel =
