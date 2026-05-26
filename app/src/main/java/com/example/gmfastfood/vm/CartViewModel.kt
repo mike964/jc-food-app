@@ -44,8 +44,8 @@ class CartViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 cartItems = listOf(
-                    CartItem(1, "Burger", 2000.0, R.drawable.burger.toString()),
-                    CartItem(2, "Pizza", 2000.0, R.drawable.pizza.toString())
+                    CartItem(55, "Burger", 2000.0, R.drawable.burger.toString()),
+                    CartItem(56, "Pizza", 2000.0, R.drawable.pizza.toString())
                 )
             )
         }
@@ -64,6 +64,8 @@ class CartViewModel : ViewModel() {
             }
         }
     }
+
+
 
     fun updateQuantity(itemId: Int, newQuantity: Int) {
         if (newQuantity <= 0) {

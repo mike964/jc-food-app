@@ -93,6 +93,7 @@ fun HomeScreen(
     var showCartBottomSheet by remember { mutableStateOf(false) }
     val totalCartItems: Int =
         cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
+    val cartItems = cartViewModel.uiState.collectAsState().value.cartItems
 
     var showSearchPopup by remember { mutableStateOf(false) }
 
@@ -147,7 +148,7 @@ fun HomeScreen(
                             )
                             Text(
                                 "Enjoy your favourite food!", Modifier, fontSize = 15.sp,
-                                color = Color(0xFFFF6969),
+                                color = Color(0xFFEA7A7A),
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -372,7 +373,11 @@ fun HomeScreen(
                         is UiState.Success -> {
                             HorizontalCardList(
                                 itemList = currentState.items,
-                                addToCart = { cartViewModel.addToCart(it) }
+                                addToCart = { cartViewModel.addToCart(it) },
+                                onUpdateQuantity = { itemId, newQty ->
+                                    cartViewModel.updateQuantity(itemId, newQty)
+                                },
+                                cartItems
                             )
                         }
 
@@ -391,7 +396,11 @@ fun HomeScreen(
                     )
                     HorizontalCardList(
                         itemList = fakeApi.getProductsByCategory("Burgers"),
-                        addToCart = { cartViewModel.addToCart(it) }
+                        addToCart = { cartViewModel.addToCart(it) },
+                        onUpdateQuantity = { itemId, newQty ->
+                            cartViewModel.updateQuantity(itemId, newQty)
+                        },
+                        cartItems
                     )
 
                     Text(
@@ -404,7 +413,11 @@ fun HomeScreen(
                     )
                     HorizontalCardList(
                         itemList = fakeApi.getProductsByCategory("Pizza"),
-                        addToCart = { cartViewModel.addToCart(it) }
+                        addToCart = { cartViewModel.addToCart(it) },
+                        onUpdateQuantity = { itemId, newQty ->
+                            cartViewModel.updateQuantity(itemId, newQty)
+                        },
+                        cartItems
                     )
 
                     Text(
@@ -417,7 +430,12 @@ fun HomeScreen(
                     )
                     HorizontalCardList(
                         itemList = fakeApi.getProductsByCategory("Salads"),
-                        addToCart = { cartViewModel.addToCart(it) })
+                        addToCart = { cartViewModel.addToCart(it) },
+                        onUpdateQuantity = { itemId, newQty ->
+                            cartViewModel.updateQuantity(itemId, newQty)
+                        },
+                        cartItems
+                    )
 
                     Text(
                         "Drinks", Modifier
@@ -429,10 +447,14 @@ fun HomeScreen(
                     )
                     HorizontalCardList(
                         itemList = fakeApi.getProductsByCategory("Drinks"),
-                        addToCart = { cartViewModel.addToCart(it) }
+                        addToCart = { cartViewModel.addToCart(it) },
+                        onUpdateQuantity = { itemId, newQty ->
+                            cartViewModel.updateQuantity(itemId, newQty)
+                        },
+                        cartItems
                     )
 
-                    Spacer(Modifier.height(800.dp))
+                    Spacer(Modifier.height(600.dp))
                 }
             }
         }
@@ -466,23 +488,8 @@ fun FoodItem(item: Product, cartViewModel: CartViewModel) {
                     Text(item.title, Modifier, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                     Text("Wendy's Burger", Modifier, fontSize = 16.sp)
                 }
-                Row(
-                    modifier = Modifier
-                        .padding(bottom = 16.dp),
-//                        .background(Color.Red),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    RatingData()
-                    Spacer(modifier = Modifier.weight(1f))
-                }
+
             }
-//            Image(
-//                painter = painterResource(R.drawable.empty_heart),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .align(Alignment.TopEnd) // Positions in top-right
-//                    .padding(8.dp)
-//            )
             IconButton(
                 onClick = {
 //                    Log.d("TAG", item.title )
@@ -499,6 +506,26 @@ fun FoodItem(item: Product, cartViewModel: CartViewModel) {
                 Icon(
                     imageVector = Icons.Filled.AddCircle,
                     contentDescription = "Add to cart",
+                    modifier = Modifier.size(32.dp), // Sets the internal icon size
+                    tint = Color.Red
+                )
+            }
+            IconButton(
+                onClick = {
+//                    Log.d("TAG", item.title )
+                    cartViewModel.addToCart(
+                        CartItem(
+                            item.id, imageUrl = item.image.toString(),
+                            name = item.title, price = item.price, quantity = 1
+                        )
+                    )
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomStart) // Positions in top-right
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_remove),
+                    contentDescription = "remove from cart",
                     modifier = Modifier.size(32.dp), // Sets the internal icon size
                     tint = Color.Red
                 )

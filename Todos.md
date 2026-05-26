@@ -11,6 +11,8 @@
 [x] Filter products by search in popup
 [x] Jump to section by pill click    5/25/2026
 
+only if Item exist in cart show minus btn 
+
 [ ] On click food item show details popup 
 [] Flip food item cards - nn 
 
