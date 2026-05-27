@@ -1,5 +1,6 @@
 package com.example.gmfastfood.auth
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,9 +22,31 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gmfastfood.LoginPopup
 import com.example.gmfastfood.profile.ProfileScreen
 
+data class UserProfile(
+    val username: String,
+    val email: String, val phoneNumber: String? = null,
+    val mainAddress: String? = null,
+    val secondaryAddress: String? = null,
+    val createdAt: String? = null,
+    val updatedAt: String? = null
+)
+
+sealed interface AuthUiState {
+    object Unauthenticated : AuthUiState
+    object Loading : AuthUiState
+    data class Authenticated(val profile: UserProfile) : AuthUiState
+    data class Error(val message: String) : AuthUiState
+}
+
+
+
+
 @Composable
 fun AuthFlowContainer(viewModel: AuthViewModel = viewModel()) {
     val activeState by viewModel.authState.collectAsState()
+
+    Log.d("AuthFlowContainer", "Active State: $activeState")
+// Active State: com.example.gmfastfood.auth.AuthUiState$Unauthenticated@47e15e8
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -31,7 +54,11 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel()) {
     ) {
         when (val state = activeState) {
             is AuthUiState.Unauthenticated -> {
-                LoginScreen(onLoginSubmitted = { user, pass -> viewModel.login(user, pass) })
+//                LoginScreen(onLoginSubmitted = { user, pass -> viewModel.login(user, pass) }, authenticated   = false)
+                ProfileScreen( profile = null, isAuthenticated = false,
+                    onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
+                    onLogout = { viewModel.logout() } )
+
             }
 
             is AuthUiState.Loading -> {
@@ -40,13 +67,16 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel()) {
 
             is AuthUiState.Authenticated -> {
 //                DashboardScreen(profile = state.profile, onLogout = { viewModel.logout() })
-                ProfileScreen( profile = state.profile, onLogout = { viewModel.logout() })
+                ProfileScreen( profile = state.profile, isAuthenticated = true,
+                    onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
+                    onLogout = { viewModel.logout() },)
             }
 
             is AuthUiState.Error -> {
                 LoginScreen(
                     errorMessage = state.message,
-                    onLoginSubmitted = { user, pass -> viewModel.login(user, pass) }
+                    onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
+                    authenticated = false
                 )
             }
         }
@@ -57,11 +87,12 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel()) {
 fun LoginScreen(
     errorMessage: String? = null,
     onLoginSubmitted: (String, String) -> Unit,
+    authenticated: Boolean,
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val viewModel: AuthViewModel = viewModel()
-    var loginError by remember { mutableStateOf(false) }
+    var loginError by remember { mutableStateOf(authenticated) }
     var loginPopupIsOpen by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -76,10 +107,11 @@ fun LoginScreen(
             Button(onClick = { loginPopupIsOpen = true }) {
                 Text("Log in")
             }
+
             LoginPopup(
                 isOpen = loginPopupIsOpen,
-                onDismiss = { loginPopupIsOpen = false })
-
+                onDismiss = { loginPopupIsOpen = false }
+            )
 
             Text("Welcome Back", fontSize = 28.sp, fontWeight = FontWeight.Bold)
             Text(

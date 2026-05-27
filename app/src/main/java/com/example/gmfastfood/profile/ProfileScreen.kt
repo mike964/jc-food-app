@@ -25,11 +25,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.LoginPopup
 import com.example.gmfastfood.auth.UserProfile
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(profile: UserProfile, onLogout: () -> Unit) {
+fun ProfileScreen(
+    profile: UserProfile?,
+    isAuthenticated: Boolean,
+    onLogout: () -> Unit,
+    onLoginSubmitted: (String, String) -> Unit,
+) {
+    var showLoginPopup by remember { mutableStateOf(false) }
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -49,16 +58,35 @@ fun ProfileScreen(profile: UserProfile, onLogout: () -> Unit) {
                 .background(Color(0xFFF8F9FA)) // Subtle light background grey
                 .verticalScroll(rememberScrollState())
         ) {
-            // 1. Profile Header Section
-//            ProfileHeader(
-//                name = "Alex Mercer",
-//                email = "alex.mercer@android.com",
-//                avatarLabel = "AM"
-//            )
 
-            Text("🔐 Access Granted", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-            Text("Welcome, ${profile.username}!", fontSize = 18.sp, fontWeight = FontWeight.Medium)
-            Text("Logged in as: ${profile.email}", color = Color.Gray)
+            LoginPopup(
+                isOpen = showLoginPopup,
+                onDismiss = { showLoginPopup = false },
+                //  onLoginSuccess = { /* Handle successful login */ }
+            )
+
+            Row(Modifier.padding(32.dp, 16.dp, )) {
+                Button(
+                    onClick = { showLoginPopup = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text("Log in", modifier = Modifier.padding(vertical = 4.dp))
+                }
+            }
+
+
+
+
+            // 1. Profile Header Section
+            if (isAuthenticated && profile != null) {
+                ProfileHeader(
+                    name = profile.username,
+                    email = profile.email,
+                    avatarLabel = "AM"
+                )
+
+            }
 
             // 2. Performance/Activity Stats Row
             ProfileStatsRow()
@@ -75,19 +103,50 @@ fun ProfileScreen(profile: UserProfile, onLogout: () -> Unit) {
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column {
-                    ProfileMenuItem(icon = Icons.Default.ShoppingCart, label = "Order History") { /* Navigate */ }
-                    HorizontalDivider(color = Color(0xFFF1F1F1), thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                    ProfileMenuItem(
+                        icon = Icons.Default.ShoppingCart,
+                        label = "Order History"
+                    ) { /* Navigate */ }
+                    HorizontalDivider(
+                        color = Color(0xFFF1F1F1),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
 
-                    ProfileMenuItem(icon = Icons.Default.Home, label = "My Addresses") { /* Navigate */ }
-                    HorizontalDivider(color = Color(0xFFF1F1F1), thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                    ProfileMenuItem(
+                        icon = Icons.Default.Home,
+                        label = "My Addresses"
+                    ) { /* Navigate */ }
+                    HorizontalDivider(
+                        color = Color(0xFFF1F1F1),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
 
-                    ProfileMenuItem(icon = Icons.Default.Notifications, label = "Notification Settings") { /* Navigate */ }
-                    HorizontalDivider(color = Color(0xFFF1F1F1), thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                    ProfileMenuItem(
+                        icon = Icons.Default.Notifications,
+                        label = "Notification Settings"
+                    ) { /* Navigate */ }
+                    HorizontalDivider(
+                        color = Color(0xFFF1F1F1),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
 
-                    ProfileMenuItem(icon = Icons.Default.Settings, label = "Account Preferences") { /* Navigate */ }
-                    HorizontalDivider(color = Color(0xFFF1F1F1), thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                    ProfileMenuItem(
+                        icon = Icons.Default.Settings,
+                        label = "Account Preferences"
+                    ) { /* Navigate */ }
+                    HorizontalDivider(
+                        color = Color(0xFFF1F1F1),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
 
-                    ProfileMenuItem(icon = Icons.Default.Person, label = "Privacy & Security") { /* Navigate */ }
+                    ProfileMenuItem(
+                        icon = Icons.Default.Person,
+                        label = "Privacy & Security"
+                    ) { /* Navigate */ }
                 }
             }
 
@@ -98,7 +157,11 @@ fun ProfileScreen(profile: UserProfile, onLogout: () -> Unit) {
                 onClick = { /* Handle Logout */ },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text("Log Out", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.SemiBold)
+                Text(
+                    "Log Out",
+                    color = MaterialTheme.colorScheme.error,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         }
     }
@@ -135,6 +198,9 @@ fun ProfileHeader(name: String, email: String, avatarLabel: String) {
         Spacer(modifier = Modifier.height(12.dp))
         Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Text(text = email, fontSize = 14.sp, color = Color.Gray)
+        Text("🔐 Access Granted", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+        Text("Welcome, ${name}!", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+        Text("Logged in as: $email", color = Color.Gray)
 
     }
 }
@@ -148,9 +214,19 @@ fun ProfileStatsRow() {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         StatItem(value = "12", label = "Orders")
-        Box(modifier = Modifier.width(1.dp).height(32.dp).background(Color.LightGray)) // Divider
+        Box(
+            modifier = Modifier
+                .width(1.dp)
+                .height(32.dp)
+                .background(Color.LightGray)
+        ) // Divider
         StatItem(value = "$428", label = "Saved")
-        Box(modifier = Modifier.width(1.dp).height(32.dp).background(Color.LightGray)) // Divider
+        Box(
+            modifier = Modifier
+                .width(1.dp)
+                .height(32.dp)
+                .background(Color.LightGray)
+        ) // Divider
         StatItem(value = "4.9", label = "Buyer Score")
     }
 }
@@ -167,7 +243,7 @@ fun StatItem(value: String, label: String) {
 fun ProfileMenuItem(
     icon: ImageVector,
     label: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
