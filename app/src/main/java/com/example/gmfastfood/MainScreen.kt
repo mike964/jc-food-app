@@ -39,6 +39,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.auth.AuthFlowContainer
+import com.example.gmfastfood.auth.AuthViewModel
+import com.example.gmfastfood.auth.LoginScreen
 import com.example.gmfastfood.profile.ProfileScreen
 import com.example.gmfastfood.screens.CheckoutScreen
 import com.example.gmfastfood.screens.SearchScreen2
@@ -61,6 +64,7 @@ fun MainScreen() {
     val currentDestination = navBackStackEntry?.destination
     var selectedIndex by remember { mutableIntStateOf(0) }
     val cartViewModel = viewModel<CartViewModel>()
+    val authViewModel = viewModel<AuthViewModel>()
     val cartTotalItems =
         cartViewModel.uiState.collectAsState().value.cartItems.sumOf { it.quantity }
 
@@ -136,9 +140,14 @@ fun MainScreen() {
                     )
                 }
                 composable<Routes.Profile> {
-                    ProfileScreen()
+//                    ProfileScreen( onLogout = {
+////                        navController.navigate(Routes.Login)
+//                        navController.navigate(Routes.Home)
+//                    })
+                    AuthFlowContainer(authViewModel )
 //                    JumpToSection()
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
+//                    LoginScreen( onLoginSubmitted = { user, pass -> navController.navigate(Routes.Home) } )
 //                    MainCatalogScreenWithCart()
 //                    LoginPopup( onDismiss = { }, isOpen = true )
                 }

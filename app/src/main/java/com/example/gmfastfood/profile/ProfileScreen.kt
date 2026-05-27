@@ -25,10 +25,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.auth.UserProfile
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(profile: UserProfile, onLogout: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -49,11 +50,15 @@ fun ProfileScreen() {
                 .verticalScroll(rememberScrollState())
         ) {
             // 1. Profile Header Section
-            ProfileHeader(
-                name = "Alex Mercer",
-                email = "alex.mercer@android.com",
-                avatarLabel = "AM"
-            )
+//            ProfileHeader(
+//                name = "Alex Mercer",
+//                email = "alex.mercer@android.com",
+//                avatarLabel = "AM"
+//            )
+
+            Text("🔐 Access Granted", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+            Text("Welcome, ${profile.username}!", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+            Text("Logged in as: ${profile.email}", color = Color.Gray)
 
             // 2. Performance/Activity Stats Row
             ProfileStatsRow()
@@ -130,6 +135,7 @@ fun ProfileHeader(name: String, email: String, avatarLabel: String) {
         Spacer(modifier = Modifier.height(12.dp))
         Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Text(text = email, fontSize = 14.sp, color = Color.Gray)
+
     }
 }
 

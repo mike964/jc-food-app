@@ -10,36 +10,52 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
-    private val _sessionState = MutableStateFlow<AuthSessionState>(AuthSessionState.Unauthenticated)
-    val sessionState: StateFlow<AuthSessionState> = _sessionState.asStateFlow()
+    private val _authState = MutableStateFlow<AuthUiState>(AuthUiState.Unauthenticated)
+    val authState: StateFlow<AuthUiState> = _authState.asStateFlow()
 
     fun login(usernameInput: String, passwordInput: String) {
         if (usernameInput.isBlank() || passwordInput.isBlank()) {
-            _sessionState.update { AuthSessionState.AuthError("Username or password cannot be blank.") }
+            _authState.update { AuthUiState.Error("Username or password cannot be blank.") }
             return
         }
 
         viewModelScope.launch {
             // Put UI into loading state
-            _sessionState.update { AuthSessionState.Processing }
+            _authState.update { AuthUiState.Loading }
 
-            // Simulate API roundtrip delay (1.5 seconds)
+            // Simulate API round trip delay (1.5 seconds)
             delay(1500)
 
-            // Mock check: accepted credential set -> admin / secret123
-            if (usernameInput.trim().equals("admin", ignoreCase = true) && passwordInput == "secret123") {
-                _sessionState.update {
-                    AuthSessionState.Authenticated(
-                        profile = UserProfile(  "Alex Mercer", email = "alex@hub.com")
+            // Mock check: accepted credential set -> admin / admin123
+            if (usernameInput.trim()
+                    .equals("admin", ignoreCase = true) && passwordInput == "admin123"
+            ) {
+                _authState.update {
+                    AuthUiState.Authenticated(
+                        profile = UserProfile(
+                            "Hasan Ali",
+                            email = "hasan@mail.com",
+                            phoneNumber = "1234567890",
+                            mainAddress = "123 Main St",
+                            secondaryAddress = "Apt 4B",
+                            createdAt = "2023-09-15",
+                            updatedAt = "2023-09-15"
+                        )
                     )
                 }
             } else {
-                _sessionState.update { AuthSessionState.AuthError("Invalid credentials. Try: admin / secret123") }
+                _authState.update { AuthUiState.Error("Invalid credentials. Try: admin / admin123") }
             }
         }
     }
 
     fun logout() {
-        _sessionState.update { AuthSessionState.Unauthenticated }
+        _authState.update { AuthUiState.Unauthenticated }
+    }
+
+    fun clearError() {
+        if (_authState.value is AuthUiState.Error) {
+            _authState.update { AuthUiState.Unauthenticated }
+        }
     }
 }
