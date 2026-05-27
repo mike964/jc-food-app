@@ -89,59 +89,74 @@ fun HorizontalCardList(
                                         else Color(0x00D3B114)
                                     )
                                     .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
+//                                horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                IconButton(
-                                    onClick = {
-                                        addToCart(
-                                            CartItem(
-                                                item.id,
-                                                imageUrl = item.image.toString(),
-                                                name = item.title,
-                                                price = item.price,
-                                                quantity = 1
-                                            )
-                                        )
-                                    },
+                                Column(
+                                    Modifier.weight(2f)
+                                    //   .background(Color.Blue)
                                 ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.AddCircle,
-                                        contentDescription = "Add to cart",
-                                        modifier = Modifier
-                                            .size(32.dp) // Sets the internal icon size
-                                            .background(color = Color.White, shape = CircleShape),
-                                        tint = Color.Red,
-                                    )
-                                }
-
-                                if (itemExistsInCart) {
-                                    Box(
-                                        contentAlignment = Alignment.Center,
-                                        modifier = Modifier
-                                            .size(34.dp)
-                                            .background(Color.White, shape = CircleShape)
-                                            .padding(4.dp) // Space between text and circle edge
-                                        // Ensures width equals height
-                                    ) {
-                                        Text(
-                                            text = itemExistingInCart?.quantity.toString(),
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 18.sp,
-                                            color = Color.Red,
+                                    if (itemExistsInCart) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            IconButton(
+                                                onClick = {
+                                                    onUpdateQuantity(
+                                                        item.id,
+                                                        itemExistingInCart?.quantity?.minus(1) ?: 0
+                                                    )
+                                                },
+                                            ) {
+                                                Icon(
+                                                    painter = painterResource(R.drawable.ic_remove),
+                                                    contentDescription = "Remove from cart",
+                                                    modifier = Modifier
+                                                        .size(32.dp) // Sets the internal icon size
+                                                        .background(
+                                                            color = Color.White,
+                                                            shape = CircleShape
+                                                        ),
+                                                    tint = Color.Red,
+                                                )
+                                            }
+                                            Box(
+                                                contentAlignment = Alignment.Center,
+                                                modifier = Modifier
+                                                    .size(32.dp)
+                                                    .background(Color.White, shape = CircleShape)
+                                                    .padding(4.dp) // Space between text and circle edge
+                                                // Ensures width equals height
+                                            ) {
+                                                Text(
+                                                    text = itemExistingInCart?.quantity.toString(),
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 18.sp,
+                                                    color = Color.Red,
 //                                            modifier = Modifier.background(Color.White)
-                                        )
+                                                )
+                                            }
+                                        }
                                     }
+                                }
+                                Column(
+                                    Modifier.weight(1f)
+                                    //  .background(Color.Green)
+                                ) {
                                     IconButton(
                                         onClick = {
-                                            onUpdateQuantity(item.id,
-                                                itemExistingInCart?.quantity?.minus(1) ?: 0
+                                            addToCart(
+                                                CartItem(
+                                                    item.id,
+                                                    imageUrl = item.image.toString(),
+                                                    name = item.title,
+                                                    price = item.price,
+                                                    quantity = 1
+                                                )
                                             )
                                         },
                                     ) {
                                         Icon(
-                                            painter = painterResource(R.drawable.ic_remove),
-                                            contentDescription = "Remove from cart",
+                                            imageVector = Icons.Filled.AddCircle,
+                                            contentDescription = "Add to cart",
                                             modifier = Modifier
                                                 .size(32.dp) // Sets the internal icon size
                                                 .background(
@@ -153,8 +168,6 @@ fun HorizontalCardList(
                                     }
                                 }
                             }
-
-
                         }
                     }
                 }

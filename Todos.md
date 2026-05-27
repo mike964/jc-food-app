@@ -10,8 +10,8 @@
 []  Remove navigation bar. Not necessary for this project. 
 [x] Filter products by search in popup
 [x] Jump to section by pill click    5/25/2026
-
-only if Item exist in cart show minus btn 
+[x] only if Item exist in cart show minus btn 
+[x] When click sign in load fake user 
 
 [ ] On click food item show details popup 
 [] Flip food item cards - nn 
