@@ -108,10 +108,9 @@ fun LoginScreen(
                 Text("Log in")
             }
 
-            LoginPopup(
-                isOpen = loginPopupIsOpen,
-                onDismiss = { loginPopupIsOpen = false }
-            )
+//            LoginPopup(
+//                isOpen = loginPopupIsOpen,
+//            ) { loginPopupIsOpen = false }
 
             Text("Welcome Back", fontSize = 28.sp, fontWeight = FontWeight.Bold)
             Text(

@@ -38,7 +38,6 @@ fun ProfileScreen(
 ) {
     var showLoginPopup by remember { mutableStateOf(false) }
 
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,19 +61,20 @@ fun ProfileScreen(
             LoginPopup(
                 isOpen = showLoginPopup,
                 onDismiss = { showLoginPopup = false },
-                //  onLoginSuccess = { /* Handle successful login */ }
+                onLoginSubmitted = onLoginSubmitted
             )
 
-            Row(Modifier.padding(32.dp, 16.dp, )) {
-                Button(
-                    onClick = { showLoginPopup = true },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme.shapes.medium
-                ) {
-                    Text("Log in", modifier = Modifier.padding(vertical = 4.dp))
+            if(!isAuthenticated){
+                Row(Modifier.padding(32.dp, 16.dp, )) {
+                    Button(
+                        onClick = { showLoginPopup = true },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Text("Log in", modifier = Modifier.padding(vertical = 4.dp))
+                    }
                 }
             }
-
 
 
 
@@ -105,7 +105,7 @@ fun ProfileScreen(
                 Column {
                     ProfileMenuItem(
                         icon = Icons.Default.ShoppingCart,
-                        label = "Order History"
+                        label = "My Orders"
                     ) { /* Navigate */ }
                     HorizontalDivider(
                         color = Color(0xFFF1F1F1),
@@ -152,17 +152,18 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Logout Button
-            TextButton(
-                onClick = { /* Handle Logout */ },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text(
-                    "Log Out",
-                    color = MaterialTheme.colorScheme.error,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
+           if(isAuthenticated){
+               TextButton(
+                   onClick = {  onLogout() },
+                   modifier = Modifier.align(Alignment.CenterHorizontally)
+               ) {
+                   Text(
+                       "Log Out",
+                       color = MaterialTheme.colorScheme.error,
+                       fontWeight = FontWeight.SemiBold
+                   )
+               }
+           }
         }
     }
 }
@@ -198,10 +199,6 @@ fun ProfileHeader(name: String, email: String, avatarLabel: String) {
         Spacer(modifier = Modifier.height(12.dp))
         Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Text(text = email, fontSize = 14.sp, color = Color.Gray)
-        Text("🔐 Access Granted", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-        Text("Welcome, ${name}!", fontSize = 18.sp, fontWeight = FontWeight.Medium)
-        Text("Logged in as: $email", color = Color.Gray)
-
     }
 }
 
