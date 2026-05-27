@@ -1,4 +1,4 @@
-package com.example.gmfastfood
+package com.example.gmfastfood.auth
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -33,13 +33,13 @@ import kotlinx.coroutines.launch
 // ==========================================
 // 1. AUTH DATA RECOGNITION MODELS
 // ==========================================
-data class UserSessionProfile(val username: String, val email: String)
+data class UserProfile(val username: String, val email: String)
 
 sealed interface AuthSessionState {
     object Unauthenticated : AuthSessionState
     object Processing : AuthSessionState
-    data class Authenticated(val profile: UserSessionProfile) : AuthSessionState
-    data class AuthenticationError(val errorMessage: String) : AuthSessionState
+    data class Authenticated(val profile: UserProfile) : AuthSessionState
+    data class AuthError(val errorMessage: String) : AuthSessionState
 }
 
 // ==========================================
@@ -52,7 +52,7 @@ class SessionAuthViewModel : ViewModel() {
 
     fun attemptLoginUser(usernameInput: String, passwordInput: String) {
         if (usernameInput.isBlank() || passwordInput.isBlank()) {
-            _sessionState.update { AuthSessionState.AuthenticationError("Input fields cannot be empty.") }
+            _sessionState.update { AuthSessionState.AuthError("Input fields cannot be empty.") }
             return
         }
 
@@ -67,11 +67,11 @@ class SessionAuthViewModel : ViewModel() {
             if (usernameInput.equals("admin", ignoreCase = true) && passwordInput == "password123") {
                 _sessionState.update {
                     AuthSessionState.Authenticated(
-                        profile = UserSessionProfile(username = "Alex Mercer", email = "alex.mercer@android.com")
+                        profile = UserProfile(username = "Alex Mercer", email = "alex.mercer@android.com")
                     )
                 }
             } else {
-                _sessionState.update { AuthSessionState.AuthenticationError("Invalid credentials. Try: admin / password123") }
+                _sessionState.update { AuthSessionState.AuthError("Invalid credentials. Try: admin / password123") }
             }
         }
     }
@@ -103,7 +103,7 @@ fun AuthFlowAppContainer(authViewModel: SessionAuthViewModel = viewModel()) {
             is AuthSessionState.Authenticated -> {
                 SecureUserDashboard(profile = session.profile, onLogoutTriggered = { authViewModel.requestUserLogout() })
             }
-            is AuthSessionState.AuthenticationError -> {
+            is AuthSessionState.AuthError -> {
                 // Return login view while explicitly passing along error text block definitions
                 LoginPanelScreen(
                     initialErrorMessage = session.errorMessage,
@@ -190,7 +190,7 @@ fun LoginPanelScreen(
 }
 
 @Composable
-fun SecureUserDashboard(profile: UserSessionProfile, onLogoutTriggered: () -> Unit) {
+fun SecureUserDashboard(profile: UserProfile, onLogoutTriggered: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text("🛡️", fontSize = 54.sp)
