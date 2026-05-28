@@ -1,5 +1,9 @@
 package com.example.gmfastfood
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,12 +24,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPopup(
     isOpen: Boolean,
@@ -37,13 +47,17 @@ fun LoginPopup(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Dialog(onDismissRequest = onDismiss) {
+    var isLoading by remember { mutableStateOf(false) }
+    var errorFeedbackText by remember { mutableStateOf<String?>(null) }
+
+    BasicAlertDialog(onDismissRequest = onDismiss) {
         Card(
             modifier = Modifier
-                .fillMaxWidth(),
-//                    .padding(16.dp),
+                .fillMaxWidth()
+                .wrapContentHeight(),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -53,11 +67,37 @@ fun LoginPopup(
             ) {
                 // Header
                 Text(
-                    text = "Welcome Back",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface
+                    text = "Sign In Required",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Animated Error Feedback Container
+                AnimatedVisibility(
+                    visible = errorFeedbackText != null,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    errorFeedbackText?.let { message ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    MaterialTheme.colorScheme.errorContainer,
+                                    RoundedCornerShape(8.dp)
+                                )
+                                .padding(10.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                message,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                fontSize = 13.sp
+                            )
+                        }
+                    }
+                }
 
                 // Email Input
                 OutlinedTextField(
@@ -80,23 +120,53 @@ fun LoginPopup(
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
-                Spacer(modifier = Modifier.height(24.dp))
 
-                // Action Buttons
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = onDismiss) {
-                        Text("Cancel")
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                    Button(
-                        onClick = { onLoginSubmitted(email, password) },
-                        modifier = Modifier.fillMaxWidth()
+                // Footer Actions / Loading Spinner Switcher
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(vertical = 4.dp)
+                    )
+                } else {
+                    // Action Buttons
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Sign In")
+                        TextButton(onClick = onDismiss) {
+                            Text("Cancel")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Button(
+                            onClick = {
+                                if (email.isBlank() || password.isBlank()) {
+                                    errorFeedbackText = "Input fields cannot be left empty."
+                                    return@Button
+                                }
+//                                coroutineScope.launch {
+                                isLoading = true
+//                                delay(1000) // Simulated API auth round-trip delay
+
+//                                if (email.trim()
+//                                        .equals("admin", ignoreCase = true) && password == "1234"
+//                                ) {
+                                onLoginSubmitted(email, password)
+//                                } else {
+//                                    isLoading = false
+//                                    errorFeedbackText = "Invalid login. Hint: admin / 1234"
+//                                }
+//                             }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text("Sign In")
+                        }
                     }
                 }
             }

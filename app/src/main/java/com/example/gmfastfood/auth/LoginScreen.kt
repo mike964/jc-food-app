@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.gmfastfood.LoginPopup
 import com.example.gmfastfood.profile.ProfileScreen
 
 data class UserProfile(
