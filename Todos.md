@@ -11,7 +11,11 @@
 [x] Filter products by search in popup
 [x] Jump to section by pill click    5/25/2026
 [x] only if Item exist in cart show minus btn 
-[ ] When click sign in load fake user 
+[x] When click sign in load fake user 
+[] Make app authenticated by default. 
+[ ] Submit new order to user.profile.orders
+
+Display address on google maps 
 
 [ ] On click food item show details popup 
 [] Flip food item cards - nn 

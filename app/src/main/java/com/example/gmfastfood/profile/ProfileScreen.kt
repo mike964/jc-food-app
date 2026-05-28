@@ -1,5 +1,6 @@
 package com.example.gmfastfood.profile
-
+import com.example.gmfastfood.R
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -188,11 +191,17 @@ fun ProfileHeader(name: String, email: String, avatarLabel: String) {
                 .background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = avatarLabel,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+//            Text(
+//                text = avatarLabel,
+//                fontSize = 28.sp,
+//                fontWeight = FontWeight.Bold,
+//                color = MaterialTheme.colorScheme.onPrimaryContainer
+//            )
+            Image(
+//                imageVector = Icons.Default.Person,
+                painter = painterResource(id = R.drawable.sample_user),
+                contentDescription = "Profile Avatar",
+                contentScale = ContentScale.Crop
             )
         }
 

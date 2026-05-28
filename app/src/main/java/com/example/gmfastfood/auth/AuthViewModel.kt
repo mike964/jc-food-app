@@ -49,6 +49,23 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    // make app state authenticated by default
+    init {
+        _authState.update {
+            AuthUiState.Authenticated(
+                profile = UserProfile(
+                    "Hasan Ali",
+                    email = "hasan@mail.com",
+                    phoneNumber = "1234567890",
+                    mainAddress = "123 Main St",
+                    secondaryAddress = "Apt 4B",
+                    createdAt = "2023-09-15",
+                    updatedAt = "2023-09-15"
+                )
+            )
+        }
+    }
+
     fun logout() {
         _authState.update { AuthUiState.Unauthenticated }
     }
