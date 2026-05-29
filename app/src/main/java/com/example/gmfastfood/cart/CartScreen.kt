@@ -26,7 +26,7 @@ fun CartScreen(
         topBar = {
             TopAppBar(title = { Text("Your Cart") })
         },
-        containerColor = Color(0xFFBCD3EA) // Set your custom color here
+        containerColor = Color(0xFFE9EBEF) // Set your custom color here
     ) { innerPadding ->
         Column(
             modifier = Modifier

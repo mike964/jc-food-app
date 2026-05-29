@@ -1,7 +1,6 @@
 package com.example.gmfastfood
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,13 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -28,8 +24,6 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,17 +43,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.data.FakeApiClient
-import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.vm.SharedViewModel
-import com.example.gmfastfood.vm.CartItem
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.UiState
 import kotlinx.coroutines.launch
@@ -70,7 +60,8 @@ fun HomeScreen(
     viewModel: SharedViewModel,
     cartViewModel: CartViewModel,
     onCheckoutClick: () -> Unit,
-    onSubmitOrderClick : () -> Unit
+    onSubmitOrderClick: () -> Unit,
+    onProfileClick: () -> Unit,
 ) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
@@ -131,6 +122,7 @@ fun HomeScreen(
 //                        .background(Color(0xFFF1CACA))
 //                        .height(200.dp)
                 ) {
+                    // # Header
                     Row(
                         Modifier
                             .background(Color(0xFFE82020))
@@ -172,7 +164,10 @@ fun HomeScreen(
                                         Modifier.size(38.dp)
                                     )
                                 }
-                                IconButton(onClick = { showCartBottomSheet = true }) {
+                                // Navigate to Profile Screen
+                                IconButton(onClick = {
+                                    onProfileClick()
+                                }) {
                                     Icon(
                                         Icons.Default.Person,
                                         contentDescription = "Open Search popup window",
@@ -196,11 +191,12 @@ fun HomeScreen(
                                 Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                IconButton(onClick = { showCartBottomSheet = true },
+                                IconButton(
+                                    onClick = { showCartBottomSheet = true },
 //                                    modifier = Modifier.background(Color.LightGray, shape = RectangleShape)
                                 ) {
                                     BadgedBox(
-                                      modifier =  Modifier.padding(top = 8.dp )  ,
+                                        modifier = Modifier.padding(top = 8.dp),
                                         badge = {
                                             if (totalCartItems > 0)
                                                 Badge { Text(totalCartItems.toString()) }
@@ -467,7 +463,6 @@ fun HomeScreen(
         }
     }
 }
-
 
 
 data class SlidingContent(

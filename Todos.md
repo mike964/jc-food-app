@@ -14,6 +14,8 @@
 [x] When click sign in load fake user 
 [] Make app authenticated by default. 
 [ ] Submit new order to user.profile.orders
+[ ] Display sample order in profile.my_orders 
+[] Multipe language - Add arabic 
 
 Display address on google maps 
 

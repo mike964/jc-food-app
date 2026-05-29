@@ -41,8 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.auth.AuthFlowContainer
 import com.example.gmfastfood.auth.AuthViewModel
-import com.example.gmfastfood.auth.LoginScreen
-import com.example.gmfastfood.profile.ProfileScreen
+import com.example.gmfastfood.order.OrdersScreen
 import com.example.gmfastfood.screens.CheckoutScreen
 import com.example.gmfastfood.screens.SearchScreen2
 
@@ -117,7 +116,8 @@ fun MainScreen() {
 
                     HomeScreen(sharedViewModel, cartViewModel,
                         onCheckoutClick = { navController.navigate(Routes.Checkout) } ,
-                        onSubmitOrderClick = { navController.navigate(Routes.Cart) }
+                        onSubmitOrderClick = { navController.navigate(Routes.Cart) },
+                        onProfileClick = { navController.navigate(Routes.Profile) }
                         )
                 }
                 composable<Routes.Search> {
@@ -144,13 +144,14 @@ fun MainScreen() {
 ////                        navController.navigate(Routes.Login)
 //                        navController.navigate(Routes.Home)
 //                    })
-                    AuthFlowContainer(authViewModel )
+//                    AuthFlowContainer(authViewModel )
 //                    JumpToSection()
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
 //                    LoginScreen( onLoginSubmitted = { user, pass -> navController.navigate(Routes.Home) } )
 //                    MainCatalogScreenWithCart()
 //                    LoginPopup( onDismiss = { }, isOpen = true )
 //                    MainStoreScreen()
+                    OrdersScreen( onOrderClick = { }, onBackClick = { })
                 }
             }
         }
@@ -180,10 +181,6 @@ fun BadgeBox(x0: ImageVector, label: String, cartTotalItems: Int) {
 }
 
 
-@Composable
-fun OrdersScreen() {
-    Text("Orders")
-}
 
 data class NavItem(
     val label: String,
