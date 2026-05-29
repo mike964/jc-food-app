@@ -24,12 +24,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import kotlinx.serialization.Serializable
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+// Root Graphs
+@Serializable object AuthGraph
+@Serializable object MainGraph
+
+// Auth Screens
+@Serializable object LoginScreen
+@Serializable object SignUpScreen
+
+// Main App Screens
+@Serializable object HomeScreen
+@Serializable object ProfileScreen
 // Root Routes
 @Serializable
 object GraphHome
@@ -61,65 +74,21 @@ class SharedCheckoutViewModel : ViewModel() {
     }
 }
 
+
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(isLoggedIn: Boolean) {
+    val navController = rememberNavController()
+
     NavHost(
         navController = navController,
-        startDestination = GraphHome
+        // Dynamically set where the user starts
+        startDestination = if (isLoggedIn) MainGraph else AuthGraph
     ) {
-        // Home Screen (Outside of Checkout flow)
-        composable<GraphHome> {
-//            HomeScreen(onStartCheckout = { navController.navigate(GraphCheckout) })
-        }
-
-        // --- NESTED CHECKOUT FLOW ---
-        navigation<GraphCheckout>(startDestination = CartOverview) {
-
-            composable<CartOverview> { backStackEntry ->
-                // 1. Get the shared ViewModel scoped to GraphCheckout
-                val parentEntry = rememberParentEntry(navController, backStackEntry)
-                val sharedViewModel: SharedCheckoutViewModel = viewModel(parentEntry)
-                val state by sharedViewModel.uiState.collectAsState()
-
-//                CartOverviewScreen(
-//                    state = state,
-//                    onNext = { navController.navigate(ShippingAddress) }
-//                )
-            }
-
-            composable<ShippingAddress> { backStackEntry ->
-                // 2. Grab the EXACT same instance using the same graph key
-                val parentEntry = rememberParentEntry(navController, backStackEntry)
-                val sharedViewModel: SharedCheckoutViewModel = viewModel(parentEntry)
-                val state by sharedViewModel.uiState.collectAsState()
-
-//                ShippingAddressScreen(
-//                    state = state,
-//                    onAddressChanged = { sharedViewModel.updateAddress(it) },
-//                    onNext = { navController.navigate(OrderSummary) }
-//                )
-            }
-
-            composable<OrderSummary> { backStackEntry ->
-                // 3. Complete the checkout, then pop the entire flow off the stack
-                val parentEntry = rememberParentEntry(navController, backStackEntry)
-                val sharedViewModel: SharedCheckoutViewModel = viewModel(parentEntry)
-                val state by sharedViewModel.uiState.collectAsState()
-
-//                OrderSummaryScreen(
-//                    state = state,
-//                    onConfirmOrder = {
-//                        // Pop everything up to Home, destroying the shared ViewModel
-//                        navController.navigate(GraphHome) {
-//                            popUpTo(GraphCheckout) { inclusive = true }
-//                        }
-//                    }
-//                )
-            }
-        }
+        // Attach our nested graphs
+//        authGraph(navController)
+//        mainGraph(navController)
     }
 }
-
 
 /**
  * A safe helper extension to find the parent destination block

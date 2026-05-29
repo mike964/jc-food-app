@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.gmfastfood.data.ApiItem
 import com.example.gmfastfood.data.FakeApiClient
 import com.example.gmfastfood.data.FakeStoreApiClient
+import com.example.gmfastfood.data.Order
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.data.StoreApiService
+import com.example.gmfastfood.data.sampleOrders2
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -36,6 +38,9 @@ class SharedViewModel(
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
 
+    private val _orders = MutableStateFlow<List<Order>>(emptyList())
+    val orders = _orders.asStateFlow()
+
     init {
         loadDataFromNetwork()
     }
@@ -49,6 +54,7 @@ class SharedViewModel(
                     UiState.Success(items = data)
                 }
                 _products.value = data
+                _orders.value = sampleOrders2
             } catch (e: Exception) {
                 _uiState.update { UiState.Error(message = e.localizedMessage ?: "Unknown Error") }
             }

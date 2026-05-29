@@ -38,6 +38,7 @@ fun ProfileScreen(
     isAuthenticated: Boolean,
     onLogout: () -> Unit,
     onLoginSubmitted: (String, String) -> Unit,
+    onOrdersClick: () -> Unit,
 ) {
     var showLoginPopup by remember { mutableStateOf(false) }
 
@@ -109,7 +110,9 @@ fun ProfileScreen(
                     ProfileMenuItem(
                         icon = Icons.Default.ShoppingCart,
                         label = "My Orders"
-                    ) { /* Navigate */ }
+                    ) {
+                        onOrdersClick()
+                    }
                     HorizontalDivider(
                         color = Color(0xFFF1F1F1),
                         thickness = 1.dp,

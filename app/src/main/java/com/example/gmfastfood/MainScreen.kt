@@ -127,7 +127,6 @@ fun MainScreen() {
                     SearchScreen2(sharedViewModel)
                 }
                 composable<Routes.Cart> {
-
                     CartScreen(
                         cartViewModel,
                         onCheckoutClick = { navController.navigate(Routes.Checkout) }
@@ -139,19 +138,18 @@ fun MainScreen() {
                         onOrderPlaced = { navController.navigate(Routes.Home) }
                     )
                 }
+                composable<Routes.Orders> {
+                    val sharedViewModel: SharedViewModel =
+                        navController.getSharedViewModel(Routes.MainGraph)
+                    OrdersScreen( onOrderClick = { }, onBackClick = { navController.popBackStack() }, viewModel = sharedViewModel)
+                }
                 composable<Routes.Profile> {
-//                    ProfileScreen( onLogout = {
-////                        navController.navigate(Routes.Login)
-//                        navController.navigate(Routes.Home)
-//                    })
-//                    AuthFlowContainer(authViewModel )
-//                    JumpToSection()
+                    AuthFlowContainer(authViewModel, navController )
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
 //                    LoginScreen( onLoginSubmitted = { user, pass -> navController.navigate(Routes.Home) } )
 //                    MainCatalogScreenWithCart()
 //                    LoginPopup( onDismiss = { }, isOpen = true )
 //                    MainStoreScreen()
-                    OrdersScreen( onOrderClick = { }, onBackClick = { })
                 }
             }
         }

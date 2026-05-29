@@ -19,6 +19,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.gmfastfood.navigation.Routes
 import com.example.gmfastfood.profile.ProfileScreen
 
 data class UserProfile(
@@ -41,7 +43,7 @@ sealed interface AuthUiState {
 
 
 @Composable
-fun AuthFlowContainer(viewModel: AuthViewModel = viewModel()) {
+fun AuthFlowContainer(viewModel: AuthViewModel = viewModel(), navController: NavHostController) {
     val activeState by viewModel.authState.collectAsState()
 
     Log.d("AuthFlowContainer", "Active State: $activeState")
@@ -54,10 +56,12 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel()) {
         when (val state = activeState) {
             is AuthUiState.Unauthenticated -> {
 //                LoginScreen(onLoginSubmitted = { user, pass -> viewModel.login(user, pass) }, authenticated   = false)
-                ProfileScreen( profile = null, isAuthenticated = false,
+                ProfileScreen(
+                    profile = null, isAuthenticated = false,
+                    onLogout = { viewModel.logout() },
                     onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
-                    onLogout = { viewModel.logout() } )
-
+                    onOrdersClick = { navController.navigate("orders") }
+                )
             }
 
             is AuthUiState.Loading -> {
@@ -68,7 +72,9 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel()) {
 //                DashboardScreen(profile = state.profile, onLogout = { viewModel.logout() })
                 ProfileScreen( profile = state.profile, isAuthenticated = true,
                     onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
-                    onLogout = { viewModel.logout() },)
+                    onLogout = { viewModel.logout() },
+                    onOrdersClick = { navController.navigate(Routes.Orders) }
+                )
             }
 
             is AuthUiState.Error -> {

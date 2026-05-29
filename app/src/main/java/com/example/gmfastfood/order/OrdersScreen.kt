@@ -10,6 +10,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.gmfastfood.data.Order
 import com.example.gmfastfood.data.sampleOrders2
+import com.example.gmfastfood.vm.SharedViewModel
+import androidx.compose.runtime.collectAsState
 
 enum class OrderStatus(val displayName: String) {
     PENDING("Pending"),
@@ -34,9 +36,10 @@ data class OrderItem(
 fun OrdersScreen(
 //    orders: List<Order>,
     onOrderClick: (String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: SharedViewModel
 ) {
-    val orders = sampleOrders2
+    val orders = viewModel.orders.collectAsState().value
 
     Scaffold(
         topBar = {

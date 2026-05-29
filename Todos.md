@@ -12,12 +12,12 @@
 [x] Jump to section by pill click    5/25/2026
 [x] only if Item exist in cart show minus btn 
 [x] When click sign in load fake user 
-[] Make app authenticated by default. 
+[ء] Make app authenticated by default. 
 [ ] Submit new order to user.profile.orders
 [ ] Display sample order in profile.my_orders 
 [] Multipe language - Add arabic 
-
 Display address on google maps 
+[] Load orders from view model 
 
 [ ] On click food item show details popup 
 [] Flip food item cards - nn 
