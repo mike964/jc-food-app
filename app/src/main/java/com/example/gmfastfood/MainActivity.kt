@@ -22,7 +22,8 @@ class MainActivity : ComponentActivity() {
 //                        modifier = Modifier.padding(innerPadding)
 //                    )
 //                }
-                MainScreen()  // Main App
+//                MainScreen()  // Main App
+                NestedNavigationExample()
             }
         }
     }
