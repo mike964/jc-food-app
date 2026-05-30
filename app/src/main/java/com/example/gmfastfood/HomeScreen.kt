@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -90,6 +92,20 @@ fun HomeScreen(
 
     var showSearchPopup by remember { mutableStateOf(false) }
 
+    var filterButtons by remember {
+        mutableStateOf(
+            listOf<String>(
+                "All",
+                "Burgers",
+                "Pizza",
+                "Salads",
+                "Drinks",
+                "Snacks"
+            )
+        )
+    }
+    // burgers, pizza, salads, drinks, snacks
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -113,8 +129,7 @@ fun HomeScreen(
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Row {
                 Column(
@@ -122,7 +137,9 @@ fun HomeScreen(
 //                        .background(Color(0xFFF1CACA))
 //                        .height(200.dp)
                 ) {
+                    //============
                     // # Header
+                    //============
                     Row(
                         Modifier
                             .background(Color(0xFFE82020))
@@ -259,208 +276,223 @@ fun HomeScreen(
                             )
                         }
                     }
-
-//                    HorizontalList(
-//                        itemsList = listOf(
-//                            "Burgers",
-//                            "Pizza",
-//                            "Drinks",
-//                            "Desserts",
-//                            "Salads",
-//                            "Pasta",
-//                            "Snacks",
-//                            "Soup"
-//                        )
-//                    )
+                    //====================================
+                    // # Horizontal list of filter buttons
+                    //====================================
                     LazyRow(
+                        // Adds spacing between elements
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(8.dp)
+                        // Adds padding at the start and end of the scrolling bounds
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
                     ) {
-                        items(1) {
-                            Button(
-                                onClick = {
-                                    scope.launch { scrollState.animateScrollTo(burgersPosition.toInt()) }
-                                },
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFEAEBEE), // Background color
-                                    contentColor = Color.DarkGray   // Text/Icon color
-                                )
-                            ) {
-                                Text("Burgers")
-                            }
-                            Button(
-                                onClick = {
-                                    scope.launch { scrollState.animateScrollTo(pizzaPosition.toInt()) }
-                                },
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFEAEBEE), // Background color
-                                    contentColor = Color.DarkGray   // Text/Icon color
-                                )
-                            ) {
-                                Text("Pizza")
-                            }
-                            Button(
-                                onClick = {
-                                    scope.launch { scrollState.animateScrollTo(saladsPosition.toInt()) }
-                                },
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFEAEBEE), // Background color
-                                    contentColor = Color.DarkGray   // Text/Icon color
-                                )
-                            ) {
-                                Text("Salads")
-                            }
-                            Button(
-                                onClick = {
-                                    scope.launch { scrollState.animateScrollTo(drinksPosition.toInt()) }
-                                },
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFEAEBEE), // Background color
-                                    contentColor = Color.DarkGray   // Text/Icon color
-                                )
-                            ) {
-                                Text("Drinks")
-                            }
-                            Button(
-                                onClick = {
-                                    scope.launch { scrollState.animateScrollTo(drinksPosition.toInt()) }
-                                },
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFEAEBEE), // Background color
-                                    contentColor = Color.DarkGray   // Text/Icon color
-                                )
-                            ) {
-                                Text("Snacks")
-                            }
+                        items(filterButtons) { item ->
+                            FilterButton( item, false, { } )
                         }
                     }
 
+                Spacer(Modifier.height(8.dp))
+
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    items(1) {
+                        Button(
+                            onClick = {
+                                scope.launch { scrollState.animateScrollTo(burgersPosition.toInt()) }
+                            },
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEAEBEE), // Background color
+                                contentColor = Color.DarkGray   // Text/Icon color
+                            )
+                        ) {
+                            Text("All")
+                        }
+                        Button(
+                            onClick = {
+                                scope.launch { scrollState.animateScrollTo(burgersPosition.toInt()) }
+                            },
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEAEBEE), // Background color
+                                contentColor = Color.DarkGray   // Text/Icon color
+                            )
+                        ) {
+                            Text("Burgers")
+                        }
+                        Button(
+                            onClick = {
+                                scope.launch { scrollState.animateScrollTo(pizzaPosition.toInt()) }
+                            },
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEAEBEE), // Background color
+                                contentColor = Color.DarkGray   // Text/Icon color
+                            )
+                        ) {
+                            Text("Pizza")
+                        }
+                        Button(
+                            onClick = {
+                                scope.launch { scrollState.animateScrollTo(saladsPosition.toInt()) }
+                            },
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEAEBEE), // Background color
+                                contentColor = Color.DarkGray   // Text/Icon color
+                            )
+                        ) {
+                            Text("Salads")
+                        }
+                        Button(
+                            onClick = {
+                                scope.launch { scrollState.animateScrollTo(drinksPosition.toInt()) }
+                            },
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEAEBEE), // Background color
+                                contentColor = Color.DarkGray   // Text/Icon color
+                            )
+                        ) {
+                            Text("Drinks")
+                        }
+                        Button(
+                            onClick = {
+                                scope.launch { scrollState.animateScrollTo(drinksPosition.toInt()) }
+                            },
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFEAEBEE), // Background color
+                                contentColor = Color.DarkGray   // Text/Icon color
+                            )
+                        ) {
+                            Text("Snacks")
+                        }
+                    }
                 }
+
             }
+        }
 
 //        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
 //        Spacer(modifier = Modifier.height(10.dp))
 
-            Row(
-                modifier = Modifier
-                //  .fillMaxSize()
+        Row(
+            modifier = Modifier
+            //  .fillMaxSize()
 //                    .background(Color.Cyan)
 //                    .height(600.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        //  .fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    //  .fillMaxSize()
 //            .background(Color.Cyan)
-                        .verticalScroll(scrollState)
+                    .verticalScroll(scrollState)
 //                        .padding(top = 100.dp) // Offset by the row's height
-                ) {
-                    Text(
-                        "Popular", Modifier.padding(16.dp, 4.dp),
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
+            ) {
+                Text(
+                    "Popular", Modifier.padding(16.dp, 4.dp),
+                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                )
 
-                    when (val currentState = state) {
-                        is UiState.Loading -> {
-                            Box(Modifier.size(100.dp), contentAlignment = Alignment.Center) {
-                                CircularProgressIndicator(strokeWidth = 4.dp)
-                                Spacer(modifier = Modifier.height(12.dp))
+                when (val currentState = state) {
+                    is UiState.Loading -> {
+                        Box(Modifier.size(100.dp), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(strokeWidth = 4.dp)
+                            Spacer(modifier = Modifier.height(12.dp))
 //                   Text("Simulating fetch request (2.5s)...", color = Color.Gray, fontSize = 14.sp)
-                            }
-                        }
-
-                        is UiState.Success -> {
-                            HorizontalCardList(
-                                itemList = currentState.items,
-                                addToCart = { cartViewModel.addToCart(it) },
-                                onUpdateQuantity = { itemId, newQty ->
-                                    cartViewModel.updateQuantity(itemId, newQty)
-                                },
-                                cartItems
-                            )
-                        }
-
-                        is UiState.Error -> {
-                            Text(currentState.message, color = Color.Red, fontSize = 14.sp)
                         }
                     }
 
-                    Text(
-                        "Burgers", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                burgersPosition = coordinates.positionInRoot().y
+                    is UiState.Success -> {
+                        HorizontalCardList(
+                            itemList = currentState.items,
+                            addToCart = { cartViewModel.addToCart(it) },
+                            onUpdateQuantity = { itemId, newQty ->
+                                cartViewModel.updateQuantity(itemId, newQty)
                             },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Burgers"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
+                            cartItems
+                        )
+                    }
 
-                    Text(
-                        "Pizza", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                pizzaPosition = coordinates.positionInRoot().y
-                            },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Pizza"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
-
-                    Text(
-                        "Salads", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                saladsPosition = coordinates.positionInRoot().y
-                            },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Salads"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
-
-                    Text(
-                        "Drinks", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                drinksPosition = coordinates.positionInRoot().y
-                            },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Drinks"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
-
-                    Spacer(Modifier.height(600.dp))
+                    is UiState.Error -> {
+                        Text(currentState.message, color = Color.Red, fontSize = 14.sp)
+                    }
                 }
+
+                Text(
+                    "Burgers", Modifier
+                        .padding(16.dp, 4.dp)
+                        .onGloballyPositioned { coordinates ->
+                            burgersPosition = coordinates.positionInRoot().y
+                        },
+                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                )
+                HorizontalCardList(
+                    itemList = fakeApi.getProductsByCategory("Burgers"),
+                    addToCart = { cartViewModel.addToCart(it) },
+                    onUpdateQuantity = { itemId, newQty ->
+                        cartViewModel.updateQuantity(itemId, newQty)
+                    },
+                    cartItems
+                )
+
+                Text(
+                    "Pizza", Modifier
+                        .padding(16.dp, 4.dp)
+                        .onGloballyPositioned { coordinates ->
+                            pizzaPosition = coordinates.positionInRoot().y
+                        },
+                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                )
+                HorizontalCardList(
+                    itemList = fakeApi.getProductsByCategory("Pizza"),
+                    addToCart = { cartViewModel.addToCart(it) },
+                    onUpdateQuantity = { itemId, newQty ->
+                        cartViewModel.updateQuantity(itemId, newQty)
+                    },
+                    cartItems
+                )
+
+                Text(
+                    "Salads", Modifier
+                        .padding(16.dp, 4.dp)
+                        .onGloballyPositioned { coordinates ->
+                            saladsPosition = coordinates.positionInRoot().y
+                        },
+                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                )
+                HorizontalCardList(
+                    itemList = fakeApi.getProductsByCategory("Salads"),
+                    addToCart = { cartViewModel.addToCart(it) },
+                    onUpdateQuantity = { itemId, newQty ->
+                        cartViewModel.updateQuantity(itemId, newQty)
+                    },
+                    cartItems
+                )
+
+                Text(
+                    "Drinks", Modifier
+                        .padding(16.dp, 4.dp)
+                        .onGloballyPositioned { coordinates ->
+                            drinksPosition = coordinates.positionInRoot().y
+                        },
+                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                )
+                HorizontalCardList(
+                    itemList = fakeApi.getProductsByCategory("Drinks"),
+                    addToCart = { cartViewModel.addToCart(it) },
+                    onUpdateQuantity = { itemId, newQty ->
+                        cartViewModel.updateQuantity(itemId, newQty)
+                    },
+                    cartItems
+                )
+
+                Spacer(Modifier.height(600.dp))
             }
         }
+    }
     }
 }
 

@@ -15,11 +15,16 @@
 [ء] Make app authenticated by default. 
 [ ] Submit new order to user.profile.orders
 [ ] Display sample order in profile.my_orders 
+[ ] On click food item show details popup 
 [] Multipe language - Add arabic 
+[] Add user sample addresses in profile n select one when submitting order. 
+
+Change jump button pills to filters. 
 Display address on google maps 
 [] Load orders from view model 
+[] Save one order to firebase 
 
-[ ] On click food item show details popup 
+[] Later fork n make a production version of it. 
 [] Flip food item cards - nn 
 
 

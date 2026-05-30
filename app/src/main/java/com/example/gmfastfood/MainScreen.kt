@@ -129,7 +129,8 @@ fun MainScreen() {
                 composable<Routes.Cart> {
                     CartScreen(
                         cartViewModel,
-                        onCheckoutClick = { navController.navigate(Routes.Checkout) }
+                        onCheckoutClick = { navController.navigate(Routes.Checkout) },
+                        onBackClick = { navController.popBackStack() }
                     )
                 }
                 composable<Routes.Checkout> {

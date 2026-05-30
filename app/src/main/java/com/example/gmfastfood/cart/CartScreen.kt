@@ -30,7 +30,8 @@ import com.example.gmfastfood.vm.CartViewModel
 @Composable
 fun CartScreen(
     viewModel: CartViewModel,
-    onCheckoutClick: () -> Unit
+    onCheckoutClick: () -> Unit,
+    onBackClick : () -> Unit
 ) {
     // Safely collect state from ViewModel
     val uiState by viewModel.uiState.collectAsState()
@@ -41,7 +42,7 @@ fun CartScreen(
                 title = { Text("Your Cart", fontWeight = FontWeight.SemiBold) },
                 navigationIcon = {
                     IconButton(onClick = {
-                      //  onBackClick
+                       onBackClick()
                     }) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
