@@ -96,7 +96,6 @@ fun HomeScreen(
     var filterButtons by remember {
         mutableStateOf(
             listOf<String>(
-                "All",
                 "Burgers",
                 "Pizza",
                 "Salads",
@@ -281,25 +280,39 @@ fun HomeScreen(
                     //======================================
                     // # Horizontal list of filter buttons
                     //======================================
-                    LazyRow(
-                        // Adds spacing between elements
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        // Adds padding at the start and end of the scrolling bounds
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
+                    Row(
+                        Modifier
+                            .background(Color(0xFFFFFFFF))
+                            .padding(start = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        items(filterButtons) { item ->
-                            FilterButton(item, activeFilters.contains(item)
-                            ) {
-                                if (activeFilters.contains(item))
-                                    activeFilters.remove(item)
-                                else
-                                    activeFilters.add(item)
+                        FilterButton(
+                            "All",
+                            activeFilters.isEmpty()
+                        ) {
+                            activeFilters.clear()
+                        }
+                        LazyRow(
+                            // Adds spacing between elements
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            // Adds padding at the start and end of the scrolling bounds
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+
+                            items(filterButtons) { item ->
+                                FilterButton(
+                                    item, activeFilters.contains(item)
+                                ) {
+                                    if (activeFilters.contains(item))
+                                        activeFilters.remove(item)
+                                    else
+                                        activeFilters.add(item)
+                                }
                             }
                         }
                     }
 
                     Spacer(Modifier.height(8.dp))
-
                 }
             }
 
@@ -308,9 +321,7 @@ fun HomeScreen(
 
             Row(
                 modifier = Modifier
-                //  .fillMaxSize()
 //                    .background(Color.Cyan)
-//                    .height(600.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -319,10 +330,7 @@ fun HomeScreen(
                         .verticalScroll(scrollState)
 //                        .padding(top = 100.dp) // Offset by the row's height
                 ) {
-                    Text(
-                        "Popular", Modifier.padding(16.dp, 4.dp),
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
+
 
                     when (val currentState = state) {
                         is UiState.Loading -> {
@@ -334,14 +342,20 @@ fun HomeScreen(
                         }
 
                         is UiState.Success -> {
-                            HorizontalCardList(
-                                itemList = currentState.items,
-                                addToCart = { cartViewModel.addToCart(it) },
-                                onUpdateQuantity = { itemId, newQty ->
-                                    cartViewModel.updateQuantity(itemId, newQty)
-                                },
-                                cartItems
-                            )
+                            if (activeFilters.isEmpty()) {
+                                Text(
+                                    "Popular", Modifier.padding(16.dp, 4.dp),
+                                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                )
+                                HorizontalCardList(
+                                    itemList = currentState.items,
+                                    addToCart = { cartViewModel.addToCart(it) },
+                                    onUpdateQuantity = { itemId, newQty ->
+                                        cartViewModel.updateQuantity(itemId, newQty)
+                                    },
+                                    cartItems
+                                )
+                            }
                         }
 
                         is UiState.Error -> {
@@ -349,75 +363,83 @@ fun HomeScreen(
                         }
                     }
 
-                    Text(
-                        "Burgers", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                burgersPosition = coordinates.positionInRoot().y
+                    if (activeFilters.contains("Burgers") || activeFilters.isEmpty()) {
+                        Text(
+                            "Burgers", Modifier
+                                .padding(16.dp, 4.dp)
+                                .onGloballyPositioned { coordinates ->
+                                    burgersPosition = coordinates.positionInRoot().y
+                                },
+                            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                        )
+                        HorizontalCardList(
+                            itemList = fakeApi.getProductsByCategory("Burgers"),
+                            addToCart = { cartViewModel.addToCart(it) },
+                            onUpdateQuantity = { itemId, newQty ->
+                                cartViewModel.updateQuantity(itemId, newQty)
                             },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Burgers"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
+                            cartItems
+                        )
+                    }
 
-                    Text(
-                        "Pizza", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                pizzaPosition = coordinates.positionInRoot().y
+
+                    if (activeFilters.contains("Pizza") || activeFilters.isEmpty()) {
+                        Text(
+                            "Pizza", Modifier
+                                .padding(16.dp, 4.dp)
+                                .onGloballyPositioned { coordinates ->
+                                    pizzaPosition = coordinates.positionInRoot().y
+                                },
+                            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                        )
+                        HorizontalCardList(
+                            itemList = fakeApi.getProductsByCategory("Pizza"),
+                            addToCart = { cartViewModel.addToCart(it) },
+                            onUpdateQuantity = { itemId, newQty ->
+                                cartViewModel.updateQuantity(itemId, newQty)
                             },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Pizza"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
+                            cartItems
+                        )
+                    }
 
-                    Text(
-                        "Salads", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                saladsPosition = coordinates.positionInRoot().y
+                    if (activeFilters.contains("Salads") || activeFilters.isEmpty()) {
+                        Text(
+                            "Salads", Modifier
+                                .padding(16.dp, 4.dp)
+                                .onGloballyPositioned { coordinates ->
+                                    saladsPosition = coordinates.positionInRoot().y
+                                },
+                            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                        )
+                        HorizontalCardList(
+                            itemList = fakeApi.getProductsByCategory("Salads"),
+                            addToCart = { cartViewModel.addToCart(it) },
+                            onUpdateQuantity = { itemId, newQty ->
+                                cartViewModel.updateQuantity(itemId, newQty)
                             },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Salads"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
+                            cartItems
+                        )
+                    }
 
-                    Text(
-                        "Drinks", Modifier
-                            .padding(16.dp, 4.dp)
-                            .onGloballyPositioned { coordinates ->
-                                drinksPosition = coordinates.positionInRoot().y
+                    if (activeFilters.contains("Drinks") || activeFilters.isEmpty()) {
+                        Text(
+                            "Drinks", Modifier
+                                .padding(16.dp, 4.dp)
+                                .onGloballyPositioned { coordinates ->
+                                    drinksPosition = coordinates.positionInRoot().y
+                                },
+                            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                        )
+                        HorizontalCardList(
+                            itemList = fakeApi.getProductsByCategory("Drinks"),
+                            addToCart = { cartViewModel.addToCart(it) },
+                            onUpdateQuantity = { itemId, newQty ->
+                                cartViewModel.updateQuantity(itemId, newQty)
                             },
-                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
-                    )
-                    HorizontalCardList(
-                        itemList = fakeApi.getProductsByCategory("Drinks"),
-                        addToCart = { cartViewModel.addToCart(it) },
-                        onUpdateQuantity = { itemId, newQty ->
-                            cartViewModel.updateQuantity(itemId, newQty)
-                        },
-                        cartItems
-                    )
-
-                    Spacer(Modifier.height(600.dp))
+                            cartItems
+                        )
+                    }
+                    Spacer(Modifier.height(400.dp))
                 }
             }
         }

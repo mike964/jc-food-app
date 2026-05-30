@@ -24,7 +24,7 @@ fun FilterButton(title: String, selected: Boolean, onClick: () -> Unit   ){
         onClick = { onClick()   },
      //   modifier = Modifier.padding(horizontal = 4.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) Color(0xFFBEE8C0) else  Color(0xFFEAEBEE), // Background color
+            containerColor = if (selected) Color(0xFFA3ECAE) else  Color(0xFFECF3F2), // Background color
             contentColor = Color.DarkGray   // Text/Icon color
         )
     ) {
