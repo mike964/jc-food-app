@@ -60,7 +60,8 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel(), navController: Nav
                     profile = null, isAuthenticated = false,
                     onLogout = { viewModel.logout() },
                     onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
-                    onOrdersClick = { navController.navigate("orders") }
+                    onOrdersClick = { navController.navigate(Routes.Orders) },
+                    onBackClick = { navController.popBackStack() }
                 )
             }
 
@@ -69,12 +70,13 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel(), navController: Nav
             }
 
             is AuthUiState.Authenticated -> {
-//                DashboardScreen(profile = state.profile, onLogout = { viewModel.logout() })
-                ProfileScreen( profile = state.profile, isAuthenticated = true,
-                    onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
+                ProfileScreen(
+                    profile = state.profile, isAuthenticated = true,
                     onLogout = { viewModel.logout() },
-                    onOrdersClick = { navController.navigate(Routes.Orders) }
-                )
+                    onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
+                    onOrdersClick = { navController.navigate(Routes.Orders) },
+                    onBackClick = { navController.popBackStack() }
+                    )
             }
 
             is AuthUiState.Error -> {
@@ -170,29 +172,6 @@ fun LoginScreen(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text("Sign In", fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
-            }
-        }
-    }
-}
-
-@Composable
-fun DashboardScreen(profile: UserProfile, onLogout: () -> Unit) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Text("🔐 Access Granted", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-            Text("Welcome, ${profile.username}!", fontSize = 18.sp, fontWeight = FontWeight.Medium)
-            Text("Logged in as: ${profile.email}", color = Color.Gray)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = onLogout,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-            ) {
-                Text("Log Out Session")
             }
         }
     }
