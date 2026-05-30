@@ -17,13 +17,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun FilterButton(title: String, selected: Boolean, onClick: () -> Unit   ){
 
-    var selected_ by remember { mutableStateOf(selected) }
+//    var selected_ by remember { mutableStateOf(selected) }
 
     Button(
-        onClick = {  selected_ = !selected_     },
+//        onClick = {  selected_ = !selected_     },
+        onClick = { onClick()   },
      //   modifier = Modifier.padding(horizontal = 4.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected_) Color(0xFFBEE8C0) else  Color(0xFFEAEBEE), // Background color
+            containerColor = if (selected) Color(0xFFBEE8C0) else  Color(0xFFEAEBEE), // Background color
             contentColor = Color.DarkGray   // Text/Icon color
         )
     ) {
