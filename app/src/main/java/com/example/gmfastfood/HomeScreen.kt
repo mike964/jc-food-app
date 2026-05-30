@@ -68,12 +68,6 @@ fun HomeScreen(
 ) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
-    val scope = rememberCoroutineScope()
-    var targetA by remember { mutableFloatStateOf(0f) }
-    var burgersPosition by remember { mutableFloatStateOf(0f) }
-    var pizzaPosition by remember { mutableFloatStateOf(0f) }
-    var drinksPosition by remember { mutableFloatStateOf(0f) }
-    var saladsPosition by remember { mutableFloatStateOf(0f) }
 
 //    Log.d("HomeScreen", "burgerPosition: $burgersPosition, pizzaPosition: $pizzaPosition, drinksPosition: $drinksPosition, saladsPosition: $saladsPosition")
 
@@ -105,7 +99,7 @@ fun HomeScreen(
         )
     }
     // burgers, pizza, salads, drinks, snacks
-    val activeFilters = remember { mutableStateListOf("") }
+    val activeFilters = remember { mutableStateListOf<String>() }
 
     Surface(
         modifier = Modifier
@@ -316,9 +310,6 @@ fun HomeScreen(
                 }
             }
 
-//        HorizontalCardList(itemList = listOf("Burgers", "Pizza", "Sushi", "Drinks", "Desserts", "Salads", "Pasta", "Snacks", "Soup"))
-//        Spacer(modifier = Modifier.height(10.dp))
-
             Row(
                 modifier = Modifier
 //                    .background(Color.Cyan)
@@ -366,10 +357,7 @@ fun HomeScreen(
                     if (activeFilters.contains("Burgers") || activeFilters.isEmpty()) {
                         Text(
                             "Burgers", Modifier
-                                .padding(16.dp, 4.dp)
-                                .onGloballyPositioned { coordinates ->
-                                    burgersPosition = coordinates.positionInRoot().y
-                                },
+                                .padding(16.dp, 4.dp),
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
@@ -386,10 +374,7 @@ fun HomeScreen(
                     if (activeFilters.contains("Pizza") || activeFilters.isEmpty()) {
                         Text(
                             "Pizza", Modifier
-                                .padding(16.dp, 4.dp)
-                                .onGloballyPositioned { coordinates ->
-                                    pizzaPosition = coordinates.positionInRoot().y
-                                },
+                                .padding(16.dp, 4.dp) ,
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
@@ -405,10 +390,7 @@ fun HomeScreen(
                     if (activeFilters.contains("Salads") || activeFilters.isEmpty()) {
                         Text(
                             "Salads", Modifier
-                                .padding(16.dp, 4.dp)
-                                .onGloballyPositioned { coordinates ->
-                                    saladsPosition = coordinates.positionInRoot().y
-                                },
+                                .padding(16.dp, 4.dp) ,
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
@@ -424,10 +406,7 @@ fun HomeScreen(
                     if (activeFilters.contains("Drinks") || activeFilters.isEmpty()) {
                         Text(
                             "Drinks", Modifier
-                                .padding(16.dp, 4.dp)
-                                .onGloballyPositioned { coordinates ->
-                                    drinksPosition = coordinates.positionInRoot().y
-                                },
+                                .padding(16.dp, 4.dp) ,
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
