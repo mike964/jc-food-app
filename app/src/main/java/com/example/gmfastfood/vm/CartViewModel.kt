@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 data class CartItem(
     val id: Int,
     val name: String,
+    val description: String = "",
     val price: Double,
     val imageUrl: String = "",
     val quantity: Int = 1,
@@ -23,6 +24,9 @@ data class CartItem(
 data class CartUiState(
     val cartItems: List<CartItem> = emptyList(),
     val isLoading: Boolean = false,
+//    val subtotal: Double,
+    val deliveryFee: Double = 2000.0,
+//    val total: Double
 ) {
     // Derived state for the summary
     val subtotal: Double get() = cartItems.sumOf { it.totalPrice }
@@ -44,8 +48,9 @@ class CartViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 cartItems = listOf(
-                    CartItem(55, "Burger", 2000.0, R.drawable.burger.toString()),
-                    CartItem(56, "Pizza", 2000.0, R.drawable.pizza.toString())
+                    CartItem(56, "Double Cheeseburger", "Flame-grilled beef, cheddar, special sauce", 8500.0, R.drawable.burger.toString(), 2),
+                    CartItem(57, "Crispy French Fries", "Salted, golden brown potato fries", 3500.0, "", 1),
+                    CartItem(58, "Strawberry Milkshake", "Made with real organic ice cream", 4500.0, "", 1)
                 )
             )
         }
@@ -78,6 +83,21 @@ class CartViewModel : ViewModel() {
                 if (item.id == itemId) item.copy(quantity = newQuantity) else item
             }
             currentState.copy(cartItems = updatedList)
+        }
+    }
+
+    private fun updateCartTotals(items: List<CartItem>) {
+        val subtotal = items.sumOf { it.price * it.quantity }
+        val deliveryFee = if (subtotal > 20.0) 0.0 else 3.99 // Free delivery over $20
+        val total = subtotal + deliveryFee
+
+        _uiState.update { currentState ->
+            currentState.copy(
+                cartItems = items,
+//                subtotal = subtotal,
+                deliveryFee = deliveryFee,
+//                total = total
+            )
         }
     }
 
