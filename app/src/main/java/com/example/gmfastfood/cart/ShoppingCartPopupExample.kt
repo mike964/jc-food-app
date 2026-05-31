@@ -1,4 +1,4 @@
-package com.example.gmfastfood
+package com.example.gmfastfood.cart
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

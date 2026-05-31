@@ -1,4 +1,4 @@
-package com.example.gmfastfood
+package com.example.gmfastfood.home
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -37,25 +37,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.SearchPopupScreen
+import com.example.gmfastfood.cart.ShoppingCartContent
 import com.example.gmfastfood.data.FakeApiClient
 import com.example.gmfastfood.vm.SharedViewModel
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.UiState
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,9 +65,6 @@ fun HomeScreen(
 ) {
     val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
-
-//    Log.d("HomeScreen", "burgerPosition: $burgersPosition, pizzaPosition: $pizzaPosition, drinksPosition: $drinksPosition, saladsPosition: $saladsPosition")
-
 
     val fakeApi: FakeApiClient = FakeApiClient()
 

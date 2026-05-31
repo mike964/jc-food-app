@@ -1,4 +1,4 @@
-package com.example.gmfastfood
+package com.example.gmfastfood.home
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults

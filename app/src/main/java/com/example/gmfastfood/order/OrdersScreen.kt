@@ -1,4 +1,6 @@
 package com.example.gmfastfood.order
+
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,13 +22,22 @@ enum class OrderStatus(val displayName: String) {
     SHIPPED("Shipped"),
     DELIVERED("Delivered"),
     CANCELLED("Cancelled")
+
 }
 
 data class OrderItem(
     val id: String,
     val title: String,
     val quantity: Int,
-    val price: Double
+    val price: Double,
+)
+data class OrderItem2(
+    val id: String,
+    val restaurantOrStoreName: String,
+    val itemsSummary: String,
+    val totalPrice: Double,
+    val status: OrderStatus, //  PLACED, PREPARING, OUT_FOR_DELIVERY, DELIVERED, CANCELLED;
+    val dateString: String
 )
 
 
@@ -39,7 +50,7 @@ fun OrdersScreen(
 //    orders: List<Order>,
     onOrderClick: (String) -> Unit,
     onBackClick: () -> Unit,
-    viewModel: SharedViewModel
+    viewModel: SharedViewModel,
 ) {
     val orders = viewModel.orders.collectAsState().value
 
@@ -57,9 +68,9 @@ fun OrdersScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+//                colors = TopAppBarDefaults.topAppBarColors(
+//                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+//                )
             )
         }
     ) { innerPadding ->
@@ -88,15 +99,19 @@ fun OrdersScreen(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun OrderCard(
     order: Order,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -147,25 +162,24 @@ fun OrderCard(
             HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
 
             // Footer: Total
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Text(
-//                    text = "Total Amount",
-//                    style = MaterialTheme.typography.bodyMedium
-//                )
-//                Text(
-//                    text = "$${String.format(\"%.2f\", order.totalAmount)}",
-//                        style = MaterialTheme.typography.titleMedium,
-//                        fontWeight = FontWeight.Bold,
-//                        color = MaterialTheme.colorScheme.primary
-//                        )
-//                    }
-//            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Total Amount",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "$${String.format("%.0f", order.totalAmount)}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
         }
     }
+}
 
-
-    }

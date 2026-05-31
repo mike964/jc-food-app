@@ -41,9 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.auth.AuthFlowContainer
 import com.example.gmfastfood.auth.AuthViewModel
+import com.example.gmfastfood.checkout.CheckoutScreen
+import com.example.gmfastfood.extra.SearchScreen2
+import com.example.gmfastfood.home.HomeScreen
 import com.example.gmfastfood.order.OrdersScreen
-import com.example.gmfastfood.screens.CheckoutScreen
-import com.example.gmfastfood.screens.SearchScreen2
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -114,11 +115,12 @@ fun MainScreen() {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
 
-                    HomeScreen(sharedViewModel, cartViewModel,
-                        onCheckoutClick = { navController.navigate(Routes.Checkout) } ,
+                    HomeScreen(
+                        sharedViewModel, cartViewModel,
+                        onCheckoutClick = { navController.navigate(Routes.Checkout) },
                         onSubmitOrderClick = { navController.navigate(Routes.Cart) },
                         onProfileClick = { navController.navigate(Routes.Profile) }
-                        )
+                    )
                 }
                 composable<Routes.Search> {
                     val sharedViewModel: SharedViewModel =
@@ -144,6 +146,11 @@ fun MainScreen() {
                         navController.getSharedViewModel(Routes.MainGraph)
                     OrdersScreen( onOrderClick = { }, onBackClick = { navController.popBackStack() }, viewModel = sharedViewModel)
                 }
+//                composable<Routes.Orders> {
+//                    val sharedViewModel: SharedViewModel =
+//                        navController.getSharedViewModel(Routes.MainGraph)
+//                    OrdersScreen2(   onOrderClick = { }, onTrackOrderClick = { } )
+//                }
                 composable<Routes.Profile> {
                     AuthFlowContainer(authViewModel, navController )
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )

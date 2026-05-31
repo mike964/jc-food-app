@@ -1,4 +1,4 @@
-package com.example.gmfastfood
+package com.example.gmfastfood.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,9 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.R
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.vm.CartItem
-import com.example.gmfastfood.vm.CartViewModel
 
 @Composable
 fun HorizontalCardList(

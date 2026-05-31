@@ -1,4 +1,4 @@
-package com.example.gmfastfood.screens
+package com.example.gmfastfood.extra
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

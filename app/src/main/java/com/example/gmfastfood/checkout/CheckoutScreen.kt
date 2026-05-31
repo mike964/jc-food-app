@@ -1,4 +1,4 @@
-package com.example.gmfastfood.screens
+package com.example.gmfastfood.checkout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

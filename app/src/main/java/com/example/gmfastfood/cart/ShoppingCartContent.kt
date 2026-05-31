@@ -1,4 +1,4 @@
-package com.example.gmfastfood
+package com.example.gmfastfood.cart
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.R
 import com.example.gmfastfood.vm.CartItem
 
 @SuppressLint("DefaultLocale")

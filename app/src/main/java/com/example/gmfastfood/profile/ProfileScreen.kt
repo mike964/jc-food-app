@@ -29,7 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gmfastfood.LoginPopup
+import com.example.gmfastfood.auth.LoginPopup
 import com.example.gmfastfood.auth.UserProfile
 
 @OptIn(ExperimentalMaterial3Api::class)
