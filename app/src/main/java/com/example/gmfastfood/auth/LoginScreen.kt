@@ -61,6 +61,7 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel(), navController: Nav
                     onLogout = { viewModel.logout() },
                     onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
                     onOrdersClick = { navController.navigate(Routes.Orders) },
+                   onAddressesClick = { navController.navigate(Routes.Addresses) },
                     onBackClick = { navController.popBackStack() }
                 )
             }
@@ -75,6 +76,7 @@ fun AuthFlowContainer(viewModel: AuthViewModel = viewModel(), navController: Nav
                     onLogout = { viewModel.logout() },
                     onLoginSubmitted = { user, pass -> viewModel.login(user, pass) },
                     onOrdersClick = { navController.navigate(Routes.Orders) },
+                    onAddressesClick = { navController.navigate(Routes.Addresses) },
                     onBackClick = { navController.popBackStack() }
                     )
             }

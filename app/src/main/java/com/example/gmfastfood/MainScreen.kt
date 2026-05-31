@@ -42,9 +42,11 @@ import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.auth.AuthFlowContainer
 import com.example.gmfastfood.auth.AuthViewModel
 import com.example.gmfastfood.checkout.CheckoutScreen
+import com.example.gmfastfood.data.UserAddress
 import com.example.gmfastfood.extra.SearchScreen2
 import com.example.gmfastfood.home.HomeScreen
 import com.example.gmfastfood.order.OrdersScreen
+import com.example.gmfastfood.profile.AddressListScreen
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -145,6 +147,18 @@ fun MainScreen() {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
                     OrdersScreen( onOrderClick = { }, onBackClick = { navController.popBackStack() }, viewModel = sharedViewModel)
+                }
+                composable<Routes.Addresses> {
+//                    AddressEditScreen( initialAddress = null, onBackClick = { navController.popBackStack() }, onSaveClick = { })
+                    AddressListScreen( addresses = listOf(
+                        UserAddress(
+                            id = "1",
+                            label = "Home",
+                            fullAddress = "123 Main St, Apt 4B",
+                            deliveryNotes = "Ring bell twice, leave at reception",
+                            isDefault = true
+                    )  )
+                     , selectedAddressId = null, onBackClick = { navController.popBackStack() }, onAddressSelect = { }, onEditClick = { }, onAddNewAddressClick = { })
                 }
 //                composable<Routes.Orders> {
 //                    val sharedViewModel: SharedViewModel =

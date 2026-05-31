@@ -40,6 +40,7 @@ fun ProfileScreen(
     onLogout: () -> Unit,
     onLoginSubmitted: (String, String) -> Unit,
     onOrdersClick: () -> Unit,
+    onAddressesClick: () -> Unit,
     onBackClick: () -> Boolean,
 ) {
     var showLoginPopup by remember { mutableStateOf(false) }
@@ -135,7 +136,9 @@ fun ProfileScreen(
                     ProfileMenuItem(
                         icon = Icons.Default.Home,
                         label = "My Addresses"
-                    ) { /* Navigate */ }
+                    ) {
+                        onAddressesClick()
+                    }
                     HorizontalDivider(
                         color = Color(0xFFF1F1F1),
                         thickness = 1.dp,
