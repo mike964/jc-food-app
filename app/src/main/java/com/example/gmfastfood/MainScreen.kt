@@ -157,7 +157,7 @@ fun MainScreen() {
 //                    LoginScreen( onLoginSubmitted = { user, pass -> navController.navigate(Routes.Home) } )
 //                    MainCatalogScreenWithCart()
 //                    LoginPopup( onDismiss = { }, isOpen = true )
-//                    MainStoreScreen()
+
                 }
             }
         }

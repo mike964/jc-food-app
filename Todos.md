@@ -20,12 +20,11 @@
 [] Add user sample addresses in profile n select one when submitting order.  
 [x] Load orders from view model 
 [x] Change jump button pills to filters   5/31/2026
-[] Display address on google maps 
+[ ] Display address on Google Maps (Later)
 [ ] User can select his address on google maps before submit order
 
-
+------------------------------------
 [] Save one order to firebase 
-
 [] Later fork n make a production version of it. 
 [] Flip food item cards - nn 
 
