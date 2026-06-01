@@ -17,20 +17,42 @@ import com.example.gmfastfood.data.UserAddress
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddressListScreen(
-    addresses: List<UserAddress>,
+
     selectedAddressId: String?,
     onBackClick: () -> Unit,
     onAddressSelect: (SavedAddress) -> Unit,
     onEditClick: (SavedAddress) -> Unit,
-    onAddNewAddressClick: () -> Unit
+    onAddNewAddressClick: () -> Unit,
 ) {
+    val addresses = listOf(
+        UserAddress(
+            id = "1",
+            label = "Home",
+            fullAddress = "123 Main St, Apt 4B",
+            deliveryNotes = "Ring bell twice, leave at reception",
+            isDefault = true
+        ),
+        UserAddress(
+            id = "2",
+            label = "Work",
+            fullAddress = "324 Main St, Apt 2C",
+            deliveryNotes = "No need for extra stuff",
+            isDefault = false
+        )
+    )
+    var showAddAddressDialog by remember { mutableStateOf(false) }
+    var selectedAddress by remember { mutableStateOf<SavedAddress?>(null) }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Saved Addresses", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -67,10 +89,10 @@ fun AddressListScreen(
                         address = address,
                         isSelected = address.id == selectedAddressId,
                         onSelect = {
-                         //   onAddressSelect(address)
-                                   },
+                            //   onAddressSelect(address)
+                        },
                         onEdit = {
-                       //     onEditClick(address)
+                            //     onEditClick(address)
                         }
                     )
                 }

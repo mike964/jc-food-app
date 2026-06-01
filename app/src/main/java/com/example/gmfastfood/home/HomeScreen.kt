@@ -47,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gmfastfood.SearchPopupScreen
 import com.example.gmfastfood.cart.ShoppingCartContent
 import com.example.gmfastfood.data.FakeApiClient
 import com.example.gmfastfood.vm.SharedViewModel

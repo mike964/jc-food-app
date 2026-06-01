@@ -150,15 +150,8 @@ fun MainScreen() {
                 }
                 composable<Routes.Addresses> {
 //                    AddressEditScreen( initialAddress = null, onBackClick = { navController.popBackStack() }, onSaveClick = { })
-                    AddressListScreen( addresses = listOf(
-                        UserAddress(
-                            id = "1",
-                            label = "Home",
-                            fullAddress = "123 Main St, Apt 4B",
-                            deliveryNotes = "Ring bell twice, leave at reception",
-                            isDefault = true
-                    )  )
-                     , selectedAddressId = null, onBackClick = { navController.popBackStack() }, onAddressSelect = { }, onEditClick = { }, onAddNewAddressClick = { })
+                    AddressListScreen(
+                       selectedAddressId = null, onBackClick = { navController.popBackStack() }, onAddressSelect = { }, onEditClick = { }, onAddNewAddressClick = { })
                 }
 //                composable<Routes.Orders> {
 //                    val sharedViewModel: SharedViewModel =
