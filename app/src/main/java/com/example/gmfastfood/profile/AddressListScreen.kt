@@ -12,7 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.gmfastfood.data.UserAddress
+import com.example.gmfastfood.vm.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,23 +23,9 @@ fun AddressListScreen(
     onAddressSelect: (SavedAddress) -> Unit,
     onEditClick: (SavedAddress) -> Unit,
     onAddNewAddressClick: () -> Unit,
+    viewModel: SharedViewModel,
 ) {
-    val addresses = listOf(
-        UserAddress(
-            id = "1",
-            label = "Home",
-            fullAddress = "123 Main St, Apt 4B",
-            deliveryNotes = "Ring bell twice, leave at reception",
-            isDefault = true
-        ),
-        UserAddress(
-            id = "2",
-            label = "Work",
-            fullAddress = "324 Main St, Apt 2C",
-            deliveryNotes = "No need for extra stuff",
-            isDefault = false
-        )
-    )
+    val addresses = viewModel.addresses.collectAsState().value
     var showAddAddressDialog by remember { mutableStateOf(false) }
     var selectedAddress by remember { mutableStateOf<SavedAddress?>(null) }
 

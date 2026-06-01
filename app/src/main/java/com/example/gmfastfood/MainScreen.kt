@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.auth.AuthFlowContainer
 import com.example.gmfastfood.auth.AuthViewModel
 import com.example.gmfastfood.checkout.CheckoutScreen
-import com.example.gmfastfood.data.UserAddress
 import com.example.gmfastfood.extra.SearchScreen2
 import com.example.gmfastfood.home.HomeScreen
 import com.example.gmfastfood.order.OrdersScreen
@@ -149,8 +148,11 @@ fun MainScreen() {
                     OrdersScreen( onOrderClick = { }, onBackClick = { navController.popBackStack() }, viewModel = sharedViewModel)
                 }
                 composable<Routes.Addresses> {
+                    val sharedViewModel: SharedViewModel =
+                        navController.getSharedViewModel(Routes.MainGraph)
 //                    AddressEditScreen( initialAddress = null, onBackClick = { navController.popBackStack() }, onSaveClick = { })
                     AddressListScreen(
+                        viewModel = sharedViewModel ,
                        selectedAddressId = null, onBackClick = { navController.popBackStack() }, onAddressSelect = { }, onEditClick = { }, onAddNewAddressClick = { })
                 }
 //                composable<Routes.Orders> {

@@ -8,6 +8,8 @@ import com.example.gmfastfood.data.FakeStoreApiClient
 import com.example.gmfastfood.data.Order
 import com.example.gmfastfood.data.Product
 import com.example.gmfastfood.data.StoreApiService
+import com.example.gmfastfood.data.UserAddress
+import com.example.gmfastfood.data.sampleAddresses
 import com.example.gmfastfood.data.sampleOrders2
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -41,8 +43,12 @@ class SharedViewModel(
     private val _orders = MutableStateFlow<List<Order>>(emptyList())
     val orders = _orders.asStateFlow()
 
+    private val _addresses = MutableStateFlow<List<UserAddress>>(emptyList())
+    val addresses = _addresses.asStateFlow()
+
     init {
         loadDataFromNetwork()
+        loadInitialAddresses()
     }
 
     fun loadDataFromNetwork() {
@@ -58,6 +64,13 @@ class SharedViewModel(
             } catch (e: Exception) {
                 _uiState.update { UiState.Error(message = e.localizedMessage ?: "Unknown Error") }
             }
+        }
+    }
+
+    fun loadInitialAddresses () {
+        viewModelScope.launch {
+//            _addresses.value = apiService.getUserAddresses()
+            _addresses.value = sampleAddresses
         }
     }
 
@@ -114,5 +127,18 @@ class SharedViewModel(
 
     fun onSearchQueryChanged(newQuery: String) {
         _searchQuery.value = newQuery
+    }
+
+    // # Address Management
+    fun addAddress (address: UserAddress) {
+        _addresses.value += address
+        }
+
+    fun deleteAddress (address: UserAddress) {
+        _addresses.value -= address
+    }
+
+    fun updateAddress (address: UserAddress) {
+        _addresses.value = _addresses.value.map { if (it.id == address.id) address else it }
     }
 }
