@@ -37,19 +37,18 @@ fun AddressListScreen(
 //        selectedAddress = addresses.find { it.id == selectedAddressId }
 //    }
 
-    fun onSaveNewAddressClick () {
+    fun onSaveNewAddressClick() {
         if (newAddressText.isNotBlank()) {
             val newAddress = UserAddress(
-                id = UUID.randomUUID().toString() ,
-                label = newAddressLabel ,
+                id = UUID.randomUUID().toString(),
+                label = newAddressLabel,
                 fullAddress = newAddressText,
-                note = newAddressNote ,
+                note = newAddressNote,
                 isDefault = false
             )
             viewModel.addAddress(newAddress)
         }
     }
-
 
     Scaffold(
         topBar = {
@@ -82,11 +81,18 @@ fun AddressListScreen(
         if (showAddAddressDialog) {
             NewAddressDialog(
                 onSaveClick = { onSaveNewAddressClick() },
-                onDismiss = { showAddAddressDialog = false },
+                onDismiss = {
+                    showAddAddressDialog = false
+                    // Clear text fields after dismiss
+                    newAddressText = ""
+                    newAddressNote = ""
+                    newAddressLabel = ""
+                },
                 newAddressLabel = newAddressLabel,
                 newAddressText = newAddressText,
                 newAddressNote = newAddressNote,
-                onAddressChange = { newAddressText = it }
+                onAddressChange = { newAddressText = it },
+                onLabelChange = { newAddressLabel = it },
             )
         }
         if (addresses.isEmpty()) {
