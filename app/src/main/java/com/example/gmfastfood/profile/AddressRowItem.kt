@@ -110,9 +110,9 @@ fun AddressRowItem(
 //                    )
 //                }
 
-                if (address.deliveryNotes.isNotBlank()) {
+                if (address.note.isNotBlank()) {
                     Text(
-                        text = "Note: ${address.deliveryNotes}",
+                        text = "Note: ${address.note}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                         maxLines = 1,

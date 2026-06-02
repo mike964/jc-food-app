@@ -9,52 +9,59 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 
 
 @Composable
-fun NewAddressDialog(   onDismiss: () -> Unit){
+fun NewAddressDialog(
+    onDismiss: () -> Unit,
+    onSaveClick: () -> Unit,
+    newAddressLabel: String,
+    newAddressText: String,
+    newAddressNote: String,
+    onAddressChange: (String) -> Unit,
+) {
 
     var noteText = ""
 
     // The Popup / Dialog
-        AlertDialog(
-            onDismissRequest = {
+    AlertDialog(
+        onDismissRequest = {
 //                showAddAddressDialog = false
-                noteText = "" // Optional: clear text on dismiss
-            },
-            title = { Text("New Note") },
-            text = {
-                Column {
-                    OutlinedTextField(
-                        value = noteText,
-                        onValueChange = { noteText = it },
-                        placeholder = { Text("Enter note details...") },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        // TODO: Save your note to the database or viewmodel here
-//                        showAddAddressDialog = false
-                        noteText = ""
-                    }
-                ) {
-                    Text("Save")
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-//                        showAddAddressDialog = false
-                        noteText = ""
-                        onDismiss()
-                    }
-                ) {
-                    Text("Cancel")
-                }
+            noteText = "" // Optional: clear text on dismiss
+        },
+        title = { Text("New Address") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = newAddressText,
+                    onValueChange = onAddressChange,
+                    placeholder = { Text("Enter full address...") },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-        )
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    // TODO: Save your note to the database or viewmodel here
+                    onSaveClick()
+                }
+            ) {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+//                        showAddAddressDialog = false
+                    noteText = ""
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
 }

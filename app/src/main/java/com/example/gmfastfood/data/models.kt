@@ -9,7 +9,7 @@ data class UserAddress(
     val label: String,
 //    val streetAddress: String,
     val fullAddress: String,
-    val deliveryNotes: String = "",
+    val note: String = "",
 //    val notesToDriver: String?,
 //    val latitude: Double,
 //    val longitude: Double,

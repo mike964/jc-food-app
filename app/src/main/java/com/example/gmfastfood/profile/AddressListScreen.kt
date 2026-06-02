@@ -12,7 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.gmfastfood.data.UserAddress
 import com.example.gmfastfood.vm.SharedViewModel
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +29,27 @@ fun AddressListScreen(
     val addresses = viewModel.addresses.collectAsState().value
     var showAddAddressDialog by remember { mutableStateOf(false) }
     var newAddressText by remember { mutableStateOf("") }
-    var selectedAddress by remember { mutableStateOf<SavedAddress?>(null) }
+    var newAddressNote by remember { mutableStateOf("") }
+    var newAddressLabel by remember { mutableStateOf("") }
+//    var selectedAddress by remember { mutableStateOf<SavedAddress?>(null) }
+
+//    LaunchedEffect(selectedAddressId) {
+//        selectedAddress = addresses.find { it.id == selectedAddressId }
+//    }
+
+    fun onSaveNewAddressClick () {
+        if (newAddressText.isNotBlank()) {
+            val newAddress = UserAddress(
+                id = UUID.randomUUID().toString() ,
+                label = newAddressLabel ,
+                fullAddress = newAddressText,
+                note = newAddressNote ,
+                isDefault = false
+            )
+            viewModel.addAddress(newAddress)
+        }
+    }
+
 
     Scaffold(
         topBar = {
@@ -59,7 +81,12 @@ fun AddressListScreen(
     ) { paddingValues ->
         if (showAddAddressDialog) {
             NewAddressDialog(
+                onSaveClick = { onSaveNewAddressClick() },
                 onDismiss = { showAddAddressDialog = false },
+                newAddressLabel = newAddressLabel,
+                newAddressText = newAddressText,
+                newAddressNote = newAddressNote,
+                onAddressChange = { newAddressText = it }
             )
         }
         if (addresses.isEmpty()) {
