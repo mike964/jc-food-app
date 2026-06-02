@@ -137,7 +137,12 @@ fun MainScreen() {
                     )
                 }
                 composable<Routes.Checkout> {
+
+                    val sharedViewModel: SharedViewModel =
+                        navController.getSharedViewModel(Routes.MainGraph)
                     CheckoutScreen(
+                        viewModel = sharedViewModel,
+                        cartViewModel = cartViewModel,
                         onBackClicked = { navController.popBackStack() },
                         onOrderPlaced = { navController.navigate(Routes.Home) }
                     )

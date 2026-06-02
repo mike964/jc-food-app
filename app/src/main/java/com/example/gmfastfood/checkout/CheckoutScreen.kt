@@ -1,7 +1,10 @@
 package com.example.gmfastfood.checkout
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -10,7 +13,23 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,13 +38,31 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.profile.AddressRowItem
+import com.example.gmfastfood.vm.CartViewModel
+import com.example.gmfastfood.vm.SharedViewModel
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckoutScreen(
     onBackClicked: () -> Unit = {},
-    onOrderPlaced: () -> Unit = {}
+    onOrderPlaced: () -> Unit = {},
+    viewModel: SharedViewModel,
+    cartViewModel: CartViewModel,
 ) {
+//    val options = listOf("Option 1", "Option 2", "Option 3")
+    val cartItems = cartViewModel.uiState.collectAsState().value.cartItems
+    val cartTotal = cartItems.sumOf { it.price * it.quantity }
+    val cartTotalFormatted = String.format("%.2f", cartTotal)
+
+    var addresses by remember { mutableStateOf(viewModel.addresses.value) }
+    val addressOptions = addresses.map { it.fullAddress }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(addressOptions[0]) }
+
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -54,6 +91,74 @@ fun CheckoutScreen(
             ) {
                 Spacer(modifier = Modifier.height(4.dp))
 
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded }
+                    ) {
+                        OutlinedTextField(
+                            // The menuAnchor modifier links the TextField to the dropdown behavior
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth(),
+                            readOnly = true,
+                            value = selectedOption,
+                            onValueChange = {},
+                            label = { Text("Select an option") },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                        )
+
+                        if (addresses.isNotEmpty()) {
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+//                            options.forEach { selectionOption ->
+//                                DropdownMenuItem(
+//                                    text = { Text(selectionOption) },
+//                                    onClick = {
+//                                        selectedOption = selectionOption
+//                                        expanded = false
+//                                    },
+//                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+//                                )
+//                            }
+                                addresses.forEach { selectionOption ->
+                                    DropdownMenuItem(
+                                        text = { Text(selectionOption.fullAddress) },
+                                        onClick = {
+                                            selectedOption = selectionOption.fullAddress
+                                            expanded = false
+                                        },
+                                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                                    )
+                                }
+                            }
+                        }
+
+//                        if (addresses.isNotEmpty()) {
+//                            Column(
+//                                modifier = Modifier
+//                                    .fillMaxSize()
+//                                    .padding(paddingValues),
+//                                verticalArrangement = Arrangement.spacedBy(12.dp)
+//                            ) {
+//                                addresses.forEach {
+//                                    Text(
+//                                        text = it.fullAddress,
+//                                    )
+//                                }
+//                            }
+//                        }
+
+                    }
+                }
+
                 // 1. Shipping Section
                 CheckoutSectionCard(
                     title = "Shipping Address",
@@ -74,7 +179,11 @@ fun CheckoutScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("💳", fontSize = 20.sp, modifier = Modifier.padding(end = 8.dp))
                         Column {
-                            Text("Mastercard ending in 4321", fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+                            Text(
+                                "Mastercard ending in 4321",
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp
+                            )
                             Text("Expires 12/29", color = Color.Gray, fontSize = 12.sp)
                         }
                     }
@@ -110,7 +219,12 @@ fun CheckoutScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text("Total Due:", fontSize = 14.sp, color = Color.Gray)
-                        Text("$1,279.23", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.primary)
+                        Text(
+                            "$1,279.23",
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
 
                     Button(
@@ -120,7 +234,11 @@ fun CheckoutScreen(
                             .height(50.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(
+                            Icons.Default.Lock,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Place Order", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
@@ -139,7 +257,7 @@ fun CheckoutSectionCard(
     title: String,
     icon: ImageVector,
     actionText: String,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -154,7 +272,12 @@ fun CheckoutSectionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                    Icon(
+                        icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
@@ -176,12 +299,19 @@ fun OrderSummaryCard(subtotal: Double, shipping: Double, tax: Double) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             Text("Order Summary", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             HorizontalDivider(color = Color(0xFFF1F1F1))
 
             SummaryRow(label = "Subtotal", value = "$$subtotal")
-            SummaryRow(label = "Shipping", value = if (shipping == 0.0) "FREE" else "$$shipping", valueColor = if (shipping == 0.0) Color(0xFF2E7D32) else Color.Black)
+            SummaryRow(
+                label = "Shipping",
+                value = if (shipping == 0.0) "FREE" else "$$shipping",
+                valueColor = if (shipping == 0.0) Color(0xFF2E7D32) else Color.Black
+            )
 //            SummaryRow(label = "Estimated Tax", value = "$$tax")
         }
     }
