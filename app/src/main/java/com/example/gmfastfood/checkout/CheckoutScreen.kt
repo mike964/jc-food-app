@@ -3,8 +3,6 @@ package com.example.gmfastfood.checkout
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -20,7 +18,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,11 +31,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gmfastfood.profile.AddressRowItem
+import com.example.gmfastfood.data.Order
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.SharedViewModel
 
@@ -46,8 +42,8 @@ import com.example.gmfastfood.vm.SharedViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckoutScreen(
-    onBackClicked: () -> Unit = {},
-    onOrderPlaced: () -> Unit = {},
+    onBackClicked: () -> Unit ,
+    onOrderPlaced: () -> Unit  ,
     viewModel: SharedViewModel,
     cartViewModel: CartViewModel,
 ) {
@@ -61,6 +57,22 @@ fun CheckoutScreen(
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(addressOptions[0]) }
 
+    fun handleSubmitOrder(){
+        val order = Order(
+            id = "12345",
+            date = "June 2, 2026",
+            status = "In Transit",
+            items = cartItems,
+            subtotal = cartTotal,
+            shipping = 0.0,
+            tax = 0.0,
+            total = cartTotal,
+            address = selectedOption,
+            note = ""
+        )
+        viewModel.addOrderToSubmit(order)
+        onOrderPlaced()  // Navigate to Order details screen
+    }
 
 
     Scaffold(
@@ -98,7 +110,9 @@ fun CheckoutScreen(
                     elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -241,7 +255,7 @@ fun CheckoutScreen(
                     }
 
                     Button(
-                        onClick = onOrderPlaced,
+                        onClick = { handleSubmitOrder() },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),

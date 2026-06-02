@@ -2,23 +2,14 @@ package com.example.gmfastfood.vm
 
 import androidx.lifecycle.ViewModel
 import com.example.gmfastfood.R
+import com.example.gmfastfood.data.CartItem
 import com.example.gmfastfood.data.products
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-data class CartItem(
-    val id: Int,
-    val name: String,
-    val description: String = "",
-    val price: Double,
-    val imageUrl: String = "",
-    val quantity: Int = 1,
-) {
-    // Helper to get total price for this specific item
-    val totalPrice: Double get() = price * quantity
-}
+
 
 // UI State wrapper
 data class CartUiState(

@@ -41,7 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.R
-import com.example.gmfastfood.vm.CartItem
+import com.example.gmfastfood.data.CartItem
 
 @SuppressLint("DefaultLocale")
 @Composable
@@ -128,7 +128,7 @@ fun CartItemRow(item: CartItem, onQuantityModified: (Int) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(item.imageUrl.toIntOrNull() ?: R.drawable.burger),
+                painter = painterResource(item.imageUrl?.toIntOrNull() ?: R.drawable.burger),
                 contentDescription = "item image",
                 modifier = Modifier
                        .fillMaxSize(), // Makes the Composable fill parent bounds
@@ -141,7 +141,7 @@ fun CartItemRow(item: CartItem, onQuantityModified: (Int) -> Unit) {
         // Title and Base Price Info Frame
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = item.name,
+                text = item.title,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp,
                 maxLines = 1,

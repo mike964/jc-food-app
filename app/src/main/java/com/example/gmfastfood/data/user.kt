@@ -1,8 +1,5 @@
 package com.example.gmfastfood.data
 
-import com.example.gmfastfood.order.OrderItem
-import com.example.gmfastfood.order.OrderStatus
-
 
 //phone, password, email , full name, addresses [], orders, favorite items list.
 
@@ -17,13 +14,6 @@ data class User(
     val favoriteItems: List<String>,
 )
 
-data class Order(
-    val orderId: String,
-    val date: String,
-    val status: OrderStatus,
-    val items: List<OrderItem>,
-    val totalAmount: Double
-)
 
 /*
 data class Order(
@@ -92,23 +82,26 @@ var sampleOrders = listOf(
  */
 
 val sampleOrders2 = listOf(
+//    Order(
+//        id = "98231",
+//        date = "May 28, 2026",
+//        status = OrderStatus.PENDING,
+//        items = listOf(
+////            OrderItem("1", "Wireless Noise-Canceling Headphones", 1, 199.99),
+////            OrderItem("2", "USB-C Charging Cable 2m", 2, 15.49)
+//        ),
+//        totalAmount = 230.97
+//    ),
     Order(
-        orderId = "98231",
+        id = "98232",
         date = "May 28, 2026",
-        status = OrderStatus.PENDING,
-        items = listOf(
-            OrderItem("1", "Wireless Noise-Canceling Headphones", 1, 199.99),
-            OrderItem("2", "USB-C Charging Cable 2m", 2, 15.49)
-        ),
-        totalAmount = 230.97
-    ),
-    Order(
-        orderId = "97140",
-        date = "May 24, 2026",
-        status = OrderStatus.DELIVERED,
-        items = listOf(
-            OrderItem("3", "Ergonomic Mechanical Keyboard", 1, 129.00)
-        ),
-        totalAmount = 129.00
+        status =  "PROCESSING",
+        items = emptyList(),
+        subtotal = 230.97,
+        shipping = 5.99,
+        tax = 22.40,
+        total = 308.37,
+        address = "Dockland Street. House red",
+        note = "Ring second floor"
     )
 )

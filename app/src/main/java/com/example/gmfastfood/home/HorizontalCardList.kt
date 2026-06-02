@@ -35,8 +35,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.R
+import com.example.gmfastfood.data.CartItem
 import com.example.gmfastfood.data.Product
-import com.example.gmfastfood.vm.CartItem
 
 @Composable
 fun HorizontalCardList(
@@ -147,7 +147,7 @@ fun HorizontalCardList(
                                                 CartItem(
                                                     item.id,
                                                     imageUrl = item.image.toString(),
-                                                    name = item.title,
+                                                    title = item.title,
                                                     price = item.price,
                                                     quantity = 1
                                                 )

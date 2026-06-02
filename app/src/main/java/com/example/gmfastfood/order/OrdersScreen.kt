@@ -17,28 +17,6 @@ import com.example.gmfastfood.data.sampleOrders2
 import com.example.gmfastfood.vm.SharedViewModel
 import androidx.compose.runtime.collectAsState
 
-enum class OrderStatus(val displayName: String) {
-    PENDING("Pending"),
-    SHIPPED("Shipped"),
-    DELIVERED("Delivered"),
-    CANCELLED("Cancelled")
-
-}
-
-data class OrderItem(
-    val id: String,
-    val title: String,
-    val quantity: Int,
-    val price: Double,
-)
-data class OrderItem2(
-    val id: String,
-    val restaurantOrStoreName: String,
-    val itemsSummary: String,
-    val totalPrice: Double,
-    val status: OrderStatus, //  PLACED, PREPARING, OUT_FOR_DELIVERY, DELIVERED, CANCELLED;
-    val dateString: String
-)
 
 
 
@@ -91,8 +69,8 @@ fun OrdersScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(orders, key = { it.orderId }) { order ->
-                    OrderCard(order = order, onClick = { onOrderClick(order.orderId) })
+                items(orders, key = { it.id }) { order ->
+                    OrderCard(order = order, onClick = { onOrderClick(order.id) })
                 }
             }
         }
@@ -125,7 +103,7 @@ fun OrderCard(
             ) {
                 Column {
                     Text(
-                        text = "Order #${order.orderId}",
+                        text = "Order #${order.id}",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -135,7 +113,7 @@ fun OrderCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                StatusBadge(status = order.status)
+//                StatusBadge(status = order.status)
             }
 
             HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
@@ -172,7 +150,7 @@ fun OrderCard(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = "$${String.format("%.0f", order.totalAmount)}",
+                    text = "$${String.format("%.0f", order.total)}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary

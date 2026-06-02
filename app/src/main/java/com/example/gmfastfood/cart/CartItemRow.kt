@@ -36,7 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.R
-import com.example.gmfastfood.vm.CartItem
+import com.example.gmfastfood.data.CartItem
 
 @SuppressLint("DefaultLocale")
 @Composable
@@ -72,7 +72,7 @@ fun CartItemRow(
                         .background(Color.LightGray) // Real apps would use AsyncImage here
                 ) {
                     Image(
-                        painter = painterResource(item.imageUrl.toIntOrNull() ?: R.drawable.burger),
+                        painter = painterResource(item.imageUrl?.toIntOrNull() ?: R.drawable.burger),
                         contentDescription = "item image",
                         modifier = Modifier.fillMaxSize()
                     )
@@ -84,7 +84,7 @@ fun CartItemRow(
                  //   .background(Color.Green)
                 ) {
                     Text(
-                        text = item.name,
+                        text = item.title,
                         style = MaterialTheme.typography.titleMedium,
 //                        fontWeight = FontWeight.Bold,
                         maxLines = 2,

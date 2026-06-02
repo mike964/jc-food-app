@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.gmfastfood.data.CartItem
 import com.example.gmfastfood.data.Product
-import com.example.gmfastfood.vm.CartItem
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.SharedViewModel
 
@@ -90,7 +90,15 @@ fun SearchPopupScreen(
 //                            }
 //                        }
                         ProductItemRow(item = item,
-                            addToCart = { cartViewModel.addToCart(CartItem(item.id, imageUrl = item.image.toString(), name = item.title, price = item.price, quantity = 1)) },
+                            addToCart = { cartViewModel.addToCart(
+                                CartItem(
+                                    item.id,
+                                    imageUrl = item.image.toString(),
+                                    title = item.title,
+                                    price = item.price,
+                                    quantity = 1
+                                )
+                            ) },
                             onQuantityModified = {
                               //  qty -> onUpdateQuantity(item.id, qty)
                             }

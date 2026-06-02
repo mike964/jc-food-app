@@ -151,9 +151,7 @@ fun MainScreen() {
                 composable<Routes.OrderDetails> {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
-                    val orderDetails = null
                     OrderDetailsScreen(
-                        // orderDetails : SharedViewModel.OrderDetails,
                       onBackClick = { navController.popBackStack() }
                     )
                 }

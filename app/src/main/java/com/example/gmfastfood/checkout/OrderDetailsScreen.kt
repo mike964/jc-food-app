@@ -19,21 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.gmfastfood.data.CartItem
+import com.example.gmfastfood.data.Order
+import com.example.gmfastfood.data.OrderItem
 
 // # Show this after order placed successfully
 // with button to go back to my orders
 // --- Data Models ---
-data class OrderItem(val name: String, val quantity: Int, val price: Double)
-data class Order(
-    val id: String,
-    val date: String,
-    val status: String,
-    val items: List<OrderItem>,
-    val subtotal: Double,
-    val shipping: Double,
-    val tax: Double,
-    val total: Double
-)
+
 
 // --- Sample Data ---
 val sampleOrder = Order(
@@ -41,20 +34,21 @@ val sampleOrder = Order(
     date = "June 2, 2026",
     status = "In Transit",
     items = listOf(
-        OrderItem("Wireless Noise-Canceling Headphones", 1, 199.99),
-        OrderItem("USB-C Fast Charging Cable (2m)", 2, 15.00),
-        OrderItem("Ergonomic Wireless Mouse", 1, 49.99)
+        CartItem( 1, "Sandwich Super", "1", 6.99, null),
+        CartItem(1, "Pizza ultra taste", "2", 15.49, null)
     ),
     subtotal = 279.98,
     shipping = 5.99,
     tax = 22.40,
-    total = 308.37
+    total = 308.37,
+    address = "Dockland Street. House red",
+    note = "Ring second floor"
 )
 
 // --- Main Composable ---
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit  ) {
+fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -76,16 +70,19 @@ fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit  ) {
         ) {
             // Success message
             item {
-               Box(Modifier.fillMaxWidth().background(Color.Green, shape = RoundedCornerShape(16.dp)),
-                   contentAlignment = Alignment.Center,
-                   ){
-                   Text(
-                       text = "Order placed successfully!",
-                       style = MaterialTheme.typography.titleLarge,
-                       fontWeight = FontWeight.Bold,
-                       modifier = Modifier.padding(  16.dp)
-                   )
-               }
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.Green, shape = RoundedCornerShape(16.dp)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "Order placed successfully!",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
             }
             // 1. Header Info
             item { OrderHeader(order) }
@@ -104,9 +101,9 @@ fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit  ) {
             }
 
             // 4. Itemized List
-            items(order.items) { item ->
-                OrderItemRow(item)
-            }
+//            items(order.items) { item ->
+//                OrderItemRow(item)
+//            }
 
             // 5. Price Breakdown
             item { PriceSummaryCard(order) }
@@ -137,7 +134,11 @@ fun OrderHeader(order: Order) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = order.id, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text(
+                    text = order.id,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
                 Text(
                     text = order.status,
                     style = MaterialTheme.typography.labelLarge,
@@ -146,7 +147,11 @@ fun OrderHeader(order: Order) {
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = "Placed on ${order.date}", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+            Text(
+                text = "Placed on ${order.date}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
         }
     }
 }
@@ -178,7 +183,11 @@ fun StatusStep(title: String, isCompleted: Boolean) {
             tint = if (isCompleted) MaterialTheme.colorScheme.primary else Color.LightGray,
             modifier = Modifier.size(24.dp)
         )
-        Text(text = title, style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 4.dp))
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
 
@@ -209,8 +218,16 @@ fun OrderItemRow(item: OrderItem) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = item.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
-                Text(text = "Qty: ${item.quantity}", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+                Text(
+                    text = item.title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = "Qty: ${item.quantity}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
             }
             Text(
                 text = "$${String.format("%.2f", item.price * item.quantity)}",
@@ -230,7 +247,10 @@ fun PriceSummaryCard(order: Order) {
             .padding(top = 16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             SummaryLine(label = "Subtotal", value = "$${String.format("%.2f", order.subtotal)}")
             SummaryLine(label = "Shipping", value = "$${String.format("%.2f", order.shipping)}")
             SummaryLine(label = "Tax", value = "$${String.format("%.2f", order.tax)}")
@@ -239,7 +259,11 @@ fun PriceSummaryCard(order: Order) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Total", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "Total",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
                 Text(
                     text = "$${String.format("%.2f", order.total)}",
                     style = MaterialTheme.typography.titleMedium,
@@ -255,6 +279,10 @@ fun PriceSummaryCard(order: Order) {
 fun SummaryLine(label: String, value: String) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(text = label, style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
-        Text(text = value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium
+        )
     }
 }

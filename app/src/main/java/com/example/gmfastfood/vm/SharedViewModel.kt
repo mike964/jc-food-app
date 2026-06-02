@@ -141,4 +141,12 @@ class SharedViewModel(
     fun updateAddress (address: UserAddress) {
         _addresses.value = _addresses.value.map { if (it.id == address.id) address else it }
     }
+
+    private val _orderToSubmit = MutableStateFlow<Order?>(null)
+    val orderToSubmit = _orderToSubmit.asStateFlow()
+    fun addOrderToSubmit (order: Order) {
+        _orderToSubmit.value = order
+        _orders.value += order
+    }
+
 }
