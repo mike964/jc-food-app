@@ -91,10 +91,35 @@ fun CheckoutScreen(
             ) {
                 Spacer(modifier = Modifier.height(4.dp))
 
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                Icons.Default.LocationOn,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text( "Shipping Address", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        }
+                        TextButton(onClick = { /* Handle Edit Action */ }) {
+                            Text("New Address", fontSize = 13.sp)
+                        }
+                    }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     ExposedDropdownMenuBox(
                         expanded = expanded,
@@ -141,22 +166,10 @@ fun CheckoutScreen(
                             }
                         }
 
-//                        if (addresses.isNotEmpty()) {
-//                            Column(
-//                                modifier = Modifier
-//                                    .fillMaxSize()
-//                                    .padding(paddingValues),
-//                                verticalArrangement = Arrangement.spacedBy(12.dp)
-//                            ) {
-//                                addresses.forEach {
-//                                    Text(
-//                                        text = it.fullAddress,
-//                                    )
-//                                }
-//                            }
-//                        }
 
                     }
+                }
+                    Text(selectedOption , Modifier.padding(16.dp, 8.dp))
                 }
 
                 // 1. Shipping Section
@@ -248,82 +261,4 @@ fun CheckoutScreen(
     }
 }
 
-// ==========================================
-// REUSABLE SUB-COMPONENTS
-// ==========================================
 
-@Composable
-fun CheckoutSectionCard(
-    title: String,
-    icon: ImageVector,
-    actionText: String,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                }
-                TextButton(onClick = { /* Handle Edit Action */ }) {
-                    Text(actionText, fontSize = 13.sp)
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            content()
-        }
-    }
-}
-
-@Composable
-fun OrderSummaryCard(subtotal: Double, shipping: Double, tax: Double) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Text("Order Summary", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            HorizontalDivider(color = Color(0xFFF1F1F1))
-
-            SummaryRow(label = "Subtotal", value = "$$subtotal")
-            SummaryRow(
-                label = "Shipping",
-                value = if (shipping == 0.0) "FREE" else "$$shipping",
-                valueColor = if (shipping == 0.0) Color(0xFF2E7D32) else Color.Black
-            )
-//            SummaryRow(label = "Estimated Tax", value = "$$tax")
-        }
-    }
-}
-
-@Composable
-fun SummaryRow(label: String, value: String, valueColor: Color = Color.Unspecified) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(label, color = Color.Gray, fontSize = 14.sp)
-        Text(value, fontWeight = FontWeight.Medium, fontSize = 14.sp, color = valueColor)
-    }
-}

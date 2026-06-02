@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.auth.AuthFlowContainer
 import com.example.gmfastfood.auth.AuthViewModel
 import com.example.gmfastfood.checkout.CheckoutScreen
+import com.example.gmfastfood.checkout.OrderDetailsScreen
 import com.example.gmfastfood.extra.SearchScreen2
 import com.example.gmfastfood.home.HomeScreen
 import com.example.gmfastfood.order.OrdersScreen
@@ -144,21 +145,38 @@ fun MainScreen() {
                         viewModel = sharedViewModel,
                         cartViewModel = cartViewModel,
                         onBackClicked = { navController.popBackStack() },
-                        onOrderPlaced = { navController.navigate(Routes.Home) }
+                        onOrderPlaced = { navController.navigate(Routes.OrderDetails) }
+                    )
+                }
+                composable<Routes.OrderDetails> {
+                    val sharedViewModel: SharedViewModel =
+                        navController.getSharedViewModel(Routes.MainGraph)
+                    val orderDetails = null
+                    OrderDetailsScreen(
+                        // orderDetails : SharedViewModel.OrderDetails,
+                      onBackClick = { navController.popBackStack() }
                     )
                 }
                 composable<Routes.Orders> {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
-                    OrdersScreen( onOrderClick = { }, onBackClick = { navController.popBackStack() }, viewModel = sharedViewModel)
+                    OrdersScreen(
+                        onOrderClick = { },
+                        onBackClick = { navController.popBackStack() },
+                        viewModel = sharedViewModel
+                    )
                 }
                 composable<Routes.Addresses> {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
 //                    AddressEditScreen( initialAddress = null, onBackClick = { navController.popBackStack() }, onSaveClick = { })
                     AddressListScreen(
-                        viewModel = sharedViewModel ,
-                       selectedAddressId = null, onBackClick = { navController.popBackStack() }, onAddressSelect = { }, onEditClick = { }, onAddNewAddressClick = { })
+                        viewModel = sharedViewModel,
+                        selectedAddressId = null,
+                        onBackClick = { navController.popBackStack() },
+                        onAddressSelect = { },
+                        onEditClick = { },
+                        onAddNewAddressClick = { })
                 }
 //                composable<Routes.Orders> {
 //                    val sharedViewModel: SharedViewModel =
@@ -166,7 +184,7 @@ fun MainScreen() {
 //                    OrdersScreen2(   onOrderClick = { }, onTrackOrderClick = { } )
 //                }
                 composable<Routes.Profile> {
-                    AuthFlowContainer(authViewModel, navController )
+                    AuthFlowContainer(authViewModel, navController)
 //                    LoginPanelScreen( onLoginTriggered = { user, pass -> } )
 //                    LoginScreen( onLoginSubmitted = { user, pass -> navController.navigate(Routes.Home) } )
 //                    MainCatalogScreenWithCart()
@@ -199,7 +217,6 @@ fun BadgeBox(x0: ImageVector, label: String, cartTotalItems: Int) {
         )
     }
 }
-
 
 
 data class NavItem(
