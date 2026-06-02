@@ -14,13 +14,13 @@
 [x] When click sign in load fake user 
 [x] Make app authenticated by default. 
 
-[ ] Submit new order to user.profile.orders
-[ ] Display sample order in profile.my_orders 
+[x] Submit new order to user.profile.orders     6/2/2026
+[x] Display sample order in profile.my_orders 
 [ ] On click food item show details popup 
-[ ] Select address before submit. 
+[x] Select address before submit                   6/2/2026
 [ ] Integrate Leaflet api for free maps 
 
-[] Add user sample addresses in profile n select one when submitting order.  
+[x] Add user sample addresses in profile n select one when submitting order  6/2/2026  
 [x] Load orders from view model 
 [x] Change jump button pills to filters   5/31/2026
 [ ] Display address on Google Maps (Later)
