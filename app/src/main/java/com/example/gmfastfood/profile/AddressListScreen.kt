@@ -17,7 +17,6 @@ import com.example.gmfastfood.vm.SharedViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddressListScreen(
-
     selectedAddressId: String?,
     onBackClick: () -> Unit,
     onAddressSelect: (SavedAddress) -> Unit,
@@ -27,6 +26,7 @@ fun AddressListScreen(
 ) {
     val addresses = viewModel.addresses.collectAsState().value
     var showAddAddressDialog by remember { mutableStateOf(false) }
+    var newAddressText by remember { mutableStateOf("") }
     var selectedAddress by remember { mutableStateOf<SavedAddress?>(null) }
 
     Scaffold(
@@ -48,7 +48,7 @@ fun AddressListScreen(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = onAddNewAddressClick,
+                onClick = { showAddAddressDialog = true },
                 icon = { Icon(Icons.Default.Add, contentDescription = null) },
                 text = { Text("Add New") },
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -57,6 +57,11 @@ fun AddressListScreen(
             )
         }
     ) { paddingValues ->
+        if (showAddAddressDialog) {
+            NewAddressDialog(
+                onDismiss = { showAddAddressDialog = false },
+            )
+        }
         if (addresses.isEmpty()) {
             EmptyAddressState(
                 modifier = Modifier.padding(paddingValues),
