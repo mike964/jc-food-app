@@ -19,6 +19,8 @@
 [ ] On click food item show details popup 
 [x] Select address before submit                   6/2/2026
 [ ] Integrate Leaflet api for free maps 
+[ ] Order is preparing animation effect 
+[ ] Place order animation effect for 2000 ms
 
 [x] Add user sample addresses in profile n select one when submitting order  6/2/2026  
 [x] Load orders from view model 

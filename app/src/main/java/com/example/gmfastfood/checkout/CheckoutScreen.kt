@@ -71,6 +71,7 @@ fun CheckoutScreen(
             note = ""
         )
         viewModel.addOrderToSubmit(order)
+        cartViewModel.clearCart()
         onOrderPlaced()  // Navigate to Order details screen
     }
 

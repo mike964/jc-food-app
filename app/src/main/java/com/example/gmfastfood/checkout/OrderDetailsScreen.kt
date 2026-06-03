@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -48,7 +47,7 @@ val sampleOrder = Order(
 // --- Main Composable ---
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit) {
+fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit, onHomeClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -111,12 +110,13 @@ fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit) {
             // 6. Actions
             item {
                 Button(
-                    onClick = { /* Handle tracking/support */ },
+                    onClick = {   onHomeClick()   },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                 ) {
-                    Text("Track Live Shipment")
+//                    Text("Track live shipment")
+                    Text("Home Screen")
                 }
             }
         }

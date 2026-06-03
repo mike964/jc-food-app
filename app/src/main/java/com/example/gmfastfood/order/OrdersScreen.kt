@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.gmfastfood.data.Order
-import com.example.gmfastfood.data.sampleOrders2
 import com.example.gmfastfood.vm.SharedViewModel
 import androidx.compose.runtime.collectAsState
 
@@ -28,7 +27,7 @@ fun OrdersScreen(
 //    orders: List<Order>,
     onOrderClick: (String) -> Unit,
     onBackClick: () -> Unit,
-    viewModel: SharedViewModel,
+    viewModel: SharedViewModel
 ) {
     val orders = viewModel.orders.collectAsState().value
 
