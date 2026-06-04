@@ -28,7 +28,10 @@
 [ ] Display address on Google Maps (Later)
 [ ] User can select his address on google maps before submit order
 Save 3rd address to viewmodel - address crud in view model
-[ ] Run first Leaflet maps example 
+[x] Run first Leaflet maps example - show first map on emulator 6/4/2026
+[x] Display selected point coordinates 
+[ ] User click new address -> Leaflet map popup -> user select point -> new address coordinates get saved
+
 
 # Later
 ------------------------------------

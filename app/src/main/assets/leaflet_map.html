@@ -12,9 +12,11 @@
 <body>
 <div id="map"></div>
     <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
+     //   var map = L.map('map').setView([51.505, -0.09], 13);  // London
+        var map = L.map('map').setView([32.59665920995979
+, 44.02086555027], 14);   // Karbala
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 20,
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
