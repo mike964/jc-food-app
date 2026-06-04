@@ -109,6 +109,8 @@ fun AddressRowItem(
 //                        color = MaterialTheme.colorScheme.onSurfaceVariant
 //                    )
 //                }
+                Text(text = address.latitude.toString())
+                Text(text = address.longitude.toString())
 
                 if (address.note.isNotBlank()) {
                     Text(

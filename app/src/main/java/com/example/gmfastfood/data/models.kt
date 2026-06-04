@@ -21,8 +21,8 @@ data class UserAddress(
     val fullAddress: String,
     val note: String = "",
 //    val notesToDriver: String?,
-//    val latitude: Double,
-//    val longitude: Double,
+    val latitude: Double?,
+    val longitude: Double?,
     val isDefault: Boolean = false
 )
 

@@ -2,6 +2,7 @@ package com.example.gmfastfood.profile
 
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +18,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.gmfastfood.map.LeafletMap
 
 
 @Composable
@@ -32,6 +33,7 @@ fun NewAddressDialog(
     newAddressNote: String,
     onAddressChange: (String) -> Unit,
     onLabelChange: (String) -> Unit,
+    onSelectedLocation: (Double, Double) -> Unit,
     // isEditing: Boolean = false
 ) {
     // The Popup / Dialog
@@ -68,6 +70,11 @@ fun NewAddressDialog(
                     placeholder = { Text("Full address...") },
                     modifier = Modifier.fillMaxWidth()
                 )
+
+                Box(modifier = Modifier.fillMaxWidth().height(400.dp)) {
+                    LeafletMap( startingLocation = "",
+                        onLocationSelected = { lat, lng -> onSelectedLocation(lat, lng)   } )
+                }
 
              Row{
                  Button(

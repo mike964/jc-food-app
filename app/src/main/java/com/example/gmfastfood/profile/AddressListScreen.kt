@@ -33,6 +33,10 @@ fun AddressListScreen(
     var newAddressLabel by remember { mutableStateOf("") }
 //    var selectedAddress by remember { mutableStateOf<SavedAddress?>(null) }
 
+    var clickedLocation by remember { mutableStateOf("No location clicked yet") }
+    var selectedPointLat by remember { mutableDoubleStateOf(0.0) }
+    var selectedPointLng by remember { mutableDoubleStateOf(0.0) }
+
 
 //    LaunchedEffect(selectedAddressId) {
 //        selectedAddress = addresses.find { it.id == selectedAddressId }
@@ -45,7 +49,9 @@ fun AddressListScreen(
                 label = newAddressLabel,
                 fullAddress = newAddressText,
                 note = newAddressNote,
-                isDefault = false
+                isDefault = false,
+                latitude = selectedPointLat,
+                longitude = selectedPointLng
             )
             viewModel.addAddress(newAddress)
         }
@@ -94,6 +100,11 @@ fun AddressListScreen(
                 newAddressNote = newAddressNote,
                 onAddressChange = { newAddressText = it },
                 onLabelChange = { newAddressLabel = it },
+//                onNoteChange = { newAddressNote = it }
+                onSelectedLocation = { lat, lng ->
+                    selectedPointLat = lat
+                    selectedPointLng = lng
+                }
             )
         }
         if (addresses.isEmpty()) {

@@ -30,7 +30,7 @@
 Save 3rd address to viewmodel - address crud in view model
 [x] Run first Leaflet maps example - show first map on emulator 6/4/2026
 [x] Display selected point coordinates 
-[ ] User click new address -> Leaflet map popup -> user select point -> new address coordinates get saved
+[x] User click new address -> Leaflet map popup -> user select point -> new address coordinates get saved  3:06 PM 6/4/2026
 
 
 # Later

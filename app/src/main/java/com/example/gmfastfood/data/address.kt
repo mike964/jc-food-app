@@ -6,13 +6,17 @@ val sampleAddresses = listOf(
         label = "Home",
         fullAddress = "123 Main St, Apt 4B",
         note = "Ring bell twice, leave at reception",
-        isDefault = true
+        isDefault = true,
+        latitude = 37.7749,
+        longitude = -122.4194
     ),
     UserAddress(
         id = "2",
         label = "Work",
         fullAddress = "324 Main St, Apt 2C",
         note = "No need for extra stuff",
-        isDefault = false
-    )
+        isDefault = false,
+        latitude = 37.7749,
+        longitude = -122.4194
+    ),
 )
