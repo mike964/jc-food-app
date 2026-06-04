@@ -28,6 +28,7 @@
 [ ] Display address on Google Maps (Later)
 [ ] User can select his address on google maps before submit order
 Save 3rd address to viewmodel - address crud in view model
+[ ] Run first Leaflet maps example 
 
 # Later
 ------------------------------------
@@ -46,3 +47,5 @@ Simple API. No firebase. Just json.
 Simple Auth 
 fake api - Loading affect
 jetpack compose select address on map
+
+let's catch when a user clicks anywhere on the Leaflet map and send those exact coordinates back to Jetpack Compose:

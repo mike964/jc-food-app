@@ -271,10 +271,10 @@ fun CheckoutScreen(
                         Text("Place Order", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
 
-                    AnimatedSubmitButton(
-                        isLoading = false,
-                        onClick = { handleSubmitOrder() }
-                    )
+//                    AnimatedSubmitButton(
+//                        isLoading = false,
+//                        onClick = { handleSubmitOrder() }
+//                    )
                 }
             }
         }
