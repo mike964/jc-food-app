@@ -43,9 +43,7 @@ fun LeafletMap(
                     WebAppInterface(onLocationSelected),
                     "AndroidBridge" // The variable name available in JS
                 )
-
 //                loadUrl("file:///android_asset/leaflet_map.html")
-
             }
         },
         update = { webView ->

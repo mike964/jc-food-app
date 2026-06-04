@@ -1,6 +1,7 @@
 package com.example.gmfastfood.map
 
 import android.annotation.SuppressLint
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Arrangement
@@ -103,6 +104,12 @@ fun LeafletMapScreen(
             modifier = Modifier.fillMaxSize(),
             factory = { context ->
                 WebView(context).apply {
+                    // The 3 lines below are essential for maps to display
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+
                     webViewClient = object : WebViewClient() {
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
@@ -120,8 +127,9 @@ fun LeafletMapScreen(
                     }
 
                     // Feed structured string layout data safely
+//                   loadDataWithBaseURL("https://localhost", "file:///android_asset/leaflet_map2", "text/html", "UTF-8", null)
                     loadDataWithBaseURL("https://localhost", leafletHtml, "text/html", "UTF-8", null)
-                    webViewInstance = this
+                     webViewInstance = this
                 }
             },
             update = {

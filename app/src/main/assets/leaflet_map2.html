@@ -1,0 +1,46 @@
+  <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <style>
+                html, body, #map { height: 100%; width: 100%; margin: 0; padding: 0; }
+            </style>
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        </head>
+        <body>
+            <div id="map"></div>
+            <script>
+                var map;
+                var currentMarker;
+
+                function initMap(lat, lng, zoom) {
+                    // Initialize Map instance hooked to our div container
+                    map = L.map('map').setView([lat, lng], zoom);
+                    
+                    // Add OpenStreetMap Standard Tile Layer
+                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(map);
+
+                    // Drop primary starting point marker
+                    currentMarker = L.marker([lat, lng]).addTo(map);
+                }
+
+                function updateLocation(lat, lng, zoom) {
+                    if (map) {
+                        // Smoothly transition view window to target coordinates
+                        map.setView([lat, lng], zoom);
+                        
+                        // Shift marker position safely
+                        if (currentMarker) {
+                            currentMarker.setLatLng([lat, lng]);
+                        } else {
+                            currentMarker = L.marker([lat, lng]).addTo(map);
+                        }
+                    }
+                }
+            </script>
+        </body>
+        </html>
