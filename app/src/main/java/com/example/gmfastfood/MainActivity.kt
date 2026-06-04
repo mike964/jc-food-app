@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gmfastfood.map.HtmlWebViewScreen
+import com.example.gmfastfood.map.LocalHtmlWebView
 import com.example.gmfastfood.map.MapExample
 import com.example.gmfastfood.ui.theme.GMFastFoodTheme
 
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
 //                }
 //                MainScreen()  // Main App
 //                MapExample()
-                HtmlWebViewScreen()
+//                HtmlWebViewScreen()
+                LocalHtmlWebView( fileName = "leaflet_map.html", modifier = Modifier)
             }
         }
     }
