@@ -270,6 +270,11 @@ fun CheckoutScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Place Order", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
+
+                    AnimatedSubmitButton(
+                        isLoading = false,
+                        onClick = { handleSubmitOrder() }
+                    )
                 }
             }
         }
