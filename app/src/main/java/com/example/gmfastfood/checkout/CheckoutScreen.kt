@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.data.Order
+import com.example.gmfastfood.profile.NewAddressDialog
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.SharedViewModel
 
@@ -59,6 +60,14 @@ fun CheckoutScreen(
     val addressOptions = addresses.map { it.fullAddress }
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(addressOptions[0]) }
+
+    var showAddAddressDialog by remember { mutableStateOf(false) }
+    var newAddressText by remember { mutableStateOf("") }
+    var newAddressNote by remember { mutableStateOf("") }
+    var newAddressLabel by remember { mutableStateOf("") }
+    var selectedPointLat by remember { mutableDoubleStateOf(0.0) }
+    var selectedPointLng by remember { mutableDoubleStateOf(0.0) }
+
 
     fun handleSubmitOrder() {
         val order = Order(
@@ -91,6 +100,28 @@ fun CheckoutScreen(
             )
         }
     ) { paddingValues ->
+        if (showAddAddressDialog) {
+            NewAddressDialog(
+                onSaveClick = { onSaveNewAddressClick() },
+                onDismiss = {
+                    showAddAddressDialog = false
+                    // Clear text fields after dismiss
+                    newAddressText = ""
+                    newAddressNote = ""
+                    newAddressLabel = ""
+                },
+                newAddressLabel = newAddressLabel,
+                newAddressText = newAddressText,
+                newAddressNote = newAddressNote,
+                onAddressChange = { newAddressText = it },
+                onLabelChange = { newAddressLabel = it },
+//                onNoteChange = { newAddressNote = it }
+                onSelectedLocation = { lat, lng ->
+                    selectedPointLat = lat
+                    selectedPointLng = lng
+                }
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -130,7 +161,9 @@ fun CheckoutScreen(
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("Shipping Address", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                         }
-                        TextButton(onClick = { /* Handle Edit Action */ }) {
+                        TextButton(onClick = {
+                            showAddAddressDialog = true
+                        }) {
                             Text("New Address", fontSize = 13.sp)
                         }
                     }
@@ -313,6 +346,9 @@ fun CheckoutScreen(
             }
         }
     }
+}
+
+fun onSaveNewAddressClick() {
 }
 
 

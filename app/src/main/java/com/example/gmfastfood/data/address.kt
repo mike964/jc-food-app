@@ -16,7 +16,7 @@ val sampleAddresses = listOf(
         fullAddress = "324 Main St, Apt 2C",
         note = "No need for extra stuff",
         isDefault = false,
-        latitude = 37.7749,
-        longitude = -122.4194
+        latitude = 32.59665920995979,
+        longitude = 44.02086555027
     ),
 )

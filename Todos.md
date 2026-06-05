@@ -52,3 +52,6 @@ fake api - Loading affect
 jetpack compose select address on map
 
 let's catch when a user clicks anywhere on the Leaflet map and send those exact coordinates back to Jetpack Compose:
+Karbala center coordinates 
+Lat : 32.596659 2099 5979
+Lng : 44.02086 555 027
