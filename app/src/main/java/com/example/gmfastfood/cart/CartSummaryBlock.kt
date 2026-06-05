@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
@@ -39,31 +40,32 @@ fun CartSummaryBlock(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text("Subtotal")
                 Text(String.format("%.0f", subtotal))
             }
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                Text("Shipping")
-                Text(if (shipping == 0.0) "FREE" else String.format("%.2f", shipping))
-            }
+//            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+//                Text("Shipping")
+//                Text(if (shipping == 0.0) "FREE" else String.format("%.2f", shipping))
+//            }
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 4.dp),
                 thickness = DividerDefaults.Thickness,
                 color = DividerDefaults.color
             )
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                Text("Total", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
-                Text("IQD ${String.format("%.0f", total)}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
-            }
+//            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+//                Text("Total", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
+//                Text("IQD ${String.format("%.0f", total)}", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
+//            }
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = onCheckoutClick,
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium
+                modifier = Modifier.fillMaxWidth().height(50.dp),
+//                shape = MaterialTheme.shapes.medium
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Text("Proceed to Checkout", modifier = Modifier.padding(vertical = 4.dp))
             }

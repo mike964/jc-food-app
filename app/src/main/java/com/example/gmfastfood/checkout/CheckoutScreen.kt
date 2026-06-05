@@ -14,10 +14,12 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,8 +44,8 @@ import com.example.gmfastfood.vm.SharedViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckoutScreen(
-    onBackClicked: () -> Unit ,
-    onOrderPlaced: () -> Unit  ,
+    onBackClicked: () -> Unit,
+    onOrderPlaced: () -> Unit,
     viewModel: SharedViewModel,
     cartViewModel: CartViewModel,
 ) {
@@ -51,13 +53,14 @@ fun CheckoutScreen(
     val cartItems = cartViewModel.uiState.collectAsState().value.cartItems
     val cartTotal = cartItems.sumOf { it.price * it.quantity }
     val cartTotalFormatted = String.format("%.2f", cartTotal)
+    val shipping = 2000.0
 
     var addresses by remember { mutableStateOf(viewModel.addresses.value) }
     val addressOptions = addresses.map { it.fullAddress }
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(addressOptions[0]) }
 
-    fun handleSubmitOrder(){
+    fun handleSubmitOrder() {
         val order = Order(
             id = "12345",
             date = "June 2, 2026",
@@ -125,39 +128,39 @@ fun CheckoutScreen(
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text( "Shipping Address", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                            Text("Shipping Address", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                         }
                         TextButton(onClick = { /* Handle Edit Action */ }) {
                             Text("New Address", fontSize = 13.sp)
                         }
                     }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                     ) {
-                        OutlinedTextField(
-                            // The menuAnchor modifier links the TextField to the dropdown behavior
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth(),
-                            readOnly = true,
-                            value = selectedOption,
-                            onValueChange = {},
-                            label = { Text("Select an option") },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
-                        )
+                        ExposedDropdownMenuBox(
+                            expanded = expanded,
+                            onExpandedChange = { expanded = !expanded }
+                        ) {
+                            OutlinedTextField(
+                                // The menuAnchor modifier links the TextField to the dropdown behavior
+                                modifier = Modifier
+                                    .menuAnchor()
+                                    .fillMaxWidth(),
+                                readOnly = true,
+                                value = selectedOption,
+                                onValueChange = {},
+                                label = { Text("Select an option") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                            )
 
-                        if (addresses.isNotEmpty()) {
-                            ExposedDropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false }
-                            ) {
+                            if (addresses.isNotEmpty()) {
+                                ExposedDropdownMenu(
+                                    expanded = expanded,
+                                    onDismissRequest = { expanded = false }
+                                ) {
 //                            options.forEach { selectionOption ->
 //                                DropdownMenuItem(
 //                                    text = { Text(selectionOption) },
@@ -168,23 +171,23 @@ fun CheckoutScreen(
 //                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
 //                                )
 //                            }
-                                addresses.forEach { selectionOption ->
-                                    DropdownMenuItem(
-                                        text = { Text(selectionOption.fullAddress) },
-                                        onClick = {
-                                            selectedOption = selectionOption.fullAddress
-                                            expanded = false
-                                        },
-                                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                                    )
+                                    addresses.forEach { selectionOption ->
+                                        DropdownMenuItem(
+                                            text = { Text(selectionOption.fullAddress) },
+                                            onClick = {
+                                                selectedOption = selectionOption.fullAddress
+                                                expanded = false
+                                            },
+                                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                                        )
+                                    }
                                 }
                             }
+
+
                         }
-
-
                     }
-                }
-                    Text(selectedOption , Modifier.padding(16.dp, 8.dp))
+                    Text(selectedOption, Modifier.padding(16.dp, 8.dp))
                 }
 
                 // 1. Shipping Section
@@ -246,11 +249,42 @@ fun CheckoutScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Total Due:", fontSize = 14.sp, color = Color.Gray)
+                        Text("Subtotal:", fontSize = 14.sp, color = Color.Gray)
                         Text(
-                            "$1,279.23",
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.ExtraBold,
+                            text = String.format("%.0f", cartTotal),
+//                            fontSize = 22.sp,
+//                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Shipping")
+                        Text(if (shipping == 0.0) "FREE" else String.format("%.0f", shipping))
+                    }
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        thickness = DividerDefaults.Thickness,
+                        color = DividerDefaults.color
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Total",
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Text(
+                            "IQD ${String.format("%.0f", cartTotal)}",
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
