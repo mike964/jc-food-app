@@ -47,7 +47,7 @@ fun NewAddressDialog(
             modifier = Modifier
                 .fillMaxWidth()
 //                .padding(4.dp),
-           , shape = RoundedCornerShape(16.dp),
+            , shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
@@ -71,29 +71,34 @@ fun NewAddressDialog(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Box(modifier = Modifier.fillMaxWidth().height(400.dp)) {
-                    LeafletMap( startingLocation = "",
-                        onLocationSelected = { lat, lng -> onSelectedLocation(lat, lng)   } )
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)) {
+                    LeafletMap(
+                        startingLocation = "",
+                        onLocationSelected = { lat, lng ->
+                            onSelectedLocation(lat, lng)
+                        })
                 }
 
-             Row{
-                 Button(
-                     onClick = {
-                         // TODO: Save your note to the database or viewmodel here
-                         onSaveClick()
-                         onDismiss()
-                     }
-                 ) {
-                     Text("Save")
-                 }
-                 TextButton(
-                     onClick = {
-                         onDismiss()
-                     }
-                 ) {
-                     Text("Cancel")
-                 }
-             }
+                Row {
+                    Button(
+                        onClick = {
+                            // TODO: Save your note to the database or viewmodel here
+                            onSaveClick()
+                            onDismiss()
+                        }
+                    ) {
+                        Text("Save")
+                    }
+                    TextButton(
+                        onClick = {
+                            onDismiss()
+                        }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
             }
         }
     }

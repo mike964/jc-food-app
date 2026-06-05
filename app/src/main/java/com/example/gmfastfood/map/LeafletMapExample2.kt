@@ -28,8 +28,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun LeafletMapScreen(
-    latitude: Double,
-    longitude: Double,
+    latitude: Double?,
+    longitude: Double?,
     zoomLevel: Int = 13,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {

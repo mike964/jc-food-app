@@ -26,11 +26,11 @@ class MainActivity : ComponentActivity() {
 //                        modifier = Modifier.padding(innerPadding)
 //                    )
 //                }
-//                MainScreen()  // Main App
+                MainScreen()  // Main App
 //                LeafletMapExample()
 //                HtmlWebViewScreen()
 //                LocalHtmlWebView( fileName = "leaflet_map.html", modifier = Modifier)
-                MapContainerDemo()
+//                MapContainerDemo()
             }
         }
     }

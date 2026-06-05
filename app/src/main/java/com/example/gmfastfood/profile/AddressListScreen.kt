@@ -28,6 +28,7 @@ fun AddressListScreen(
 ) {
     val addresses = viewModel.addresses.collectAsState().value
     var showAddAddressDialog by remember { mutableStateOf(false) }
+    var showAddressDetailsPopup by remember { mutableStateOf(false) }
     var newAddressText by remember { mutableStateOf("") }
     var newAddressNote by remember { mutableStateOf("") }
     var newAddressLabel by remember { mutableStateOf("") }
@@ -36,6 +37,8 @@ fun AddressListScreen(
     var clickedLocation by remember { mutableStateOf("No location clicked yet") }
     var selectedPointLat by remember { mutableDoubleStateOf(0.0) }
     var selectedPointLng by remember { mutableDoubleStateOf(0.0) }
+
+    var selectedAddress by remember { mutableStateOf<UserAddress?>(null) }
 
 
 //    LaunchedEffect(selectedAddressId) {
@@ -56,6 +59,7 @@ fun AddressListScreen(
             viewModel.addAddress(newAddress)
         }
     }
+
 
     Scaffold(
         topBar = {
@@ -85,6 +89,12 @@ fun AddressListScreen(
             )
         }
     ) { paddingValues ->
+        if (showAddressDetailsPopup && selectedAddress != null) {
+            AddressDetailsPopup(
+                address = selectedAddress!!,
+                onDismiss = { showAddressDetailsPopup = false })
+        }
+
         if (showAddAddressDialog) {
             NewAddressDialog(
                 onSaveClick = { onSaveNewAddressClick() },
@@ -123,6 +133,10 @@ fun AddressListScreen(
                 items(addresses, key = { it.id }) { address ->
                     AddressRowItem(
                         address = address,
+                        onClick = {
+                            selectedAddress = address
+                            showAddressDetailsPopup = true
+                        },
                         isSelected = address.id == selectedAddressId,
                         onSelect = {
                             //   onAddressSelect(address)

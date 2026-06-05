@@ -23,7 +23,8 @@ fun AddressRowItem(
     address: UserAddress,
     isSelected: Boolean,
     onSelect: () -> Unit,
-    onEdit: () -> Unit
+    onEdit: () -> Unit,
+    onClick: () -> Unit
 ) {
     // Dynamic matching of preset label types to relevant app icons
     val labelIcon: ImageVector = remember(address.label) {
@@ -35,6 +36,7 @@ fun AddressRowItem(
     }
 
     Card(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onSelect() },
