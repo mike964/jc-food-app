@@ -17,17 +17,13 @@ import com.example.gmfastfood.vm.SharedViewModel
 import androidx.compose.runtime.collectAsState
 
 
-
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrdersScreen(
 //    orders: List<Order>,
     onOrderClick: (String) -> Unit,
     onBackClick: () -> Unit,
-    viewModel: SharedViewModel
+    viewModel: SharedViewModel,
 ) {
     val orders = viewModel.orders.collectAsState().value
 
@@ -51,10 +47,11 @@ fun OrdersScreen(
             )
         }
     ) { innerPadding ->
+
         if (orders.isEmpty()) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
+//                    .fillMaxSize()
                     .padding(innerPadding),
                 contentAlignment = Alignment.Center
             ) {
@@ -70,93 +67,15 @@ fun OrdersScreen(
             ) {
                 items(orders, key = { it.id }) { order ->
                     OrderCard(order = order, onClick = { onOrderClick(order.id) })
+                    ExpandableCard(
+                        "Example", "This is an example of an expandable card",
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("This is an example of an expandable card")
+                    }
                 }
+
             }
         }
     }
 }
-
-@SuppressLint("DefaultLocale")
-@Composable
-fun OrderCard(
-    order: Order,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    ElevatedCard(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            // Header: Order ID & Date
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = "Order #${order.id}",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = order.date,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-//                StatusBadge(status = order.status)
-            }
-
-            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
-
-            // Items Summary
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                order.items.take(2).forEach { item ->
-                    Text(
-                        text = "${item.quantity}x ${item.title}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-                if (order.items.size > 2) {
-                    Text(
-                        text = "+${order.items.size - 2} more items",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-            }
-
-            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
-
-            // Footer: Total
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Total Amount",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "$${String.format("%.0f", order.total)}",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-        }
-    }
-}
-
