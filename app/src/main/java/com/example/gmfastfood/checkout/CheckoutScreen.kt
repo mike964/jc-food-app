@@ -37,6 +37,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gmfastfood.data.Order
+import com.example.gmfastfood.data.UserAddress
+import com.example.gmfastfood.data.generateRandomId
 import com.example.gmfastfood.profile.NewAddressDialog
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.SharedViewModel
@@ -68,6 +70,28 @@ fun CheckoutScreen(
     var selectedPointLat by remember { mutableDoubleStateOf(0.0) }
     var selectedPointLng by remember { mutableDoubleStateOf(0.0) }
 
+    fun onSaveNewAddress(){
+        val newAddress = UserAddress(
+            id = generateRandomId(),
+            label = newAddressLabel,
+            fullAddress = newAddressText,
+            note = newAddressNote,
+            isDefault = false,
+            latitude = selectedPointLat,
+            longitude = selectedPointLng
+        )
+        viewModel.addAddress(newAddress)
+        addresses = viewModel.addresses.value
+        expanded = false
+        selectedOption = newAddressText
+        showAddAddressDialog = false
+        // Clear text fields after dismiss
+        newAddressText = ""
+        newAddressNote = ""
+        newAddressLabel = ""
+        selectedPointLat = 0.0
+        selectedPointLng = 0.0
+    }
 
     fun handleSubmitOrder() {
         val order = Order(
@@ -102,7 +126,9 @@ fun CheckoutScreen(
     ) { paddingValues ->
         if (showAddAddressDialog) {
             NewAddressDialog(
-                onSaveClick = { onSaveNewAddressClick() },
+                onSaveClick = {
+                    onSaveNewAddress()
+                },
                 onDismiss = {
                     showAddAddressDialog = false
                     // Clear text fields after dismiss
@@ -347,8 +373,4 @@ fun CheckoutScreen(
         }
     }
 }
-
-fun onSaveNewAddressClick() {
-}
-
 

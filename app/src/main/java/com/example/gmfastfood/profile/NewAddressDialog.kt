@@ -19,9 +19,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.gmfastfood.map.LeafletMap
+import org.intellij.lang.annotations.JdkConstants
 
 
 @Composable
@@ -54,16 +56,18 @@ fun NewAddressDialog(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text("New Address")
+                Text("New Address",
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(
                     value = newAddressLabel,
                     onValueChange = onLabelChange,
                     placeholder = { Text("Label...") },
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = newAddressText,
                     onValueChange = onAddressChange,
