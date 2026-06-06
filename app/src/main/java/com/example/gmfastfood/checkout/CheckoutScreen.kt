@@ -96,7 +96,7 @@ fun CheckoutScreen(
     fun handleSubmitOrder() {
         val order = Order(
             id = "12345",
-            date = "June 2, 2026",
+            createdAt = System.currentTimeMillis(),
             status = "In Transit",
             items = cartItems,
             subtotal = cartTotal,

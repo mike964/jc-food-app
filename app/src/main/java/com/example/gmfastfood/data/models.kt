@@ -75,7 +75,7 @@ data class OrderItem2(
 
 data class Order(
     val id: String,
-    val date: String,
+    val createdAt: Long, // timestamp milliseconds
     val status: String,
     val items: List<CartItem>,
     val subtotal: Double,

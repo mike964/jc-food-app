@@ -30,7 +30,7 @@ import com.example.gmfastfood.data.OrderItem
 // --- Sample Data ---
 val sampleOrder = Order(
     id = "#ORD-95821",
-    date = "June 2, 2026",
+    createdAt =  1780325392000 ,
     status = "In Transit",
     items = listOf(
         CartItem( 1, "Sandwich Super", "1", 6.99, null),
@@ -148,7 +148,7 @@ fun OrderHeader(order: Order) {
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Placed on ${order.date}",
+                text = "Placed on ${order.createdAt}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
