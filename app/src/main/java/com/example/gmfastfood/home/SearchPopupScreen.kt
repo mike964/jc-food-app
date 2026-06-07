@@ -107,9 +107,10 @@ fun SearchPopupScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Action Layout
+                /*
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -136,6 +137,8 @@ fun SearchPopupScreen(
                         Text("Discard")
                     }
                 }
+
+                 */
             }
         }
     }

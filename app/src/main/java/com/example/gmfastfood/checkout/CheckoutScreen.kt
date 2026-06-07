@@ -48,7 +48,7 @@ import com.example.gmfastfood.vm.SharedViewModel
 @Composable
 fun CheckoutScreen(
     onBackClicked: () -> Unit,
-    onOrderPlaced: () -> Unit,
+   navigateToOrderDetails: (String) -> Unit,
     viewModel: SharedViewModel,
     cartViewModel: CartViewModel,
 ) {
@@ -94,8 +94,10 @@ fun CheckoutScreen(
     }
 
     fun handleSubmitOrder() {
+        val newOrderId = generateRandomId(8)
+
         val order = Order(
-            id = generateRandomId(8),
+            id = newOrderId,
             createdAt = System.currentTimeMillis(),
             status = "In Transit",
             items = cartItems,
@@ -108,7 +110,7 @@ fun CheckoutScreen(
         )
         viewModel.addOrderToSubmit(order)
         cartViewModel.clearCart()
-        onOrderPlaced()  // Navigate to Order details screen
+        navigateToOrderDetails( newOrderId)  // Navigate to Order details screen
     }
 
 
@@ -164,6 +166,7 @@ fun CheckoutScreen(
             ) {
                 Spacer(modifier = Modifier.height(4.dp))
 
+                // 1. Shipping Section
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -220,16 +223,6 @@ fun CheckoutScreen(
                                     expanded = expanded,
                                     onDismissRequest = { expanded = false }
                                 ) {
-//                            options.forEach { selectionOption ->
-//                                DropdownMenuItem(
-//                                    text = { Text(selectionOption) },
-//                                    onClick = {
-//                                        selectedOption = selectionOption
-//                                        expanded = false
-//                                    },
-//                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-//                                )
-//                            }
                                     addresses.forEach { selectionOption ->
                                         DropdownMenuItem(
                                             text = { Text(selectionOption.fullAddress) },
@@ -242,22 +235,10 @@ fun CheckoutScreen(
                                     }
                                 }
                             }
-
-
                         }
                     }
-                    Text(selectedOption, Modifier.padding(16.dp, 8.dp))
-                }
+                    Text(selectedOption, Modifier.padding(24.dp, 8.dp),color = Color.Gray, fontSize = 13.sp)
 
-                // 1. Shipping Section
-                CheckoutSectionCard(
-                    title = "Shipping Address",
-                    icon = Icons.Default.LocationOn,
-                    actionText = "Change"
-                ) {
-                    Text("Alex Mercer", fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
-                    Text("123 Android Way, Suite 404", color = Color.Gray, fontSize = 13.sp)
-                    Text("Brooklyn, NY 11201", color = Color.Gray, fontSize = 13.sp)
                 }
 
                 // 2. Payment Section
@@ -280,11 +261,11 @@ fun CheckoutScreen(
                 }
 
                 // 3. Summary Breakdown Card
-                OrderSummaryCard(
-                    subtotal = 1184.48,
-                    shipping = 0.00,
-                    tax = 94.75
-                )
+//                OrderSummaryCard(
+//                    subtotal = 1184.48,
+//                    shipping = 0.00,
+//                    tax = 94.75
+//                )
 
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -341,7 +322,7 @@ fun CheckoutScreen(
                             style = MaterialTheme.typography.titleLarge
                         )
                         Text(
-                            "IQD ${String.format("%.0f", cartTotal)}",
+                            "IQD ${String.format("%.0f", cartTotal+shipping)}",
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary

@@ -47,7 +47,9 @@ val sampleOrder = Order(
 // --- Main Composable ---
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit, onHomeClick: () -> Unit) {
+fun OrderDetailsScreen(order: Order? , onBackClick: () -> Unit, onHomeClick: () -> Unit) {
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -60,6 +62,10 @@ fun OrderDetailsScreen(order: Order = sampleOrder, onBackClick: () -> Unit, onHo
             )
         }
     ) { paddingValues ->
+        if (order == null) {
+            Text("No order found")
+            return@Scaffold
+        }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

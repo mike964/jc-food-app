@@ -67,7 +67,7 @@ class SharedViewModel(
         }
     }
 
-    fun loadInitialAddresses () {
+    fun loadInitialAddresses() {
         viewModelScope.launch {
 //            _addresses.value = apiService.getUserAddresses()
             _addresses.value = sampleAddresses
@@ -130,23 +130,27 @@ class SharedViewModel(
     }
 
     // # Address Management
-    fun addAddress (address: UserAddress) {
+    fun addAddress(address: UserAddress) {
         _addresses.value += address
-        }
+    }
 
-    fun deleteAddress (address: UserAddress) {
+    fun deleteAddress(address: UserAddress) {
         _addresses.value -= address
     }
 
-    fun updateAddress (address: UserAddress) {
+    fun updateAddress(address: UserAddress) {
         _addresses.value = _addresses.value.map { if (it.id == address.id) address else it }
     }
 
     private val _orderToSubmit = MutableStateFlow<Order?>(null)
     val orderToSubmit = _orderToSubmit.asStateFlow()
-    fun addOrderToSubmit (order: Order) {
+    fun addOrderToSubmit(order: Order) {
         _orderToSubmit.value = order
         _orders.value += order
     }
 
+    fun getOrderById(orderId: String): Order?  {
+      return  _orders.value.find { it.id == orderId }
+    }
 }
+

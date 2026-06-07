@@ -22,7 +22,7 @@ sealed interface Routes {
 
     @Serializable data object Orders : Routes   // Tab 4
     @Serializable data object Addresses : Routes   // Tab 4
-@Serializable data object OrderDetails : Routes   // Tab 4
+    @Serializable data class OrderDetails(val orderId: String) : Routes   // Tab 4
     @Serializable data object Profile : Routes   // Tab 4
 }
 

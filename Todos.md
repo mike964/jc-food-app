@@ -32,6 +32,7 @@ Save 3rd address to viewmodel - address crud in view model
 [x] Display selected point coordinates 
 [x] User click new address -> Leaflet map popup -> user select point -> new address coordinates get saved  3:06 PM 6/4/2026
 [x] User add items to cart -> user click submit order -> Use select new address on map. Address get saved to the ViewModel.  6/6/2026
+Order is preparing animation - will be ready in 45 minutes
 
 
 # Later

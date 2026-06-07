@@ -39,10 +39,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.example.gmfastfood.auth.AuthFlowContainer
 import com.example.gmfastfood.auth.AuthViewModel
 import com.example.gmfastfood.checkout.CheckoutScreen
 import com.example.gmfastfood.checkout.OrderDetailsScreen
+import com.example.gmfastfood.checkout.sampleOrder
 import com.example.gmfastfood.extra.SearchScreen2
 import com.example.gmfastfood.home.HomeScreen
 import com.example.gmfastfood.order.OrdersScreen
@@ -139,22 +143,43 @@ fun MainScreen() {
                 }
                 composable<Routes.Checkout> {
 
+
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
+
+                    fun navigateToOrderDetails(orderId: String) {
+                        navController.navigate(Routes.OrderDetails(orderId = orderId))
+                    }
+
                     CheckoutScreen(
                         viewModel = sharedViewModel,
                         cartViewModel = cartViewModel,
                         onBackClicked = { navController.popBackStack() },
-                        onOrderPlaced = { navController.navigate(Routes.OrderDetails) }
+                        navigateToOrderDetails = { orderId ->
+                            navigateToOrderDetails(orderId)
+                        }
                     )
                 }
-                composable<Routes.OrderDetails> {
+                composable<Routes.OrderDetails> {backStackEntry ->
+                    // Extract the arguments automatically and type-safely
+                    val args = backStackEntry.toRoute<Routes.OrderDetails>()
+
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
+
+                    val order = sharedViewModel.getOrderById(args.orderId)
+
                     OrderDetailsScreen(
-                        onHomeClick = { navController.navigate(Routes.Home) },
-                      onBackClick = { navController.popBackStack() }
+                        order = order ,
+                        onBackClick = { navController.popBackStack() },
+                        onHomeClick = { navController.navigate(Routes.Home) }
                     )
+
+//                    OrderDetailsScreen(
+//                        order = sampleOrder,
+//                        onHomeClick = { navController.navigate(Routes.Home) },
+//                      onBackClick = { navController.popBackStack() }
+//                    )
                 }
                 composable<Routes.Orders> {
                     val sharedViewModel: SharedViewModel =
