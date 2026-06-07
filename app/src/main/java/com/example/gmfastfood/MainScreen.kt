@@ -39,14 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.example.gmfastfood.auth.AuthFlowContainer
 import com.example.gmfastfood.auth.AuthViewModel
 import com.example.gmfastfood.checkout.CheckoutScreen
 import com.example.gmfastfood.checkout.OrderDetailsScreen
-import com.example.gmfastfood.checkout.sampleOrder
 import com.example.gmfastfood.extra.SearchScreen2
 import com.example.gmfastfood.home.HomeScreen
 import com.example.gmfastfood.order.OrdersScreen
@@ -172,14 +169,9 @@ fun MainScreen() {
                     OrderDetailsScreen(
                         order = order ,
                         onBackClick = { navController.popBackStack() },
-                        onHomeClick = { navController.navigate(Routes.Home) }
+                        onHomeClick = { navController.navigate(Routes.Home) },
+                        onMyOrdersClick = { navController.navigate(Routes.Orders) }
                     )
-
-//                    OrderDetailsScreen(
-//                        order = sampleOrder,
-//                        onHomeClick = { navController.navigate(Routes.Home) },
-//                      onBackClick = { navController.popBackStack() }
-//                    )
                 }
                 composable<Routes.Orders> {
                     val sharedViewModel: SharedViewModel =

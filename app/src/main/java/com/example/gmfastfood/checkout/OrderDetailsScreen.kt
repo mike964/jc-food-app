@@ -30,10 +30,10 @@ import com.example.gmfastfood.data.OrderItem
 // --- Sample Data ---
 val sampleOrder = Order(
     id = "#ORD-95821",
-    createdAt =  1780325392000 ,
+    createdAt = 1780325392000,
     status = "In Transit",
     items = listOf(
-        CartItem( 1, "Sandwich Super", "1", 6.99, null),
+        CartItem(1, "Sandwich Super", "1", 6.99, null),
         CartItem(1, "Pizza ultra taste", "2", 15.49, null)
     ),
     subtotal = 279.98,
@@ -47,7 +47,12 @@ val sampleOrder = Order(
 // --- Main Composable ---
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderDetailsScreen(order: Order? , onBackClick: () -> Unit, onHomeClick: () -> Unit) {
+fun OrderDetailsScreen(
+    order: Order?,
+    onBackClick: () -> Unit,
+    onHomeClick: () -> Unit,
+    onMyOrdersClick: () -> Unit,
+) {
 
 
     Scaffold(
@@ -116,13 +121,26 @@ fun OrderDetailsScreen(order: Order? , onBackClick: () -> Unit, onHomeClick: () 
             // 6. Actions
             item {
                 Button(
-                    onClick = {   onHomeClick()   },
+                    onClick = { onHomeClick() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
 //                    Text("Track live shipment")
                     Text("Home Screen")
+                }
+                Spacer(Modifier.height(8.dp))
+                Button(
+                    onClick = { onMyOrdersClick() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Gray,       // Sets the background color
+                        contentColor = Color.White        // Sets the text/icon color
+                    )
+                ) {
+                    Text("My Orders")
                 }
             }
         }
