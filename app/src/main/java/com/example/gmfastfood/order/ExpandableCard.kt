@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,11 +45,14 @@ fun ExpandableCard(
         label = "ChevronRotation"
     )
 
-    Card(
+    ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable { isExpanded = !isExpanded }, // Toggles state on tap
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(
             modifier = Modifier

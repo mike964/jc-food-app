@@ -72,7 +72,7 @@ fun CheckoutScreen(
 
     fun onSaveNewAddress(){
         val newAddress = UserAddress(
-            id = generateRandomId(),
+            id = generateRandomId(8),
             label = newAddressLabel,
             fullAddress = newAddressText,
             note = newAddressNote,
@@ -95,7 +95,7 @@ fun CheckoutScreen(
 
     fun handleSubmitOrder() {
         val order = Order(
-            id = "12345",
+            id = generateRandomId(8),
             createdAt = System.currentTimeMillis(),
             status = "In Transit",
             items = cartItems,

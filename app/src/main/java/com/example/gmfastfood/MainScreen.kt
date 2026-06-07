@@ -160,7 +160,6 @@ fun MainScreen() {
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
                     OrdersScreen(
-                        onOrderClick = { },
                         onBackClick = { navController.popBackStack() },
                         viewModel = sharedViewModel
                     )

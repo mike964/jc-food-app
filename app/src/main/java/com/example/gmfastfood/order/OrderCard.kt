@@ -16,8 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.gmfastfood.data.FormatTimestamp
 import com.example.gmfastfood.data.Order
+import com.example.gmfastfood.data.formatTimestamp
 
 
 @SuppressLint("DefaultLocale")
@@ -51,7 +51,7 @@ fun OrderCard(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = FormatTimestamp( order.createdAt.toLong(), null).toString(),
+                        text = formatTimestamp(order.createdAt, null),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -82,7 +82,7 @@ fun OrderCard(
 
             HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
 
-            // Footer: Total
+            // Footer: Date & Total
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,

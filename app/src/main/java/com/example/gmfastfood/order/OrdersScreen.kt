@@ -21,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 @Composable
 fun OrdersScreen(
 //    orders: List<Order>,
-    onOrderClick: (String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: SharedViewModel,
 ) {
@@ -66,15 +65,11 @@ fun OrdersScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(orders, key = { it.id }) { order ->
-                    OrderCard(order = order, onClick = { onOrderClick(order.id) })
-                    ExpandableCard(
-                        "Example", "This is an example of an expandable card",
+                    OrderCardExpandable(
+                        order = order ,
                         modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("This is an example of an expandable card")
-                    }
+                    )
                 }
-
             }
         }
     }
