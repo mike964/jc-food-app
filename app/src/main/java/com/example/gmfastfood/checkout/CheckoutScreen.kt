@@ -51,6 +51,10 @@ import com.example.gmfastfood.vm.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+enum class SubmitState {
+    Idle, Loading, Success
+}
+
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,9 +102,6 @@ fun CheckoutScreen(
     // 2. Track the selected option state
     val (selectedPaymentOption, onPaymentOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
 
-
-
-
     fun onSaveNewAddress() {
         val newAddress = UserAddress(
             id = generateRandomId(8),
@@ -133,9 +134,9 @@ fun CheckoutScreen(
             status = "In Transit",
             items = cartItems,
             subtotal = cartTotal,
-            shipping = 2000.00,
+            shipping = shipping,
             tax = 0.0,
-            total = cartTotal,
+            total = cartTotal+shipping,
             address = selectedOption,
             note = ""
         )
