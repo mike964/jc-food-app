@@ -24,12 +24,16 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +52,8 @@ import com.example.gmfastfood.data.CartItem
 fun ShoppingCartContent(
     cartItems: List<CartItem>,
     onUpdateQuantity: (Int, Int) -> Unit,
-    onCheckoutClicked: () -> Unit
+    onCheckoutClicked: () -> Unit,
+    onClearCartClicked: () -> Unit,
 ) {
 //    val totalCartPrice = cartItems.sumOf { it.price * it.initialQuantity }
     val totalCartPrice = cartItems.sumOf { it.price }
@@ -57,9 +62,20 @@ fun ShoppingCartContent(
         modifier = Modifier
             .fillMaxWidth()
             .navigationBarsPadding() // Ensures structural safety clearance around navigation bars
-            .padding(horizontal = 20.dp, vertical = 8.dp)
+            .padding(horizontal = 20.dp,
+              //  vertical = 8.dp
+            )
     ) {
-        Text("Your Shopping Bag", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Shopping List", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            TextButton(onClick = { onClearCartClicked() }) {
+                Text("Clear Cart")
+            }
+        }
         Spacer(modifier = Modifier.height(12.dp))
 
         if (cartItems.isEmpty()) {
@@ -78,19 +94,31 @@ fun ShoppingCartContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(cartItems, key = { it.id }) { item ->
-                    CartItemRow(item = item, onQuantityModified = { qty -> onUpdateQuantity(item.id, qty) })
+                    CartItemRow(
+                        item = item,
+                        onQuantityModified = { qty -> onUpdateQuantity(item.id, qty) })
                 }
             }
 
-            HorizontalDivider(color = Color(0xFFF1F1F1), modifier = Modifier.padding(vertical = 16.dp))
+            HorizontalDivider(
+                color = Color(0xFFF1F1F1),
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
 
             // Subtotal Price Metadata Calculation Block
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Subtotal:", fontSize = 15.sp, color = Color.Gray, fontWeight = FontWeight.Medium)
+                Text(
+                    "Subtotal:",
+                    fontSize = 15.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Medium
+                )
                 Text(
                     //text = "$${String.format("%.2f", totalCartPrice)}",
                     text = "${String.format("%.0f", totalCartPrice)} IQD",
@@ -102,7 +130,9 @@ fun ShoppingCartContent(
 
             Button(
                 onClick = onCheckoutClicked,
-                modifier = Modifier.fillMaxWidth().height(48.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text("Proceed to Checkout", fontWeight = FontWeight.Bold)
@@ -131,7 +161,7 @@ fun CartItemRow(item: CartItem, onQuantityModified: (Int) -> Unit) {
                 painter = painterResource(item.imageUrl?.toIntOrNull() ?: R.drawable.burger),
                 contentDescription = "item image",
                 modifier = Modifier
-                       .fillMaxSize(), // Makes the Composable fill parent bounds
+                    .fillMaxSize(), // Makes the Composable fill parent bounds
                 contentScale = ContentScale.Crop
             )
         }
@@ -159,7 +189,9 @@ fun CartItemRow(item: CartItem, onQuantityModified: (Int) -> Unit) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier.background(Color(0xFFF5F5F5), CircleShape).padding(horizontal = 4.dp, vertical = 2.dp)
+            modifier = Modifier
+                .background(Color(0xFFF5F5F5), CircleShape)
+                .padding(horizontal = 4.dp, vertical = 2.dp)
         ) {
             FilledIconButton(
                 onClick = { onQuantityModified(item.quantity - 1) },
@@ -186,7 +218,12 @@ fun CartItemRow(item: CartItem, onQuantityModified: (Int) -> Unit) {
                 colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color.Transparent),
                 modifier = Modifier.size(28.dp)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Increase Quantity count", tint = Color.Black, modifier = Modifier.size(16.dp))
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "Increase Quantity count",
+                    tint = Color.Black,
+                    modifier = Modifier.size(16.dp)
+                )
             }
         }
     }

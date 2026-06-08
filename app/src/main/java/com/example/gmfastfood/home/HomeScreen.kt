@@ -260,7 +260,8 @@ fun HomeScreen(
                                     showCartBottomSheet = false
                                     /* Navigate to Checkout Screen */
                                     onCheckoutClick()
-                                }
+                                },
+                                onClearCartClicked = { cartViewModel.clearCart() }
                             )
                         }
                     }
