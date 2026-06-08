@@ -10,12 +10,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,6 +48,8 @@ import com.example.gmfastfood.data.generateRandomId
 import com.example.gmfastfood.profile.NewAddressDialog
 import com.example.gmfastfood.vm.CartViewModel
 import com.example.gmfastfood.vm.SharedViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,22 +79,25 @@ fun CheckoutScreen(
     var selectedPointLng by remember { mutableDoubleStateOf(0.0) }
 
     // 1. Define the options
-    val radioOptions = listOf("Option A", "Option B", "Option C", "Option D")
-    val paymentOptions = listOf( "Cash on Delivery", "Credit Card", "PayPal")
+    val paymentOptions = listOf("Cash on Delivery", "Credit Card", "PayPal")
+
+    var submitState by remember { mutableStateOf(SubmitState.Idle) }
+    val scope = rememberCoroutineScope()
 
     @Composable
-    fun paymentOptionIcon(option: String){
+    fun paymentOptionIcon(option: String) {
         var icon: String = ""
-        when(option){
-            "Cash on Delivery" ->  icon = "🛵"
+        when (option) {
+            "Cash on Delivery" -> icon = "🛵"
             "Credit Card" -> icon = "💳"
-            "PayPal" ->  icon = "💸"
+            "PayPal" -> icon = "💸"
         }
-        return Text(icon,fontSize = 20.sp, modifier = Modifier.padding(horizontal = 8.dp))
+        return Text(icon, fontSize = 20.sp, modifier = Modifier.padding(horizontal = 12.dp))
     }
 
     // 2. Track the selected option state
-    val (selectedPaymentOption, onPaymentOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+    val (selectedPaymentOption, onPaymentOptionSelected) = remember { mutableStateOf(paymentOptions[0]) }
+
 
 
 
@@ -126,15 +133,23 @@ fun CheckoutScreen(
             status = "In Transit",
             items = cartItems,
             subtotal = cartTotal,
-            shipping = 0.0,
+            shipping = 2000.00,
             tax = 0.0,
             total = cartTotal,
             address = selectedOption,
             note = ""
         )
-        viewModel.addOrderToSubmit(order)
-        cartViewModel.clearCart()
-        navigateToOrderDetails(newOrderId)  // Navigate to Order details screen
+        submitState = SubmitState.Loading
+        scope.launch {
+            delay(2000)
+            submitState = SubmitState.Success
+            delay(1500)
+            submitState = SubmitState.Idle
+            viewModel.addOrderToSubmit(order)
+            // Reset and Navigate to Order details screen
+            cartViewModel.clearCart()
+            navigateToOrderDetails(newOrderId)
+        }
     }
 
     Scaffold(
@@ -277,7 +292,9 @@ fun CheckoutScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(
                             // The selectableGroup modifier is great for accessibility (screen readers)
-                            modifier = Modifier.selectableGroup().padding(4.dp)
+                            modifier = Modifier
+                                .selectableGroup()
+                                .padding(4.dp)
                         ) {
 //                            Text(
 //                                "Mastercard ending in 4321",
@@ -308,8 +325,7 @@ fun CheckoutScreen(
                                     Text(
                                         text = payOption,
                                         fontWeight = FontWeight.SemiBold,
-                                        fontSize = 14.sp,
-                                        modifier = Modifier.padding(horizontal = 8.dp)
+                                        fontSize = 14.sp
                                     )
                                 }
                             }
@@ -385,18 +401,53 @@ fun CheckoutScreen(
                             .height(50.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Icon(
-                            Icons.Default.Lock,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Place Order", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        when (submitState) {
+                            SubmitState.Idle -> {
+                                Text(
+                                    text = "Submit Order", color = Color.White,
+                                    fontWeight = FontWeight.Bold, fontSize = 16.sp
+                                )
+                            }
+
+                            SubmitState.Loading -> {
+                                CircularProgressIndicator(
+                                    color = Color.White,
+                                    strokeWidth = 3.dp,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+
+                            SubmitState.Success -> {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = "Success",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(28.dp)
+                                )
+                            }
+                        }
+//                        Icon(
+//                            Icons.Default.Lock,
+//                            contentDescription = null,
+//                            modifier = Modifier.size(16.dp)
+//                        )
+//                        Spacer(modifier = Modifier.width(8.dp))
+//                        Text("Place Order", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
 
 //                    AnimatedSubmitButton(
-//                        isLoading = false,
-//                        onClick = { handleSubmitOrder() }
+//                        state = submitState,
+//                        onClick = {
+//                            scope.launch {
+//                                submitState = SubmitState.Loading
+//                                delay(2000) // Simulate Network API call
+//
+//                                submitState = SubmitState.Success
+//                                delay(1500) // Show success checkmark briefly
+//
+//                                submitState = SubmitState.Idle // Reset or navigate away
+//                            }
+//                        }
 //                    )
                 }
             }

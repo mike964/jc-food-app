@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.gmfastfood.data.CartItem
 import com.example.gmfastfood.data.Order
 import com.example.gmfastfood.data.OrderItem
+import com.example.gmfastfood.data.formatTimestamp
 
 // # Show this after order placed successfully
 // with button to go back to my orders
@@ -172,7 +173,7 @@ fun OrderHeader(order: Order) {
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Placed on ${order.createdAt}",
+                text = "Placed on ${formatTimestamp(order.createdAt , null  )}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
