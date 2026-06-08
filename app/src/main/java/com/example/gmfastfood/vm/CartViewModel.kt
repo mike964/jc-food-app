@@ -32,7 +32,7 @@ class CartViewModel : ViewModel() {
 
     init {
         // Initialize with some dummy data for demonstration
-        loadCartItems()
+//        loadCartItems()  // Just for developer test
     }
 
     private fun loadCartItems() {

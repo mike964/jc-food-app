@@ -314,10 +314,9 @@ fun CheckoutScreen(
                                             onClick = { onPaymentOptionSelected(payOption) },
                                             role = Role.RadioButton
                                         )
-                                        .padding(vertical = 8.dp),
+                                        .padding(vertical = 4.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-
                                     RadioButton(
                                         selected = (payOption == selectedPaymentOption),
                                         onClick = null // null because the Row's selectable handles the click
