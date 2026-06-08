@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -24,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +36,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +52,7 @@ import com.example.gmfastfood.vm.SharedViewModel
 @Composable
 fun CheckoutScreen(
     onBackClicked: () -> Unit,
-   navigateToOrderDetails: (String) -> Unit,
+    navigateToOrderDetails: (String) -> Unit,
     viewModel: SharedViewModel,
     cartViewModel: CartViewModel,
 ) {
@@ -70,7 +74,27 @@ fun CheckoutScreen(
     var selectedPointLat by remember { mutableDoubleStateOf(0.0) }
     var selectedPointLng by remember { mutableDoubleStateOf(0.0) }
 
-    fun onSaveNewAddress(){
+    // 1. Define the options
+    val radioOptions = listOf("Option A", "Option B", "Option C", "Option D")
+    val paymentOptions = listOf( "Cash on Delivery", "Credit Card", "PayPal")
+
+    @Composable
+    fun paymentOptionIcon(option: String){
+        var icon: String = ""
+        when(option){
+            "Cash on Delivery" ->  icon = "🛵"
+            "Credit Card" -> icon = "💳"
+            "PayPal" ->  icon = "💸"
+        }
+        return Text(icon,fontSize = 20.sp, modifier = Modifier.padding(horizontal = 8.dp))
+    }
+
+    // 2. Track the selected option state
+    val (selectedPaymentOption, onPaymentOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+
+
+
+    fun onSaveNewAddress() {
         val newAddress = UserAddress(
             id = generateRandomId(8),
             label = newAddressLabel,
@@ -110,9 +134,8 @@ fun CheckoutScreen(
         )
         viewModel.addOrderToSubmit(order)
         cartViewModel.clearCart()
-        navigateToOrderDetails( newOrderId)  // Navigate to Order details screen
+        navigateToOrderDetails(newOrderId)  // Navigate to Order details screen
     }
-
 
     Scaffold(
         topBar = {
@@ -213,7 +236,7 @@ fun CheckoutScreen(
                                 readOnly = true,
                                 value = selectedOption,
                                 onValueChange = {},
-                                label = { Text("Select an option") },
+                                label = { Text("Select an address") },
                                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
                             )
@@ -237,8 +260,12 @@ fun CheckoutScreen(
                             }
                         }
                     }
-                    Text(selectedOption, Modifier.padding(24.dp, 8.dp),color = Color.Gray, fontSize = 13.sp)
-
+                    Text(
+                        selectedOption,
+                        Modifier.padding(24.dp, 8.dp),
+                        color = Color.Gray,
+                        fontSize = 13.sp
+                    )
                 }
 
                 // 2. Payment Section
@@ -248,25 +275,47 @@ fun CheckoutScreen(
                     actionText = "Edit"
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("💳", fontSize = 20.sp, modifier = Modifier.padding(end = 8.dp))
-                        Column {
-                            Text(
-                                "Mastercard ending in 4321",
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 14.sp
-                            )
-                            Text("Expires 12/29", color = Color.Gray, fontSize = 12.sp)
+                        Column(
+                            // The selectableGroup modifier is great for accessibility (screen readers)
+                            modifier = Modifier.selectableGroup().padding(4.dp)
+                        ) {
+//                            Text(
+//                                "Mastercard ending in 4321",
+//                                fontWeight = FontWeight.SemiBold,
+//                                fontSize = 14.sp
+//                            )
+//                            Text("Expires 12/29", color = Color.Gray, fontSize = 12.sp)
+
+                            paymentOptions.forEach { payOption ->
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        // Make the entire row clickable for better UX
+                                        .selectable(
+                                            selected = (payOption == selectedPaymentOption),
+                                            onClick = { onPaymentOptionSelected(payOption) },
+                                            role = Role.RadioButton
+                                        )
+                                        .padding(vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+
+                                    RadioButton(
+                                        selected = (payOption == selectedPaymentOption),
+                                        onClick = null // null because the Row's selectable handles the click
+                                    )
+                                    paymentOptionIcon(payOption)
+                                    Text(
+                                        text = payOption,
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 14.sp,
+                                        modifier = Modifier.padding(horizontal = 8.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
-
-                // 3. Summary Breakdown Card
-//                OrderSummaryCard(
-//                    subtotal = 1184.48,
-//                    shipping = 0.00,
-//                    tax = 94.75
-//                )
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
@@ -322,7 +371,7 @@ fun CheckoutScreen(
                             style = MaterialTheme.typography.titleLarge
                         )
                         Text(
-                            "IQD ${String.format("%.0f", cartTotal+shipping)}",
+                            "IQD ${String.format("%.0f", cartTotal + shipping)}",
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary
