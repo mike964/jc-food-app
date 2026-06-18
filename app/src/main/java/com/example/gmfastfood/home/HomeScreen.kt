@@ -146,8 +146,8 @@ fun HomeScreen(
                                 color = Color(0xFF3D0606),
                             )
                             Text(
-                                "Enjoy your favourite food!", Modifier, fontSize = 15.sp,
-                                color = Color(0xFFEA7A7A),
+                                "Enjoy your favourite meals 😉", Modifier, fontSize = 15.sp,
+                                color = Color(0xFFED9797),
                                 fontWeight = FontWeight.Medium
                             )
                         }
