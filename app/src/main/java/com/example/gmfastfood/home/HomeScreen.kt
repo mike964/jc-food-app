@@ -44,9 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gmfastfood.R
 import com.example.gmfastfood.cart.ShoppingCartContent
 import com.example.gmfastfood.data.FakeApiClient
 import com.example.gmfastfood.vm.SharedViewModel
@@ -329,7 +331,7 @@ fun HomeScreen(
                         is UiState.Success -> {
                             if (activeFilters.isEmpty()) {
                                 Text(
-                                    "Popular", Modifier.padding(16.dp, 4.dp),
+                                    stringResource(  R.string.popular ), Modifier.padding(16.dp, 4.dp),
                                     fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                                 )
                                 HorizontalCardList(

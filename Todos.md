@@ -33,7 +33,8 @@ Order is preparing animation - will be ready in 45 minutes
 AM 6/18/2026
 Add Arabic language 
 Add Repository for data
-User get food data from remote API 
+User get food data from remote API with Retrofit 
+Remember. First step is just a prototype to show. 
 
 
 # Later

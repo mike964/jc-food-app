@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">GM Fast Food</string>
     <string name="welcome_message">Welcome</string>
+    <string name="greeting">Welcome John</string>
+    <string name="title">Title</string>
+    <string name="switch_language">Switch language</string>
+    <string name="popular">Popular</string>
+    <string name="my_orders">My Orders</string>
 </resources>

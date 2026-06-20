@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GM Fast Food</string>
+    <string name="welcome_message">مرحباَ بك</string>
+    <string name="greeting">اهلاَ بك</string>
+    <string name="title">العنوان</string>
+    <string name="switch_language">تغيير اللغة</string>
+    <string name="popular">شائعة</string>
+    <string name="my_orders">طلباتي</string>
+</resources>

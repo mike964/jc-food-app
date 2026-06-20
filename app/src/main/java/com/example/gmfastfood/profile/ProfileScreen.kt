@@ -1,4 +1,5 @@
 package com.example.gmfastfood.profile
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.gmfastfood.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,9 +27,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import com.example.gmfastfood.auth.LoginPopup
 import com.example.gmfastfood.auth.UserProfile
 
@@ -123,7 +126,7 @@ fun ProfileScreen(
                 Column {
                     ProfileMenuItem(
                         icon = Icons.Default.ShoppingCart,
-                        label = "My Orders"
+                        label = stringResource(id = R.string.my_orders)
                     ) {
                         onOrdersClick()
                     }
@@ -174,6 +177,21 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
+            // This text will update automatically when the language changes
+            Text(
+                text = stringResource(id = R.string.greeting),
+                modifier = Modifier.padding(bottom = 24.dp)
+            )
+            Row{
+                Button(onClick = { changeLanguage("en") }) {
+                    Text("English")
+                }
+
+                Button(onClick = { changeLanguage("ar") }) {
+                    Text("Arabic")
+                }
+            }
+
            if(isAuthenticated){
                TextButton(
                    onClick = {  onLogout() },
@@ -188,6 +206,12 @@ fun ProfileScreen(
            }
         }
     }
+}
+
+// Helper function to trigger the language change
+private fun changeLanguage(languageTag: String) {
+    val localeList = LocaleListCompat.forLanguageTags(languageTag)
+    AppCompatDelegate.setApplicationLocales(localeList)
 }
 
 // ==========================================
