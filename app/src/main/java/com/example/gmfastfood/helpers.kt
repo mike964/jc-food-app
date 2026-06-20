@@ -2,7 +2,9 @@ package com.example.gmfastfood
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
+import androidx.core.os.LocaleListCompat
 
 class LanguageManager(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -20,4 +22,11 @@ class LanguageManager(context: Context) {
     fun saveLanguage(languageCode: String) {
         sharedPreferences.edit { putString(KEY_APP_LANGUAGE, languageCode) }
     }
+}
+
+
+// Helper function to trigger the language change
+  fun changeLanguage(languageTag: String) {
+    val localeList = LocaleListCompat.forLanguageTags(languageTag)
+    AppCompatDelegate.setApplicationLocales(localeList)
 }

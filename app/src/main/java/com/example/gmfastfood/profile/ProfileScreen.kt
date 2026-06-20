@@ -26,14 +26,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
+import com.example.gmfastfood.LanguageManager
 import com.example.gmfastfood.auth.LoginPopup
 import com.example.gmfastfood.auth.UserProfile
+import com.example.gmfastfood.changeLanguage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,6 +49,10 @@ fun ProfileScreen(
     onAddressesClick: () -> Unit,
     onBackClick: () -> Boolean,
 ) {
+    val context = LocalContext.current
+    // Remember the manager so it isn't recreated on every recomposition
+    val languageManager = remember { LanguageManager(context) }
+
     var showLoginPopup by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -183,11 +190,18 @@ fun ProfileScreen(
                 modifier = Modifier.padding(bottom = 24.dp)
             )
             Row{
-                Button(onClick = { changeLanguage("en") }) {
+                Button(onClick = {
+//                    changeLanguage("en")
+                    languageManager.saveLanguage("en")
+                    changeLanguage("en")
+                }) {
                     Text("English")
                 }
 
-                Button(onClick = { changeLanguage("ar") }) {
+                Button(onClick = {
+                    languageManager.saveLanguage("ar")
+                    changeLanguage("ar")
+                }) {
                     Text("Arabic")
                 }
             }
@@ -208,11 +222,6 @@ fun ProfileScreen(
     }
 }
 
-// Helper function to trigger the language change
-private fun changeLanguage(languageTag: String) {
-    val localeList = LocaleListCompat.forLanguageTags(languageTag)
-    AppCompatDelegate.setApplicationLocales(localeList)
-}
 
 // ==========================================
 // COMPONENT SUB-VIEWS
