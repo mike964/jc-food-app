@@ -1,12 +1,11 @@
 package com.example.gmfastfood.profile
-import androidx.appcompat.app.AppCompatDelegate
+
+import android.util.Log
 import com.example.gmfastfood.R
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -25,18 +24,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.LocaleListCompat
 import com.example.gmfastfood.LanguageManager
 import com.example.gmfastfood.auth.LoginPopup
 import com.example.gmfastfood.auth.UserProfile
 import com.example.gmfastfood.changeLanguage
+import com.example.gmfastfood.getCurrentLanguage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,11 +54,20 @@ fun ProfileScreen(
     var showLoginPopup by remember { mutableStateOf(false) }
     // 1. Maintain the toggle state
     var isChecked by remember { mutableStateOf(false) }
+    var isArabic by remember { mutableStateOf(getCurrentLanguage() == "ar") }
+
+    Log.d("ProfileScreen", "languageManager: ${languageManager.getLanguage()}")
+    Log.d("ProfileScreen", "isArabic: $isArabic")
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(id = R.string.my_profile), fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        stringResource(id = R.string.my_profile),
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 // Left-side button (e.g., Back or Navigation drawer)
                 navigationIcon = {
                     IconButton(onClick = {
@@ -94,8 +101,8 @@ fun ProfileScreen(
                 onLoginSubmitted = onLoginSubmitted
             )
 
-            if(!isAuthenticated){
-                Row(Modifier.padding(32.dp, 16.dp, )) {
+            if (!isAuthenticated) {
+                Row(Modifier.padding(32.dp, 16.dp)) {
                     Button(
                         onClick = { showLoginPopup = true },
                         modifier = Modifier.fillMaxWidth(),
@@ -167,7 +174,7 @@ fun ProfileScreen(
 
                     ProfileMenuItem(
                         icon = Icons.Default.Settings,
-                        label =  stringResource(id = R.string.preferences)
+                        label = stringResource(id = R.string.preferences)
                     ) { /* Navigate */ }
                     HorizontalDivider(
                         color = Color(0xFFF1F1F1),
@@ -179,46 +186,65 @@ fun ProfileScreen(
                         icon = Icons.Default.Person,
                         label = stringResource(id = R.string.privacy_and_security)
                     ) { /* Navigate */ }
+                    HorizontalDivider(
+                        color = Color(0xFFF1F1F1),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.outline_language_24),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(
+                            text = stringResource(id = R.string.switch_language),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "Eng / Arb",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Switch(
+                            checked = isArabic,
+                            onCheckedChange = { newValue ->
+//                                isChecked = newValue
+                                isArabic = newValue
+                                val targetLanguage = if (newValue) "ar" else "en"
+                                changeLanguage(targetLanguage)
+                                languageManager.saveLanguage(targetLanguage)
+                            }
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Row{
-                Button(onClick = {
-//                    changeLanguage("en")
-                    languageManager.saveLanguage("en")
-                    changeLanguage("en")
-                }) {
-                    Text("English")
+            if (isAuthenticated) {
+                TextButton(
+                    onClick = { onLogout() },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Text(
+                        "Log Out",
+                        color = MaterialTheme.colorScheme.error,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
-
-                Button(onClick = {
-                    languageManager.saveLanguage("ar")
-                    changeLanguage("ar")
-                }) {
-                    Text("Arabic")
-                }
-                Switch(
-                    checked = isChecked,
-                    onCheckedChange = { newValue ->
-                        isChecked = newValue
-                    }
-                )
             }
-
-           if(isAuthenticated){
-               TextButton(
-                   onClick = {  onLogout() },
-                   modifier = Modifier.align(Alignment.CenterHorizontally)
-               ) {
-                   Text(
-                       "Log Out",
-                       color = MaterialTheme.colorScheme.error,
-                       fontWeight = FontWeight.SemiBold
-                   )
-               }
-           }
         }
     }
 }

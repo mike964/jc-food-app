@@ -30,3 +30,7 @@ class LanguageManager(context: Context) {
     val localeList = LocaleListCompat.forLanguageTags(languageTag)
     AppCompatDelegate.setApplicationLocales(localeList)
 }
+
+fun getCurrentLanguage(): String {
+    return AppCompatDelegate.getApplicationLocales()[0]?.language ?: "en"
+}
