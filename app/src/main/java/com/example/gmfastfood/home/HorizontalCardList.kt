@@ -58,7 +58,6 @@ fun HorizontalCardList(
                 val itemExistingInCart: CartItem? = cartItems.find { it.id == item.id }
                 val itemExistsInCart: Boolean = cartItems.any { it.id == item.id }
 
-
                 Card(
                     modifier = Modifier
                         .width(128.dp)

@@ -64,7 +64,7 @@ fun HomeScreen(
     onSubmitOrderClick: () -> Unit,
     onProfileClick: () -> Unit,
 ) {
-    val text by viewModel.sharedText.collectAsState()
+//    val text by viewModel.sharedText.collectAsState()
     val scrollState = rememberScrollState()
 
     val fakeApi: FakeApiClient = FakeApiClient()
@@ -277,7 +277,7 @@ fun HomeScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         FilterButton(
-                            "All",
+                            stringResource(R.string.all),
                             activeFilters.isEmpty()
                         ) {
                             activeFilters.clear()
@@ -301,7 +301,6 @@ fun HomeScreen(
                             }
                         }
                     }
-
                     Spacer(Modifier.height(8.dp))
                 }
             }
@@ -317,8 +316,6 @@ fun HomeScreen(
                         .verticalScroll(scrollState)
 //                        .padding(top = 100.dp) // Offset by the row's height
                 ) {
-
-
                     when (val currentState = state) {
                         is UiState.Loading -> {
                             Box(Modifier.size(100.dp), contentAlignment = Alignment.Center) {
@@ -331,7 +328,7 @@ fun HomeScreen(
                         is UiState.Success -> {
                             if (activeFilters.isEmpty()) {
                                 Text(
-                                    stringResource(  R.string.popular ), Modifier.padding(16.dp, 4.dp),
+                                    stringResource(R.string.popular), Modifier.padding(16.dp, 4.dp),
                                     fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                                 )
                                 HorizontalCardList(
@@ -352,8 +349,8 @@ fun HomeScreen(
 
                     if (activeFilters.contains("Burgers") || activeFilters.isEmpty()) {
                         Text(
-                            "Burgers", Modifier
-                                .padding(16.dp, 4.dp),
+                            stringResource(R.string.burgers),
+                            Modifier.padding(16.dp, 4.dp),
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
@@ -369,8 +366,8 @@ fun HomeScreen(
 
                     if (activeFilters.contains("Pizza") || activeFilters.isEmpty()) {
                         Text(
-                            "Pizza", Modifier
-                                .padding(16.dp, 4.dp) ,
+                            stringResource(R.string.pizzas), Modifier
+                                .padding(16.dp, 4.dp),
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
@@ -385,8 +382,8 @@ fun HomeScreen(
 
                     if (activeFilters.contains("Salads") || activeFilters.isEmpty()) {
                         Text(
-                            "Salads", Modifier
-                                .padding(16.dp, 4.dp) ,
+                            stringResource(R.string.salads), Modifier
+                                .padding(16.dp, 4.dp),
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
@@ -401,8 +398,8 @@ fun HomeScreen(
 
                     if (activeFilters.contains("Drinks") || activeFilters.isEmpty()) {
                         Text(
-                            "Drinks", Modifier
-                                .padding(16.dp, 4.dp) ,
+                            stringResource(R.string.drinks), Modifier
+                                .padding(16.dp, 4.dp),
                             fontSize = 18.sp, fontWeight = FontWeight.SemiBold
                         )
                         HorizontalCardList(
@@ -414,15 +411,9 @@ fun HomeScreen(
                             cartItems
                         )
                     }
-                    Spacer(Modifier.height(400.dp))
+                    Spacer(Modifier.height(300.dp))
                 }
             }
         }
     }
 }
-
-
-data class SlidingContent(
-    val text: String,
-    val selected: Boolean = false,
-)
