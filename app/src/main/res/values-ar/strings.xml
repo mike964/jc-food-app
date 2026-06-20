@@ -4,7 +4,25 @@
     <string name="welcome_message">مرحباَ بك</string>
     <string name="greeting">اهلاَ بك</string>
     <string name="title">العنوان</string>
+    <string name="all">الكل</string>
+    <string name="profile">بروفايل</string>
+    <string name="my_profile">حسابي</string>
+    <string name="Cart">سلة التسوق</string>
+    <string name="Search">بحث</string>
+    <string name="Home">الرئيسية</string>
+    <string name="orders">الطلبات</string>
+    <string name="address">العنوان</string>
+    <string name="notifications">الاشعارات</string>
+    <string name="preferences">الاولويات</string>
+    <string name="privacy_and_security">الامان و الخصوصية</string>
     <string name="switch_language">تغيير اللغة</string>
-    <string name="popular">شائعة</string>
-    <string name="my_orders">طلباتي</string>
+    <string name="change_language">تغيير اللغة</string>
+    <string name="popular">الأكثر شعبية</string>
+    <string name="sandwiches">الشطائر</string>
+    <string name="burgers">البركر</string>
+    <string name="pizzas">بيتزا</string>
+    <string name="salads">السلطات</string>
+    <string name="drinks">المشروبات</string>
+    <string name="appetizers">المقبلات</string>
+    <string name="snacks">وجبات خفيفة</string>
 </resources>

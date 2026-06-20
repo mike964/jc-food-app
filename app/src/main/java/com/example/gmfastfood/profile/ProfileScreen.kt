@@ -54,11 +54,13 @@ fun ProfileScreen(
     val languageManager = remember { LanguageManager(context) }
 
     var showLoginPopup by remember { mutableStateOf(false) }
+    // 1. Maintain the toggle state
+    var isChecked by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("My Profile", fontWeight = FontWeight.Bold) },
+                title = { Text(stringResource(id = R.string.my_profile), fontWeight = FontWeight.Bold) },
                 // Left-side button (e.g., Back or Navigation drawer)
                 navigationIcon = {
                     IconButton(onClick = {
@@ -104,8 +106,6 @@ fun ProfileScreen(
                 }
             }
 
-
-
             // 1. Profile Header Section
             if (isAuthenticated && profile != null) {
                 ProfileHeader(
@@ -133,7 +133,7 @@ fun ProfileScreen(
                 Column {
                     ProfileMenuItem(
                         icon = Icons.Default.ShoppingCart,
-                        label = stringResource(id = R.string.my_orders)
+                        label = stringResource(id = R.string.orders)
                     ) {
                         onOrdersClick()
                     }
@@ -145,7 +145,7 @@ fun ProfileScreen(
 
                     ProfileMenuItem(
                         icon = Icons.Default.Home,
-                        label = "My Addresses"
+                        label = stringResource(id = R.string.address)
                     ) {
                         onAddressesClick()
                     }
@@ -157,7 +157,7 @@ fun ProfileScreen(
 
                     ProfileMenuItem(
                         icon = Icons.Default.Notifications,
-                        label = "Notification Settings"
+                        label = stringResource(id = R.string.notifications)
                     ) { /* Navigate */ }
                     HorizontalDivider(
                         color = Color(0xFFF1F1F1),
@@ -167,7 +167,7 @@ fun ProfileScreen(
 
                     ProfileMenuItem(
                         icon = Icons.Default.Settings,
-                        label = "Account Preferences"
+                        label =  stringResource(id = R.string.preferences)
                     ) { /* Navigate */ }
                     HorizontalDivider(
                         color = Color(0xFFF1F1F1),
@@ -177,18 +177,13 @@ fun ProfileScreen(
 
                     ProfileMenuItem(
                         icon = Icons.Default.Person,
-                        label = "Privacy & Security"
+                        label = stringResource(id = R.string.privacy_and_security)
                     ) { /* Navigate */ }
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // This text will update automatically when the language changes
-            Text(
-                text = stringResource(id = R.string.greeting),
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
             Row{
                 Button(onClick = {
 //                    changeLanguage("en")
@@ -204,6 +199,12 @@ fun ProfileScreen(
                 }) {
                     Text("Arabic")
                 }
+                Switch(
+                    checked = isChecked,
+                    onCheckedChange = { newValue ->
+                        isChecked = newValue
+                    }
+                )
             }
 
            if(isAuthenticated){
@@ -226,77 +227,6 @@ fun ProfileScreen(
 // ==========================================
 // COMPONENT SUB-VIEWS
 // ==========================================
-
-@Composable
-fun ProfileHeader(name: String, email: String, avatarLabel: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Avatar Circle Placeholder (Switch to AsyncImage in production for URL loading)
-        Box(
-            modifier = Modifier
-                .size(96.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-//            Text(
-//                text = avatarLabel,
-//                fontSize = 28.sp,
-//                fontWeight = FontWeight.Bold,
-//                color = MaterialTheme.colorScheme.onPrimaryContainer
-//            )
-            Image(
-//                imageVector = Icons.Default.Person,
-                painter = painterResource(id = R.drawable.sample_user),
-                contentDescription = "Profile Avatar",
-                contentScale = ContentScale.Crop
-            )
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(text = name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Text(text = email, fontSize = 14.sp, color = Color.Gray)
-    }
-}
-
-@Composable
-fun ProfileStatsRow() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        StatItem(value = "12", label = "Orders")
-        Box(
-            modifier = Modifier
-                .width(1.dp)
-                .height(32.dp)
-                .background(Color.LightGray)
-        ) // Divider
-        StatItem(value = "$428", label = "Saved")
-        Box(
-            modifier = Modifier
-                .width(1.dp)
-                .height(32.dp)
-                .background(Color.LightGray)
-        ) // Divider
-        StatItem(value = "4.9", label = "Buyer Score")
-    }
-}
-
-@Composable
-fun StatItem(value: String, label: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-        Text(text = label, fontSize = 12.sp, color = Color.Gray)
-    }
-}
-
 @Composable
 fun ProfileMenuItem(
     icon: ImageVector,

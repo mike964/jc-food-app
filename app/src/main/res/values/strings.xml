@@ -3,7 +3,26 @@
     <string name="welcome_message">Welcome</string>
     <string name="greeting">Welcome John</string>
     <string name="title">Title</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="my_profile">My Profile</string>
+    <string name="Cart">Profile</string>
+    <string name="Search">Profile</string>
+    <string name="Home">Profile</string>
+    <string name="orders">Orders</string>
+    <string name="address">Address</string>
+    <string name="notifications">Notifications</string>
+    <string name="preferences">Preferences</string>
+    <string name="privacy_and_security">Privacy &amp; Security</string>
     <string name="switch_language">Switch language</string>
+    <string name="change_language">Change language</string>
     <string name="popular">Popular</string>
-    <string name="my_orders">My Orders</string>
+    <string name="sandwiches">Sandwiches</string>
+    <string name="burgers">Burgers</string>
+    <string name="pizzas">Pizzas</string>
+    <string name="salads">Salads</string>
+    <string name="drinks">Drinks</string>
+    <string name="appetizers">Appetizers</string>
+    <string name="snacks">Snacks</string>
+
 </resources>
