@@ -11,6 +11,7 @@ import com.example.gmfastfood.data.StoreApiService
 import com.example.gmfastfood.data.UserAddress
 import com.example.gmfastfood.data.sampleAddresses
 import com.example.gmfastfood.data.sampleOrders2
+import com.example.gmfastfood.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 
 data class Book(val id: Int, val title: String, val author: String)
 
+// Define possible UI states
 sealed interface UiState {
     object Loading : UiState
     data class Success(val items: List<Product>) : UiState
@@ -46,21 +48,28 @@ class SharedViewModel(
     private val _addresses = MutableStateFlow<List<UserAddress>>(emptyList())
     val addresses = _addresses.asStateFlow()
 
+    // Injecting manually for this example. Use Hilt in production!
+    private val repository = ProductRepository(
+//        RetrofitClient.apiService
+        apiService
+    )
+
     init {
-        loadDataFromNetwork()
+        // Load data from network
+        getProducts()
+//        loadDataFromNetwork()
         loadInitialAddresses()
     }
 
-    fun loadDataFromNetwork() {
+    fun getProducts(){
         viewModelScope.launch {
             _uiState.update { UiState.Loading }
             try {
-                val data = apiService.getProductItems()
+                val data = repository.getProducts()
                 _uiState.update {
                     UiState.Success(items = data)
                 }
                 _products.value = data
-                _orders.value = sampleOrders2
             } catch (e: Exception) {
                 _uiState.update { UiState.Error(message = e.localizedMessage ?: "Unknown Error") }
             }
