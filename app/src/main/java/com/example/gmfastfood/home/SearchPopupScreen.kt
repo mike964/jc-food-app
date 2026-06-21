@@ -42,7 +42,6 @@ fun SearchPopupScreen(
 
     // Collect states safely from the ViewModel
     val searchQuery by viewModel.searchQuery.collectAsState()
-    val books by viewModel.filteredBooks.collectAsState()
     val products by viewModel.filteredProducts.collectAsState()
 
     Dialog(

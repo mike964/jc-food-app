@@ -2,12 +2,9 @@ package com.example.gmfastfood.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gmfastfood.data.ApiItem
 import com.example.gmfastfood.data.FakeApiClient
-import com.example.gmfastfood.data.FakeStoreApiClient
 import com.example.gmfastfood.data.Order
 import com.example.gmfastfood.data.Product
-import com.example.gmfastfood.data.StoreApiService
 import com.example.gmfastfood.data.UserAddress
 import com.example.gmfastfood.data.sampleAddresses
 import com.example.gmfastfood.data.sampleOrders2
@@ -17,12 +14,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-data class Book(val id: Int, val title: String, val author: String)
 
 // Define possible UI states
 sealed interface UiState {
@@ -42,7 +37,7 @@ class SharedViewModel(
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
 
-    private val _orders = MutableStateFlow<List<Order>>(emptyList())
+    private var _orders = MutableStateFlow<List<Order>>(emptyList())
     val orders = _orders.asStateFlow()
 
     private val _addresses = MutableStateFlow<List<UserAddress>>(emptyList())
@@ -55,10 +50,11 @@ class SharedViewModel(
     )
 
     init {
-        // Load data from network
+        // # Load data from network
         getProducts()
 //        loadDataFromNetwork()
         loadInitialAddresses()
+        _orders.value = sampleOrders2
     }
 
     fun getProducts(){
@@ -90,34 +86,6 @@ class SharedViewModel(
     // 1. The search query state
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
-
-    // 2. The backing dummy data (or data from a repository)
-    private val _books = MutableStateFlow(
-        listOf(
-            Book(1, "The Hobbit", "J.R.R. Tolkien"),
-            Book(2, "1984", "George Orwell"),
-            Book(3, "The Fellowship of the Ring", "J.R.R. Tolkien"),
-            Book(4, "Animal Farm", "George Orwell"),
-            Book(5, "Animal Kingdom", "George Orwell"),
-            Book(6, "Thriving Farm", "George Washington")
-        )
-    )
-
-    // 3. The filtered list state, updating dynamically
-    val filteredBooks = combine(_books, _searchQuery) { books, query ->
-        if (query.isBlank()) {
-            books
-        } else {
-            books.filter { book ->
-                book.title.contains(query, ignoreCase = true) ||
-                        book.author.contains(query, ignoreCase = true)
-            }
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
 
     val filteredProducts = combine(_products, _searchQuery) { products, query ->
         if (query.isBlank()) {
@@ -154,7 +122,7 @@ class SharedViewModel(
     private val _orderToSubmit = MutableStateFlow<Order?>(null)
     val orderToSubmit = _orderToSubmit.asStateFlow()
     fun addOrderToSubmit(order: Order) {
-        _orderToSubmit.value = order
+//        _orderToSubmit.value = order
         _orders.value += order
     }
 

@@ -134,8 +134,6 @@ fun MainScreen() {
                     )
                 }
                 composable<Routes.Checkout> {
-
-
                     val sharedViewModel: SharedViewModel =
                         navController.getSharedViewModel(Routes.MainGraph)
 

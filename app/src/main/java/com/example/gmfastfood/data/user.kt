@@ -97,10 +97,10 @@ val sampleOrders2 = listOf(
         createdAt =  1779720592000 ,
         status =  "PROCESSING",
         items = emptyList(),
-        subtotal = 230.97,
-        shipping = 5.99,
-        tax = 22.40,
-        total = 308.37,
+        subtotal = 25000.0,
+        shipping = 2000.0,
+        tax = 0.0,
+        total = 27000.0,
         address = "Dockland Street. House red",
         note = "Ring second floor"
     )
