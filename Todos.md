@@ -1,6 +1,6 @@
 
-
-[x] Display a list of food items. 
+[x] Simple Navigation bar  			5/17/2026
+[x] Display a list of food items.   5/18/2026
 [x] Fake data with 10 sample items 
 [x] Simple Shopping cart example
 [x] Add item to cart view model 
@@ -28,13 +28,19 @@ Save 3rd address to viewmodel - address crud in view model
 [x] Run first Leaflet maps example - show first map on emulator 6/4/2026
 [x] Display selected point coordinates 
 [x] User click new address -> Leaflet map popup -> user select point -> new address coordinates get saved  3:06 PM 6/4/2026
-[x] User add items to cart -> user click submit order -> Use select new address on map. Address get saved to the ViewModel.  6/6/2026
+[x] User add items to cart -> user click submit order -> Use select new address on map. 
+[x] Address get saved to the ViewModel.  6/6/2026
 Order is preparing animation - will be ready in 45 minutes
 AM 6/18/2026
-Add Arabic language 
+[x]  Switch language with button done. AR/EN - done  6/20/2026
 Add Repository for data
 User get food data from remote API with Retrofit 
 Remember. First step is just a prototype to show. 
+Do login with shared prefrences. 
+Add orders in navigation bar instead of search screen 
+order status colors. Is preparing. Is delivering. Delivered. 
+
+
 
 
 # Later
@@ -48,13 +54,13 @@ Remember. First step is just a prototype to show.
 
 First Repo no API. Just mock data. 
 Next fork repo and add firebase. 
-Horizontal sliders. 
+Horizontal sliders ✅
 Burgers. Pizza. Drinks. Salads. 
-Arabic language
-Simple API. No firebase. Just json. 
-Simple Auth 
-fake api - Loading affect
-jetpack compose select address on map
+Arabic language ✅
+Simple API. No firebase. Just json ✅
+Simple Auth ✅
+fake api - Loading affect  ✅
+jetpack compose select address on map ✅
 
 let's catch when a user clicks anywhere on the Leaflet map and send those exact coordinates back to Jetpack Compose:
 Karbala center coordinates 
