@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable;
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -74,9 +75,9 @@ fun MainScreen() {
     // # Navigation bar items
     val listOfNavItems = listOf(
         NavItem("Home", Icons.Default.Home, Routes.Home),
-        NavItem("Search", Icons.Default.Search, Routes.Search),
-//    NavItem("Orders", Icons.AutoMirrored.Filled.List, "orders"),
+//        NavItem("Search", Icons.Default.Search, Routes.Search),
         NavItem("Cart", ImageVector.vectorResource(id = R.drawable.ic_shopping_cart), Routes.Cart),
+        NavItem("Orders", Icons.AutoMirrored.Filled.List, Routes.Orders),
         NavItem("Profile", Icons.Default.Person, Routes.Profile)
     )
 
@@ -125,12 +126,6 @@ fun MainScreen() {
                         onProfileClick = { navController.navigate(Routes.Profile) }
                     )
                 }
-                composable<Routes.Search> {
-                    val sharedViewModel: SharedViewModel =
-                        navController.getSharedViewModel(Routes.MainGraph)
-
-                    SearchScreen2(sharedViewModel)
-                }
                 composable<Routes.Cart> {
                     CartScreen(
                         cartViewModel,
@@ -157,7 +152,7 @@ fun MainScreen() {
                         }
                     )
                 }
-                composable<Routes.OrderDetails> {backStackEntry ->
+                composable<Routes.OrderDetails> { backStackEntry ->
                     // Extract the arguments automatically and type-safely
                     val args = backStackEntry.toRoute<Routes.OrderDetails>()
 
@@ -167,7 +162,7 @@ fun MainScreen() {
                     val order = sharedViewModel.getOrderById(args.orderId)
 
                     OrderDetailsScreen(
-                        order = order ,
+                        order = order,
                         onBackClick = { navController.popBackStack() },
                         onHomeClick = { navController.navigate(Routes.Home) },
                         onMyOrdersClick = { navController.navigate(Routes.Orders) }

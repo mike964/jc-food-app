@@ -33,13 +33,14 @@ Save 3rd address to viewmodel - address crud in view model
 Order is preparing animation - will be ready in 45 minutes
 AM 6/18/2026
 [x]  Switch language with button done. AR/EN - done  6/20/2026
-Add Repository for data
+Add Repository for data similar to MVVM architecture
 User get food data from remote API with Retrofit 
 Remember. First step is just a prototype to show. 
 Do login with shared prefrences. 
-Add orders in navigation bar instead of search screen 
+[x] Add orders in navigation bar instead of search screen  6/21/2026
 order status colors. Is preparing. Is delivering. Delivered. 
-
+JSON API with simple retrofit n repository 
+Run on the other emulator
 
 
 
