@@ -33,13 +33,13 @@ Save 3rd address to viewmodel - address crud in view model
 Order is preparing animation - will be ready in 45 minutes
 AM 6/18/2026
 [x]  Switch language with button done. AR/EN - done  6/20/2026
-Add Repository for data similar to MVVM architecture
+[x] Add Repository for data similar to MVVM architecture  6/22/2026
 User get food data from remote API with Retrofit 
 Remember. First step is just a prototype to show. 
 Do login with shared prefrences. 
 [x] Add orders in navigation bar instead of search screen  6/21/2026
 order status colors. Is preparing. Is delivering. Delivered. 
-JSON API with simple retrofit n repository 
+JSON API with simple retrofit n repository (Later)
 Run on the other emulator
 
 
@@ -48,9 +48,11 @@ Run on the other emulator
 ------------------------------------
 [] Save one order to firebase 
 [] Later fork n make a production version of it. 
-[] Flip food item cards - nn 
-[] Multipe language - Add arabic 
+[] Flip food item card to show details - nn 
+[x] Multipe language - Add arabic 
 [ ] Display address on Google Maps (Later)
+[ ] Build Admin App for restaurant owner with Next.js n PWA
+Food items, orders, special deals. 
 
 
 First Repo no API. Just mock data. 
